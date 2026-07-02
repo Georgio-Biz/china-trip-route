@@ -112,14 +112,14 @@ const REGIONS={
 };
 // Generic stops — no supplier names (flight-planning view)
 const STOPS=[
- {day:2,city:'Nantong (Rudong)',region:'jiangsu',ll:[32.32,121.61],kind:'Free weights',ap:'NTG · via Shanghai PVG (~1 h rail)',hsr:'Nantong West'},
- {day:3,city:'Qingdao',region:'shandong',ll:[36.31,120.40],kind:'Strength & cardio cluster (4 factories)',ap:'TAO Qingdao (~15–50 km)',hsr:'Qingdao North / Airport HSR'},
- {day:4,city:'Dezhou (Ningjin)',region:'shandong',ll:[37.66,116.79],kind:'Machines',ap:'TNA Jinan (~90 km)',hsr:'Dezhou East'},
- {day:0,city:'Yishui (Linyi)',region:'shandong',ll:[35.83,118.52],kind:'Flooring (optional)',ap:'LYI Linyi (~70 km)',hsr:'Yishui station'},
- {day:5,city:'Zhangzhou (Changtai)',region:'fujian',ll:[24.57,117.85],kind:'Racks',ap:'XMN Xiamen (~50 km)',hsr:'Xiamen North'},
- {day:6,city:'Guangzhou',region:'guangdong',ll:[23.13,113.26],kind:'Cardio',ap:'CAN Guangzhou (~28 km)',hsr:'Guangzhou South'},
- {day:6,city:'Foshan (Shunde)',region:'guangdong',ll:[22.86,113.26],kind:'Treadmills',ap:'CAN Guangzhou (~50 km)',hsr:'Guangzhou South'},
- {day:7,city:'Dongguan (Chashan)',region:'guangdong',ll:[23.07,113.95],kind:'Flooring',ap:'CAN (~65 km) / SZX Shenzhen',hsr:'Dongguan Station'},
+ {day:2,city:'Nantong (Rudong)',region:'jiangsu',ll:[32.32,121.61],kind:'Free weights',ap:'NTG · via Shanghai PVG (~1 h rail)',drive:'Shanghai→Nantong rail ~1 h + local',hsr:'Nantong West'},
+ {day:3,city:'Qingdao',region:'shandong',ll:[36.31,120.40],kind:'Strength & cardio cluster (4 factories)',ap:'TAO Qingdao (~15–50 km)',drive:'~30–50 min from TAO',hsr:'Qingdao North / Airport HSR'},
+ {day:4,city:'Dezhou (Ningjin)',region:'shandong',ll:[37.66,116.79],kind:'Machines',ap:'TNA Jinan (~90 km)',drive:'~1 h 30 from TNA Jinan',hsr:'Dezhou East'},
+ {day:0,city:'Yishui (Linyi)',region:'shandong',ll:[35.83,118.52],kind:'Flooring (optional)',ap:'LYI Linyi (~70 km)',drive:'~1 h from LYI Linyi',hsr:'Yishui station'},
+ {day:5,city:'Zhangzhou (Changtai)',region:'fujian',ll:[24.57,117.85],kind:'Racks',ap:'XMN Xiamen (~50 km)',drive:'~1 h from XMN Xiamen',hsr:'Xiamen North'},
+ {day:6,city:'Guangzhou',region:'guangdong',ll:[23.13,113.26],kind:'Cardio',ap:'CAN Guangzhou (~28 km)',drive:'~40 min from CAN',hsr:'Guangzhou South'},
+ {day:6,city:'Foshan (Shunde)',region:'guangdong',ll:[22.86,113.26],kind:'Treadmills',ap:'CAN Guangzhou (~50 km)',drive:'~1 h from CAN',hsr:'Guangzhou South'},
+ {day:7,city:'Dongguan (Chashan)',region:'guangdong',ll:[23.07,113.95],kind:'Flooring',ap:'CAN (~65 km) / SZX Shenzhen',drive:'~1 h 15 from CAN',hsr:'Dongguan Station'},
 ];
 const AIRPORTS=[
  {code:'PVG',nm:'Shanghai Pudong',ll:[31.143,121.805],serves:'Entry from Brisbane · gateway to Nantong + Qingdao'},
@@ -172,7 +172,7 @@ AIRPORTS.forEach(a=>{const html=`<div class="pp-nm">✈ ${a.code} — ${a.nm}</d
 STOPS.forEach(s=>{const col=REGIONS[s.region].color,v=s.day>0;
   const icon=L.divIcon({className:'',iconSize:[28,28],iconAnchor:[14,14],html:`<div class="pin${v?'':' opt'}" style="background:${col}">${v?s.day:'+'}</div>`});
   const m=L.marker(s.ll,{icon}).addTo(map);
-  const html=`<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span><div class="pp-nm">${s.city}</div><div class="pp-city">${v?'Day '+s.day:'Optional'} · ${s.kind}</div><div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div><div class="pp-row"><b>Nearest HSR:</b> ${s.hsr}</div>`;
+  const html=`<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span><div class="pp-nm">${s.city}</div><div class="pp-city">${v?'Day '+s.day:'Optional'} · ${s.kind}</div><div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div><div class="pp-row"><b>Airport → site:</b> ${s.drive}</div><div class="pp-row"><b>Nearest HSR:</b> ${s.hsr}</div>`;
   m.bindTooltip(html,{direction:'top',offset:[0,-14],className:'rich-tip',sticky:false});m.bindPopup(html,{maxWidth:280});
   markerByCity[s.city]=m;allPts.push(s.ll);});
 const b=L.latLngBounds(allPts).pad(.12);

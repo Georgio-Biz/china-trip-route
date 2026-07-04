@@ -3,101 +3,113 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>China Trip — Route &amp; Airports</title>
+<title>China Sourcing Trip</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
-    --bg:#fff;--bg2:#f5f5f7;--text:#1d1d1f;--text2:#6e6e73;--text3:#86868b;
-    --hair:#d2d2d7;--hair2:#e8e8ed;--blue:#0071e3;--flight:#0071e3;--ground:#ff9500;
-    --shandong:#2E6FD6;--jiangsu:#8A4FBE;--fujian:#CC7A1F;--guangdong:#3E8E2E;
-    --shadow:0 4px 24px rgba(0,0,0,.10);--shadow-sm:0 1px 3px rgba(0,0,0,.10);
+    --bg:#ffffff; --bg2:#f5f5f7; --text:#1d1d1f; --text2:#6e6e73; --text3:#86868b;
+    --hair:#d2d2d7; --hair2:#e8e8ed; --blue:#0071e3; --flight:#0071e3; --ground:#ff9500;
+    --shandong:#2E6FD6; --jiangsu:#8A4FBE; --fujian:#CC7A1F; --guangdong:#3E8E2E;
+    --shadow:0 4px 24px rgba(0,0,0,.10); --shadow-sm:0 1px 3px rgba(0,0,0,.10);
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
   body{display:flex;flex-direction:column;height:100vh;background:var(--bg);color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-  header{padding:13px 22px 11px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair)}
-  .h-title{font-size:19px;font-weight:600;letter-spacing:-.012em}
-  .h-sub{font-size:12.5px;color:var(--text2);margin-top:2px}
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+
+  header{padding:13px 22px 11px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--hair);}
+  .h-title{font-size:19px;font-weight:600;letter-spacing:-.012em;color:var(--text)}
+  .h-sub{font-size:12.5px;color:var(--text2);margin-top:2px;letter-spacing:-.005em}
+
   nav{display:flex;justify-content:center;padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--hair2)}
-  .seg{display:inline-flex;background:var(--hair2);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap;justify-content:center}
-  .seg button{appearance:none;border:0;background:transparent;color:var(--text);padding:6px 16px;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;transition:all .15s}
+  .seg{display:inline-flex;background:var(--hair2);border-radius:10px;padding:3px;gap:2px}
+  .seg button{appearance:none;border:0;background:transparent;color:var(--text);
+    padding:6px 18px;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;letter-spacing:-.01em;transition:all .15s}
+  .seg button:hover{color:#000}
   .seg button.active{background:#fff;box-shadow:var(--shadow-sm);font-weight:600}
+
   #content{flex:1;min-height:0;position:relative}
-  .view{position:absolute;inset:0;overflow:auto;display:none}
+  .view{position:absolute;inset:0;overflow:auto;display:none;-webkit-overflow-scrolling:touch}
   .view.active{display:block}
+
+  /* MAP */
   #map{position:absolute;inset:0;background:#eef1f4}
   .leaflet-container{background:#eef1f4;font-family:inherit}
-  .panel{position:absolute;z-index:500;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(18px);border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:var(--shadow)}
+  .panel{position:absolute;z-index:500;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(18px);
+    border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:var(--shadow)}
   #legend{left:14px;bottom:18px;padding:13px 15px;font-size:12px;max-width:230px}
   #legend h4{margin:0 0 9px;font-size:11px;letter-spacing:.04em;color:var(--text3);text-transform:uppercase;font-weight:600}
-  .lg{display:flex;align-items:center;gap:9px;margin:6px 0}
+  .lg{display:flex;align-items:center;gap:9px;margin:6px 0;color:var(--text)}
   .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
   .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;flex:0 0 auto}
-  #stops{right:14px;top:14px;width:250px;max-height:calc(100% - 28px);overflow:auto;padding:6px}
+  #stops{right:14px;top:14px;width:264px;max-height:calc(100% - 28px);overflow:auto;padding:6px}
   #stops h4{margin:9px 11px 4px;font-size:11px;letter-spacing:.04em;color:var(--text3);text-transform:uppercase;font-weight:600}
-  .stop{display:flex;gap:11px;padding:9px 11px;border-radius:11px;cursor:pointer;align-items:flex-start}
+  .stop{display:flex;gap:11px;padding:9px 11px;border-radius:11px;cursor:pointer;align-items:flex-start;transition:background .12s}
   .stop:hover{background:rgba(0,0,0,.045)}
-  .daybadge{flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;line-height:1}
-  .daybadge small{font-size:7.5px;font-weight:600;opacity:.85}
-  .stop .nm{font-weight:600;font-size:13.5px}
+  .daybadge{flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;line-height:1}
+  .daybadge small{font-size:7.5px;font-weight:600;opacity:.85;letter-spacing:.06em}
+  .stop .nm{font-weight:600;font-size:13.5px;letter-spacing:-.01em}
   .stop .mt{font-size:11.5px;color:var(--text2);margin-top:2px}
   .stop .ap{font-size:11px;color:var(--blue);margin-top:3px}
   .toolbtn{position:absolute;z-index:500;left:14px;top:14px;display:flex;gap:7px}
-  .toolbtn button{background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(18px);border:1px solid rgba(0,0,0,.06);color:var(--text);border-radius:10px;padding:8px 13px;font-size:12.5px;font-weight:500;cursor:pointer;box-shadow:var(--shadow-sm)}
-  .pin{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13.5px;border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer;transition:transform .1s}
-  .pin:hover{transform:scale(1.18)}
-  .pin.opt{opacity:.9;font-size:16px;font-weight:600}
-  .leaflet-tooltip.rich-tip{background:#fff;color:var(--text);border:1px solid rgba(0,0,0,.08);border-radius:13px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:12px 14px;width:250px;white-space:normal;font-size:12.5px;line-height:1.5;font-family:inherit}
-  .leaflet-tooltip.rich-tip::before{display:none}
-  .pp-nm{font-weight:600;font-size:15px;margin-bottom:1px}
+  .toolbtn button{background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(18px);
+    border:1px solid rgba(0,0,0,.06);color:var(--text);border-radius:10px;padding:8px 13px;
+    font-size:12.5px;font-weight:500;cursor:pointer;box-shadow:var(--shadow-sm)}
+  .toolbtn button:hover{background:#fff}
+
+  .leaflet-popup-content-wrapper{background:#fff;color:var(--text);border-radius:14px;box-shadow:var(--shadow)}
+  .leaflet-popup-tip{background:#fff}
+  .leaflet-popup-content{margin:13px 15px;font-size:13px;line-height:1.5}
+  .pp-nm{font-weight:600;font-size:15px;margin-bottom:1px;letter-spacing:-.01em}
   .pp-city{color:var(--text2);font-size:12px;margin-bottom:8px}
   .pp-row{margin:3px 0}.pp-row b{color:var(--text3);font-weight:600}
   .pp-tag{display:inline-block;font-size:10.5px;font-weight:600;color:#fff;padding:2px 8px;border-radius:6px;margin-bottom:7px}
-  .leaflet-popup-content-wrapper{background:#fff;border-radius:14px;box-shadow:var(--shadow)}
-  .leaflet-popup-content{margin:13px 15px;font-size:13px;line-height:1.5}
-  .prov-label{font-weight:700;font-size:13px;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 3px #fff}
-  .wrap{max-width:860px;margin:0 auto;padding:34px 22px 70px}
-  h2{font-weight:700;letter-spacing:-.02em;margin:0 0 5px;font-size:28px}
+  .prov-label{font-weight:700;font-size:13px;letter-spacing:.02em;white-space:nowrap;
+    text-shadow:0 0 3px #fff,0 0 3px #fff,0 1px 2px #fff}
+  .pin{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:13.5px;border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer;transition:transform .1s}
+  .pin:hover{transform:scale(1.18)}
+  .pin.opt{opacity:.9;font-size:16px;font-weight:600}
+  .leaflet-tooltip.rich-tip{background:#fff;color:var(--text);border:1px solid rgba(0,0,0,.08);border-radius:13px;
+    box-shadow:0 8px 30px rgba(0,0,0,.18);padding:12px 14px;width:250px;white-space:normal;
+    font-size:12.5px;line-height:1.5;font-family:inherit}
+  .leaflet-tooltip.rich-tip::before{display:none}
+
+  /* CONTENT PAGES */
+  .wrap{max-width:920px;margin:0 auto;padding:34px 22px 70px}
+  h2{font-weight:700;letter-spacing:-.02em;margin:0 0 5px;font-size:30px}
   .lead{color:var(--text2);margin:0 0 26px;font-size:15px;line-height:1.5}
-  .h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;margin:22px 0 12px}
-  .tsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 6px}
-  .tsum .box{background:var(--bg2);border-radius:16px;padding:16px 18px}
-  .tsum .lab{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600}
-  .tsum .val{font-size:16px;font-weight:600;margin-top:5px}
-  .tsum .val small{font-size:13px;color:var(--text2);font-weight:400}
-  .tl{padding-left:6px}
-  .tleg{display:flex;gap:14px}
-  .tleg .ic{flex:0 0 36px;display:flex;flex-direction:column;align-items:center}
-  .tleg .badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:#fff;border:1.5px solid var(--hair);z-index:1}
-  .tleg .badge.fl{border-color:var(--flight);color:var(--flight)}
-  .tleg .badge.gr{border-color:var(--ground);color:var(--ground)}
-  .tleg .line{width:2px;flex:1;background:var(--hair);margin:2px 0}
-  .tleg:last-child .line{display:none}
-  .tleg .bd{flex:1;padding-bottom:20px}
-  .tleg .seg{font-weight:600;font-size:15px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  .tleg .dur{font-weight:600;font-size:14px;white-space:nowrap}
-  .tleg .tn{color:var(--text2);font-size:12.5px;margin-top:3px}
-  .work{display:inline-block;margin-top:7px;font-size:12px;font-weight:600;color:#fff;background:var(--text);padding:3px 10px;border-radius:7px}
-  .cav{background:var(--bg2);border-radius:16px;padding:6px 20px 8px}
-  .cav li{font-size:13px;line-height:1.55;margin:11px 0}
   .day{border:1px solid var(--hair);border-radius:18px;margin:0 0 14px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm)}
   .day-hd{display:flex;align-items:center;gap:14px;padding:15px 18px;background:var(--bg2)}
   .day-hd .n{width:42px;height:42px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;color:#fff;line-height:1}
-  .day-hd .n small{font-size:8px;font-weight:600;opacity:.85}
-  .day-hd .rg{font-weight:600;font-size:16px}.day-hd .dt{color:var(--text2);font-size:12.5px;margin-top:1px}
-  .movebadge{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;line-height:1.2;text-align:right}
-  .movebadge b{font-size:13.5px;font-weight:600;color:var(--text)}
-  .movebadge small{font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+  .day-hd .n small{font-size:8px;font-weight:600;opacity:.85;letter-spacing:.06em}
+  .day-hd .rg{font-weight:600;font-size:16px;letter-spacing:-.01em}
+  .day-hd .dt{color:var(--text2);font-size:12.5px;margin-top:1px}
   .day-bd{padding:6px 18px 15px}
   .leg{display:flex;gap:14px;padding:11px 0;border-top:1px solid var(--hair2)}
   .leg:first-child{border-top:0}
-  .leg .slot{flex:0 0 100px;color:var(--text3);font-size:12px;font-weight:600}
-  .leg .who{font-weight:600;font-size:14.5px}.leg .buy{color:var(--text2);font-size:13px;margin-top:2px}
+  .leg .slot{flex:0 0 120px;color:var(--text3);font-size:12px;font-weight:600;padding-top:1px}
+  .leg .who{font-weight:600;font-size:14.5px;letter-spacing:-.01em}
+  .leg .buy{color:var(--text2);font-size:13px;margin-top:2px}
   .note{color:var(--text2);font-size:12.5px;margin-top:9px;line-height:1.5}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px}
+  .card{border:1px solid var(--hair);border-radius:18px;padding:17px 18px;background:#fff;box-shadow:var(--shadow-sm)}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .card .nm{font-weight:600;font-size:16px;letter-spacing:-.01em}
+  .card .ct{color:var(--text2);font-size:12px;margin-top:1px}
+  .card .meta{margin-top:11px;font-size:12.5px;line-height:1.7;color:var(--text)}
+  .card .meta b{color:var(--text3);font-weight:600}
+  .chip{font-size:10.5px;font-weight:600;color:#fff;padding:3px 9px;border-radius:7px;white-space:nowrap}
+  .movebadge{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;line-height:1.2;text-align:right}
+  .movebadge b{font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+  .movebadge small{font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
   .jtbl{width:100%;border-collapse:collapse;font-size:13px;margin:0 0 8px}
   .jtbl th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;padding:0 10px 8px;border-bottom:1px solid var(--hair)}
-  .jtbl td{padding:10px;border-bottom:1px solid var(--hair2);vertical-align:top}.jtbl tr:last-child td{border-bottom:0}
+  .jtbl td{padding:10px;border-bottom:1px solid var(--hair2);vertical-align:top}
+  .jtbl tr:last-child td{border-bottom:0}
   .jtbl td:first-child{font-weight:600}
   .jgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:0 0 10px}
   .jcard{background:var(--bg2);border-radius:16px;padding:16px 18px}
@@ -109,148 +121,442 @@
   .seqrow .s{background:var(--bg2);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}
   .seqrow .a{color:var(--text3);font-weight:700}
   .rec{background:#eff6ee;border:1px solid #cfe6cf;border-radius:12px;padding:11px 15px;font-size:13px;line-height:1.5;margin:0 0 10px}
-  @media(max-width:640px){#stops{display:none}#legend{max-width:170px}h2{font-size:23px}.intlgrid{grid-template-columns:1fr}}
+  @media(max-width:640px){.intlgrid{grid-template-columns:1fr}}
+
+  /* TRAVEL PAGE */
+  .tsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 28px}
+  .tsum .box{background:var(--bg2);border-radius:16px;padding:16px 18px}
+  .tsum .lab{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600}
+  .tsum .val{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-top:5px}
+  .tsum .val small{font-size:13px;color:var(--text2);font-weight:400}
+  .h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;margin:6px 0 12px}
+  .tl{position:relative;margin:0 0 30px;padding-left:6px}
+  .tleg{display:flex;gap:14px;padding:0 0 4px}
+  .tleg .ic{flex:0 0 36px;display:flex;flex-direction:column;align-items:center}
+  .tleg .ic .badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:16px;background:#fff;border:1.5px solid var(--hair);z-index:1}
+  .tleg .ic .badge.fl{border-color:var(--flight);color:var(--flight)}
+  .tleg .ic .badge.gr{border-color:var(--ground);color:var(--ground)}
+  .tleg .ic .line{width:2px;flex:1;background:var(--hair);margin:2px 0}
+  .tleg:last-child .ic .line{display:none}
+  .tleg .bd{flex:1;padding-bottom:20px}
+  .tleg .seg{font-weight:600;font-size:15px;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .tleg .dur{color:var(--text);font-weight:600;font-size:14px;white-space:nowrap}
+  .tleg .tn{color:var(--text2);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .work{display:inline-block;margin-top:7px;font-size:12px;font-weight:600;color:#fff;background:var(--text);
+    padding:3px 10px;border-radius:7px}
+  .cav{background:var(--bg2);border-radius:16px;padding:6px 20px 8px}
+  .cav li{font-size:13px;color:var(--text);line-height:1.55;margin:11px 0}
+  .cav li b{font-weight:600}
+  @media(max-width:640px){
+    #stops{display:none}#legend{max-width:170px;font-size:11px}
+    h2{font-size:24px}.h-sub{font-size:11.5px}
+  }
 </style>
 </head>
 <body>
 <header>
-  <div class="h-title">China trip — route &amp; airports</div>
-  <div class="h-sub">Depart 24 Jul 2026 · Shanghai in, Guangzhou out · 4 provinces · flight-planning view</div>
+  <div class="h-title">China sourcing trip</div>
+  <div class="h-sub">Depart 24 Jul 2026 · Shanghai in, Guangzhou out · 10 factories (+2 optional) · 4 provinces</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
   <button data-view="justin">Justin</button>
   <button data-view="travel">Travel</button>
   <button data-view="itinerary">Itinerary</button>
+  <button data-view="suppliers">Suppliers</button>
 </div></nav>
+
 <div id="content">
   <section id="view-map" class="view active">
     <div id="map"></div>
-    <div class="toolbtn"><button id="fitChina">All China</button><button id="fitStops">Fit to route</button></div>
+    <div class="toolbtn">
+      <button id="fitChina">All China</button>
+      <button id="fitStops">Fit to route</button>
+    </div>
     <div id="stops" class="panel"></div>
     <div id="legend" class="panel"></div>
   </section>
   <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-travel" class="view"><div class="wrap" id="travel"></div></section>
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
+  <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
 </div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const REGIONS={
-  shandong:{name:'Shandong 山东',color:'#2E6FD6',adcode:370000,center:[118.0,36.4]},
-  jiangsu:{name:'Jiangsu 江苏',color:'#8A4FBE',adcode:320000,center:[119.8,33.0]},
-  fujian:{name:'Fujian 福建',color:'#CC7A1F',adcode:350000,center:[118.0,26.1]},
-  guangdong:{name:'Guangdong 广东',color:'#3E8E2E',adcode:440000,center:[113.4,23.4]},
+/* ---------- DATA ---------- */
+const REGIONS = {
+  shandong:{name:'Shandong 山东', color:'#2E6FD6', adcode:370000, center:[118.0,36.4]},
+  jiangsu :{name:'Jiangsu 江苏',  color:'#8A4FBE', adcode:320000, center:[119.8,33.0]},
+  fujian  :{name:'Fujian 福建',   color:'#CC7A1F', adcode:350000, center:[118.0,26.1]},
+  guangdong:{name:'Guangdong 广东',color:'#3E8E2E', adcode:440000, center:[113.4,23.4]},
 };
-const STOPS=[
- {day:2,city:'Nantong (Rudong)',region:'jiangsu',ll:[32.32,121.61],kind:'Free weights',ap:'NTG · via Shanghai PVG (~1 h rail)',drive:'Shanghai→Nantong rail ~1 h + local',hsr:'Nantong West'},
- {day:3,city:'Qingdao — strength machines',region:'shandong',ll:[36.310,120.420],kind:'Pin + plate loaded',ap:'TAO Qingdao (~35 km)',drive:'~40 min from TAO',hsr:'Qingdao North / Airport HSR'},
- {day:3,city:'Qingdao — stair climber',region:'shandong',ll:[36.190,120.310],kind:'Cardio / stair climber',ap:'TAO Qingdao (~35 km)',drive:'~50 min from TAO',hsr:'Qingdao North'},
- {day:3,city:'Jimo — booty machines',region:'shandong',ll:[36.400,120.450],kind:'Booty machines',ap:'TAO Qingdao (~15 km)',drive:'~30 min from TAO',hsr:'Qingdao Airport HSR'},
- {day:0,city:'Qingdao — benches (optional)',region:'shandong',ll:[36.070,120.375],kind:'FID benches',ap:'TAO Qingdao (~35 km)',drive:'~50 min from TAO',hsr:'Qingdao North'},
- {day:4,city:'Dezhou (Ningjin)',region:'shandong',ll:[37.66,116.79],kind:'Machines',ap:'TNA Jinan (~90 km)',drive:'~1 h 30 from TNA Jinan',hsr:'Dezhou East'},
- {day:0,city:'Yishui (Linyi)',region:'shandong',ll:[35.83,118.52],kind:'Flooring (optional)',ap:'LYI Linyi (~70 km)',drive:'~1 h from LYI Linyi',hsr:'Yishui station'},
- {day:5,city:'Zhangzhou (Changtai)',region:'fujian',ll:[24.57,117.85],kind:'Racks',ap:'XMN Xiamen (~50 km)',drive:'~1 h from XMN Xiamen',hsr:'Xiamen North'},
- {day:6,city:'Guangzhou',region:'guangdong',ll:[23.13,113.26],kind:'Cardio',ap:'CAN Guangzhou (~28 km)',drive:'~40 min from CAN',hsr:'Guangzhou South'},
- {day:6,city:'Foshan (Shunde)',region:'guangdong',ll:[22.86,113.26],kind:'Treadmills',ap:'CAN Guangzhou (~50 km)',drive:'~1 h from CAN',hsr:'Guangzhou South'},
- {day:7,city:'Dongguan (Chashan)',region:'guangdong',ll:[23.07,113.95],kind:'Flooring',ap:'CAN (~65 km) / SZX Shenzhen',drive:'~1 h 15 from CAN',hsr:'Dongguan Station'},
+
+const SUPPLIERS = [
+  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:2, slot:'Day 2 · AM',
+   cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
+  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:3, slot:'Day 3 · AM',
+   cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
+  {nm:'Relax Fitness', city:'Qingdao / Rizhao', region:'shandong', ll:[36.190,120.310], day:3, slot:'Day 3 · PM',
+   cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC)', ap:'TAO Qingdao (~35 km)'},
+  {nm:'Hongbinsheng (HBS)', city:'Qingdao', region:'shandong', ll:[36.070,120.375], day:0, slot:'Optional · Qingdao Day 3',
+   cat:'FID bench', buy:'HBS-2603 FID Bench ×12', ap:'TAO Qingdao (~35 km)'},
+  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:3, slot:'Day 3 · Qingdao',
+   cat:'V-squat · belt squat · hip ext · deadlift', buy:'PB311 V-Squat, PB312 Belt Squat, PB410 Hip Ext, PB411 Deadlift (via Insight)', ap:'TAO Qingdao (~15 km)'},
+  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:4, slot:'Day 4 · AM',
+   cat:'Plate loaded · cardio · glute', buy:'3D Glute Drive (RS-1013), Orbital Row (RS-3011)', ap:'TNA Jinan (~90 km)'},
+  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:4, slot:'Day 4 · PM',
+   cat:'Pin + plate loaded', buy:'HM plate machines + consumables consolidation RFQ', ap:'TNA Jinan (~90 km)'},
+  {nm:'Flooring — Yishui', city:'Yishui, Linyi', region:'shandong', ll:[35.830,118.520], day:0, slot:'Optional · flooring vs Chuanyu',
+   cat:'Flooring (alternative)', buy:'Gym flooring — compare with Dongguan Chuanyu', ap:'LYI Linyi Qiyang (~70 km)'},
+  {nm:'Rayton', city:'Zhangzhou (Changtai)', region:'fujian', ll:[24.570,117.850], day:5, slot:'Day 5 · AM',
+   cat:'Nexa rack', buy:'Nexa rack manufacture (China-made alternative)', ap:'XMN Xiamen (~50 km)'},
+  {nm:'Conlin Fitness', city:'Guangzhou', region:'guangdong', ll:[23.130,113.260], day:6, slot:'Day 6 · AM',
+   cat:'Treadmill', buy:'GT X Luxury Commercial Treadmill ×3 (price TBC)', ap:'CAN Guangzhou (~28 km)'},
+  {nm:'OMA Fitness', city:'Foshan (Shunde)', region:'guangdong', ll:[22.860,113.260], day:6, slot:'Day 6 · PM',
+   cat:'Slatted treadmill', buy:'OMA-6367TA Slatted Treadmill ×3 (locked)', ap:'CAN Guangzhou (~45 km)'},
+  {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:7, slot:'Day 7 · AM',
+   cat:'Flooring', buy:'Gym flooring (or drop if sourcing in Shandong)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
 ];
-const AIRPORTS=[
- {code:'PVG',nm:'Shanghai Pudong',ll:[31.143,121.805],serves:'Entry from Brisbane (direct daily) · rail on to Nantong'},
- {code:'NTG',nm:'Nantong Xingdong',ll:[32.071,120.976],serves:'Nantong — reach via Shanghai rail'},
- {code:'TAO',nm:'Qingdao Jiaodong',ll:[36.366,120.086],serves:'Qingdao cluster'},
- {code:'LYI',nm:'Linyi Qiyang',ll:[35.046,118.412],serves:'Optional Yishui stop (~70 km)'},
- {code:'TNA',nm:'Jinan Yaoqiang',ll:[36.857,117.216],serves:'Dezhou / Ningjin (~90 km) · fly south from here'},
- {code:'XMN',nm:'Xiamen Gaoqi',ll:[24.544,118.127],serves:'Zhangzhou (~50 km)'},
- {code:'CAN',nm:'Guangzhou Baiyun',ll:[23.392,113.299],serves:'Guangdong · direct flight home to Brisbane'},
+
+const OFFMAP = [];
+
+// Nearest high-speed rail station per factory
+const HSR = {
+  'Baopeng Fitness':'Nantong West / Rugao South (Rudong stn is not HSR)',
+  'Quick Body':'Hongdao / Qingdao Airport HSR',
+  'Relax Fitness':'Qingdao North',
+  'Hongbinsheng (HBS)':'Qingdao North',
+  'Peach Builder':'Qingdao Airport HSR',
+  'Rosen Fitness':'Dezhou East (Beijing–Shanghai HSR)',
+  'MBH Fitness':'Dezhou East (Beijing–Shanghai HSR)',
+  'Flooring — Yishui':'Yishui station (Rizhao–Qufu HSR)',
+  'Rayton':'Xiamen North (or Zhangzhou)',
+  'Conlin Fitness':'Guangzhou South',
+  'OMA Fitness':'Guangzhou South (Shunde = intercity)',
+  'Dongguan Chuanyu':'Dongguan Station (borders Chashan)',
+};
+
+// Approx airport → factory drive time
+const DRIVE = {
+  'Baopeng Fitness':'Shanghai→Nantong rail ~1 h, then ~30 min local',
+  'Quick Body':'~40 min from TAO',
+  'Relax Fitness':'~50 min from TAO',
+  'Hongbinsheng (HBS)':'~50 min from TAO',
+  'Peach Builder':'~30 min from TAO',
+  'Rosen Fitness':'~1 h 30 from TNA Jinan',
+  'MBH Fitness':'~1 h 30 from TNA Jinan',
+  'Flooring — Yishui':'~1 h from LYI Linyi',
+  'Rayton':'~1 h from XMN Xiamen',
+  'Conlin Fitness':'~40 min from CAN',
+  'OMA Fitness':'~1 h from CAN',
+  'Dongguan Chuanyu':'~1 h 15 from CAN',
+};
+
+// Contact person per factory
+const CONTACT = {
+  'Baopeng Fitness':'Kang Kang (康康)',
+  'Quick Body':'Crystal / Josie',
+  'Relax Fitness':'TBC',
+  'Hongbinsheng (HBS)':'TBC',
+  'Peach Builder':'via Insight',
+  'Rosen Fitness':'TBC',
+  'MBH Fitness':'Josie',
+  'Flooring — Yishui':'TBC (new lead)',
+  'Rayton':'Jane',
+  'Conlin Fitness':'Daily Youth Sports',
+  'OMA Fitness':'TBC',
+  'Dongguan Chuanyu':'TBC',
+};
+
+// Catalogue / quote reference per factory
+const CAT = {
+  'Quick Body':{url:'https://quikbody.cn',label:'quikbody.cn ↗ · QB quote sheet on file'},
+  'MBH Fitness':{url:'https://mbhfit.com',label:'mbhfit.com ↗ · MBH catalogue + counter-quote on file'},
+  'Rosen Fitness':{url:'https://hongshuofit.com',label:'hongshuofit.com ↗'},
+  'Relax Fitness':{url:'https://relaxfitness.com',label:'relaxfitness.com ↗'},
+  'Hongbinsheng (HBS)':{url:'https://hongbinsheng.com',label:'hongbinsheng.com ↗'},
+  'OMA Fitness':{url:'https://oma-fitness.com',label:'oma-fitness.com ↗'},
+  'Conlin Fitness':{url:'https://conlinfitness.com',label:'conlinfitness.com ↗'},
+  'Peach Builder':{url:'',label:'via Insight (PB311/312/410/411 on file)'},
+  'Baopeng Fitness':{url:'',label:'catalogue TBC'},
+  'Rayton':{url:'',label:'catalogue TBC'},
+  'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
+  'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
+};
+const catRow = nm => { const c=CAT[nm]; if(!c) return '';
+  return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
+
+const AIRPORTS = [
+  {code:'PVG', nm:'Shanghai Pudong Int’l', ll:[31.143,121.805], serves:'Entry from Brisbane · gateway to Baopeng (Nantong ~1 h rail) + Qingdao'},
+  {code:'NTG', nm:'Nantong Xingdong Int’l', ll:[32.071,120.976], serves:'Baopeng (Jiangsu) — rail via Shanghai preferred'},
+  {code:'TAO', nm:'Qingdao Jiaodong Int’l', ll:[36.366,120.086], serves:'Qingdao cluster — Quick Body, Relax, HBS, Peach Builder'},
+  {code:'LYI', nm:'Linyi Qiyang Int’l', ll:[35.046,118.412], serves:'Optional — Yishui flooring supplier (~70 km)'},
+  {code:'TNA', nm:'Jinan Yaoqiang Int’l', ll:[36.857,117.216], serves:'Rosen, MBH (Dezhou/Ningjin, ~90 km) · fly to Xiamen'},
+  {code:'XMN', nm:'Xiamen Gaoqi Int’l', ll:[24.544,118.127], serves:'Rayton (Zhangzhou, ~50 km)'},
+  {code:'CAN', nm:'Guangzhou Baiyun Int’l', ll:[23.392,113.299], serves:'Guangdong cluster · direct flight home to Brisbane'},
 ];
-const LEGS=[
- {from:[31.143,121.805],to:[32.320,121.610],mode:'ground',label:'Shanghai PVG → Nantong (HSR ~1–1.5 h)'},
- {from:[32.320,121.610],to:[36.310,120.400],mode:'ground',label:'Nantong → Qingdao (direct HSR ~3.5–5 h)'},
- {from:[36.310,120.400],to:[37.668,116.805],mode:'ground',label:'Qingdao → Dezhou (HSR ~2–3 h)'},
- {from:[36.857,117.216],to:[24.544,118.127],mode:'flight',label:'Jinan TNA → Xiamen XMN (the big jump south)'},
- {from:[24.544,118.127],to:[24.570,117.850],mode:'ground',label:'Xiamen → Zhangzhou (1.5 h)'},
- {from:[24.544,118.127],to:[23.392,113.299],mode:'flight',label:'Xiamen XMN → Guangzhou CAN (~1.5 h, or 3–5 h rail)'},
- {from:[23.130,113.260],to:[22.860,113.260],mode:'ground',label:'Guangzhou → Foshan (45 min)'},
- {from:[23.130,113.260],to:[23.070,113.950],mode:'ground',label:'Guangzhou → Dongguan (1 h)'},
+
+// Map route legs in trip order
+const LEGS = [
+  {from:[31.143,121.805], to:[32.320,121.610], mode:'ground', label:'Shanghai PVG → Nantong (HSR ~1–1.5 h)'},
+  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Nantong → Qingdao (direct HSR ~3.5–5 h)'},
+  {from:[36.310,120.400], to:[37.668,116.805], mode:'ground', label:'Qingdao → Dezhou (HSR ~2–3 h)'},
+  {from:[36.857,117.216], to:[24.544,118.127], mode:'flight', label:'Jinan TNA → Xiamen XMN (the big jump south)'},
+  {from:[24.544,118.127], to:[24.570,117.850], mode:'ground', label:'Xiamen → Zhangzhou (1.5 h)'},
+  {from:[24.544,118.127], to:[23.392,113.299], mode:'flight', label:'Xiamen XMN → Guangzhou CAN (~1.5 h, or 3–5 h rail)'},
+  {from:[23.130,113.260], to:[22.860,113.260], mode:'ground', label:'Guangzhou → Foshan (45 min)'},
+  {from:[23.130,113.260], to:[23.070,113.950], mode:'ground', label:'Guangzhou → Dongguan (1 h)'},
 ];
-const TRAVEL={total:'≈ 31–33 h',entry:'Brisbane → Shanghai (direct)',exit:'Guangzhou → Brisbane (direct)',
- legs:[
-  {seg:'Brisbane → Shanghai (PVG)',mode:'flight',dur:'~10h 30m',tn:'China Eastern, direct daily (per Justin).'},
-  {seg:'Shanghai → Nantong',mode:'ground',dur:'~1–1.5 h',tn:'High-speed rail from Shanghai Hongqiao.',work:'Nantong'},
-  {seg:'Nantong → Qingdao',mode:'ground',dur:'~3.5–5 h',tn:'Direct HSR (~7/day, fastest to Qingdao West). Take the train, skip Nantong’s small airport.',work:'Qingdao cluster'},
-  {seg:'Qingdao → Dezhou',mode:'ground',dur:'~2–3 h',tn:'High-speed rail, both in Shandong.',work:'Dezhou / Ningjin'},
-  {seg:'Jinan TNA → Xiamen (XMN)',mode:'flight',dur:'~2h 20m',tn:'Fly out of Jinan (near Dezhou) for the big jump south.',work:'Zhangzhou'},
-  {seg:'Xiamen XMN → Guangzhou (CAN)',mode:'flight',dur:'~1.5 h (or 3–5 h rail)',tn:'Either works — pick by meeting times.',work:'Guangdong'},
-  {seg:'Guangzhou CAN → Brisbane',mode:'flight',dur:'~9h 30m',tn:'China Southern, direct daily.'},
- ],
- caveats:[
-  '<b>Direct both ways.</b> Brisbane→Shanghai (China Eastern) and Guangzhou→Brisbane (China Southern) both run direct daily, so no backtracking. Cathay via Hong Kong only if fares are a lot cheaper (adds a stop + a border).',
-  '<b>Rail in the north.</b> Nantong→Qingdao→Dezhou are all high-speed rail — simpler than flying, no small-airport connections. Only the Dezhou→Xiamen jump is a flight (out of Jinan).',
-  '<b>Visa-free.</b> Australians get 30 days visa-free entry to mainland China (through end-2026).',
- ]};
+
+const ITINERARY = [
+  {day:1, date:'Jul 24', region:'jiangsu', rg:'Arrive · Brisbane → Shanghai',
+   legs:[{slot:'Daytime', who:'Fly Brisbane → Shanghai (PVG)', buy:'China Eastern, direct daily (~10h30)'},
+         {slot:'On arrival', who:'HSR to Nantong', buy:'~1–1.5 h from Shanghai Hongqiao. Overnight Nantong.'}],
+   note:'Justin: Brisbane→Shanghai runs direct daily, so no date squeeze. Cathay via Hong Kong only if fares are a lot cheaper (adds a stop + a border).'},
+  {day:2, date:'Jul 25', region:'jiangsu', rg:'Jiangsu · Nantong',
+   legs:[{slot:'AM Rudong', who:'Baopeng (Kang Kang)', buy:'Dumbbells, Olympic barbells, shorter / specialty bars'},
+         {slot:'PM', who:'Travel', buy:'Direct HSR Nantong → Qingdao (~3.5–5 h)'}],
+   note:'Justin: take the direct train (~7/day, fastest ~3.5 h into Qingdao West) over a connecting flight from Nantong’s small airport. Half-day either way.'},
+  {day:3, date:'Jul 26', region:'shandong', rg:'Shandong · Qingdao',
+   legs:[{slot:'AM', who:'Quick Body (Crystal / Josie)', buy:'Pin-loaded, 8-station bundle, plate, frame colour'},
+         {slot:'PM', who:'Relax · HBS · Peach Builder', buy:'Stair climber · FID benches · booty machines (all near Jimo/TAO)'}],
+   note:'Four suppliers in Qingdao — plan a full day. Evening high-speed train Qingdao → Dezhou (~2–3 h).'},
+  {day:4, date:'Jul 27', region:'shandong', rg:'Shandong · Ningjin',
+   legs:[{slot:'AM 08:30', who:'Rosen Fitness', buy:'Glute drive, orbital row, plate-loaded'},
+         {slot:'PM 14:00', who:'MBH Fitness', buy:'HM machines + consumables, counter-quote rebuttal'}],
+   note:'Same Ningjin park. Optional: the new Yishui flooring supplier is in south Shandong (Linyi) — a detour if you want to compare it with Chuanyu. Drive to Jinan, fly Jinan TNA → Xiamen XMN in the evening.'},
+  {day:5, date:'Jul 28', region:'fujian', rg:'Fujian · Zhangzhou',
+   legs:[{slot:'AM Zhangzhou', who:'Rayton (Jane)', buy:'Nexa rack manufacture'},
+         {slot:'PM', who:'Travel', buy:'Xiamen → Guangzhou: fly ~1.5 h, or HSR 3–5 h'}],
+   note:'1.5 h Xiamen → Zhangzhou. Justin: pick flight vs rail to Guangzhou by your meeting times on the day.'},
+  {day:6, date:'Jul 29', region:'guangdong', rg:'Guangdong',
+   legs:[{slot:'AM Guangzhou', who:'Conlin', buy:'Treadmill (price TBC)'},
+         {slot:'PM Foshan', who:'OMA', buy:'Slatted treadmill (locked)'}],
+   note:'Same driver both stops (Foshan ~45 min from Guangzhou).'},
+  {day:7, date:'Jul 30', region:'guangdong', rg:'Guangdong · depart',
+   legs:[{slot:'AM Dongguan', who:'Chuanyu', buy:'Flooring — or drop if sourcing flooring in Shandong'},
+         {slot:'PM', who:'Fly home', buy:'Guangzhou CAN → Brisbane direct, or train ~1 h to Hong Kong + Cathay'}],
+   note:'Ends in Guangzhou for the direct flight home. Leaving Brisbane on the 23rd instead of the 24th adds a spare day.'},
+];
+
+const TRAVEL = {
+  total:'≈ 31–33 h', entry:'Brisbane → Shanghai (direct)', exit:'Guangzhou → Brisbane (direct)',
+  legs:[
+    {seg:'Brisbane → Shanghai (PVG)', mode:'flight', dur:'~10h 30m', tn:'China Eastern, direct daily (per Justin).'},
+    {seg:'Shanghai → Nantong', mode:'ground', dur:'~1–1.5 h', tn:'High-speed rail from Shanghai Hongqiao.', work:'Nantong / Rudong — Baopeng'},
+    {seg:'Nantong → Qingdao', mode:'ground', dur:'~3.5–5 h', tn:'Direct HSR (~7/day, fastest ~3.5 h to Qingdao West). Justin: take the train, skip Nantong’s small airport.', work:'Qingdao — Quick Body, Relax, HBS, Peach Builder'},
+    {seg:'Qingdao → Dezhou', mode:'ground', dur:'~2–3 h', tn:'High-speed rail, both in Shandong.', work:'Dezhou / Ningjin — Rosen, MBH'},
+    {seg:'Jinan TNA → Xiamen (XMN)', mode:'flight', dur:'~2h 20m', tn:'Fly out of Jinan (near Dezhou) for the big jump south.', work:'Zhangzhou — Rayton'},
+    {seg:'Xiamen XMN → Guangzhou (CAN)', mode:'flight', dur:'~1.5 h (or 3–5 h rail)', tn:'Either works — pick by meeting times.', work:'Guangzhou, Foshan, Dongguan'},
+    {seg:'Guangzhou CAN → Brisbane', mode:'flight', dur:'~9h 30m', tn:'China Southern, direct daily.'},
+  ],
+  caveats:[
+    '<b>Direct both ways.</b> Justin confirms Brisbane→Shanghai (China Eastern) and Guangzhou→Brisbane (China Southern) both run direct daily, so no backtracking and no date squeeze. Cathay via Hong Kong only if fares are a lot cheaper (adds a stop + a border).',
+    '<b>Rail in the north.</b> Nantong→Qingdao→Dezhou are all high-speed rail — simpler than flying, no small-airport connections. Only the Dezhou→Xiamen jump is a flight (out of Jinan).',
+    '<b>Visa-free.</b> Australians get 30 days visa-free entry to mainland China (through end-2026).',
+    '<b>Lock appointments first.</b> Set the factory dates, then build transport around them. See the Justin tab for payments, eSIM/VPN and booking tips.',
+    '<b>Flooring.</b> The new Yishui supplier (Linyi, Shandong) is an alternative to Chuanyu (Dongguan). Pick one or compare both.',
+  ]
+};
+
+/* ---------- MAP ---------- */
+const map = L.map('map',{zoomControl:true, attributionControl:true, minZoom:3}).setView([31,113],4);
+window.map = map;
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+}).addTo(map);
+
+const allPts = [];
+const markerByName = {};
+
+fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+ .then(r=>r.json())
+ .then(gj=>{
+   const trip = {};
+   Object.values(REGIONS).forEach(r=>trip[r.adcode]=r);
+   const layer = L.geoJSON(gj,{
+     style:f=>{
+       const t = trip[f.properties.adcode];
+       return t ? {color:t.color,weight:1.5,opacity:.95,fillColor:t.color,fillOpacity:.14}
+                : {color:'#b9bcc4',weight:.6,opacity:.7,fillColor:'#000',fillOpacity:0};
+     },
+     onEachFeature:(f,l)=>{ l.bindTooltip(f.properties.name,{sticky:true,direction:'top'}); }
+   }).addTo(map);
+   layer.bringToBack();
+   Object.values(REGIONS).forEach(r=>{
+     L.marker([r.center[1],r.center[0]],{interactive:false,
+       icon:L.divIcon({className:'',html:`<div class="prov-label" style="color:${r.color}">${r.name}</div>`,iconSize:[120,18]})
+     }).addTo(map);
+   });
+ })
+ .catch(()=>{});
+
+LEGS.forEach(s=>{
+  const ground = s.mode==='ground';
+  L.polyline([s.from,s.to],{
+    color: ground ? '#ff9500' : '#0071e3',
+    weight: ground ? 3 : 2.6, opacity:.92,
+    dashArray: ground ? null : '3,7'
+  }).addTo(map).bindTooltip(s.label,{sticky:true});
+});
+
+const planeSVG = c=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="${c}" style="filter:drop-shadow(0 0 2px #fff) drop-shadow(0 1px 1px #fff)"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>`;
+AIRPORTS.forEach(a=>{
+  const m = L.marker(a.ll,{icon:L.divIcon({className:'',html:planeSVG('#0071e3'),iconSize:[20,20],iconAnchor:[10,10]})}).addTo(map);
+  const html = `<div class="pp-nm">✈ ${a.code} — ${a.nm}</div><div class="pp-row"><b>Serves:</b> ${a.serves}</div>`;
+  m.bindTooltip(html,{direction:'top',offset:[0,-8],className:'rich-tip',sticky:false});
+  m.bindPopup(html);
+  allPts.push(a.ll);
+});
+
+function detailHTML(s){
+  const col = REGIONS[s.region].color;
+  const tag = `<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span>`;
+  return `${tag}<div class="pp-nm">${s.nm}</div><div class="pp-city">${s.city} · ${s.slot}</div>`+
+    (CONTACT[s.nm]?`<div class="pp-row"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
+    `<div class="pp-row"><b>Makes:</b> ${s.cat}</div>`+
+    `<div class="pp-row"><b>Buying:</b> ${s.buy}</div>`+
+    catRow(s.nm)+
+    `<div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div>`+
+    (DRIVE[s.nm]?`<div class="pp-row"><b>Airport → site:</b> ${DRIVE[s.nm]}</div>`:'')+
+    (HSR[s.nm]?`<div class="pp-row"><b>Nearest HSR:</b> ${HSR[s.nm]}</div>`:'');
+}
+SUPPLIERS.forEach(s=>{
+  const col = REGIONS[s.region].color;
+  const visited = s.day>0;
+  const icon = L.divIcon({className:'', iconSize:[28,28], iconAnchor:[14,14],
+    html:`<div class="pin${visited?'':' opt'}" style="background:${col}">${visited?s.day:'+'}</div>`});
+  const m = L.marker(s.ll,{icon}).addTo(map);
+  const html = detailHTML(s);
+  m.bindTooltip(html,{direction:'top',offset:[0,-14],className:'rich-tip',sticky:false});
+  m.bindPopup(html,{maxWidth:280});
+  markerByName[s.nm]=m;
+  allPts.push(s.ll);
+});
+
+const stopBounds = L.latLngBounds(allPts).pad(.12);
+document.getElementById('fitStops').onclick=()=>map.flyToBounds(stopBounds,{duration:.6});
+document.getElementById('fitChina').onclick=()=>map.flyTo([31,110],4,{duration:.6});
+
+/* side panel */
+const stopsEl = document.getElementById('stops');
+let html = '<h4>Trip stops</h4>';
+SUPPLIERS.filter(s=>s.day>0).sort((a,b)=>a.day-b.day).forEach(s=>{
+  const col = REGIONS[s.region].color;
+  const dlabel = s.slot.includes('AM')?'AM':s.slot.includes('PM')?'PM':'';
+  html += `<div class="stop" data-nm="${s.nm}">
+    <div class="daybadge" style="background:${col}"><small>DAY</small>${s.day}</div>
+    <div><div class="nm">${s.nm}</div><div class="mt">${s.city}${dlabel?' · '+dlabel:''}</div>
+    <div class="ap">✈ ${s.ap}</div></div></div>`;
+});
+stopsEl.innerHTML = html;
+stopsEl.querySelectorAll('.stop').forEach(el=>{
+  el.onclick=()=>{const m=markerByName[el.dataset.nm]; map.flyTo(m.getLatLng(),9,{duration:.6}); m.openPopup();};
+});
+
+/* legend */
+document.getElementById('legend').innerHTML =
+  '<h4>Legend</h4>'+
+  Object.values(REGIONS).map(r=>`<div class="lg"><span class="dot" style="background:${r.color}"></span>${r.name}</div>`).join('')+
+  '<div class="lg"><span class="swatch" style="border-top-color:#ff9500"></span>Ground (rail / drive)</div>'+
+  '<div class="lg"><span class="swatch" style="border-top-color:#0071e3;border-top-style:dashed"></span>Flight</div>'+
+  '<div class="lg">✈ &nbsp;Airport</div>';
+
+/* TRAVEL view */
+document.getElementById('travel').innerHTML =
+  '<h2>Optimal flight path</h2><p class="lead">Enter mid-coast at Shanghai (best of the three China-direct entries), do Baopeng on arrival, sweep north to Shandong then south, exit Guangzhou direct to Brisbane.</p>'+
+  '<div class="tsum">'+
+    `<div class="box"><div class="lab">In transit</div><div class="val">${TRAVEL.total} <small>flying + rail</small></div></div>`+
+    `<div class="box"><div class="lab">Entry</div><div class="val" style="font-size:15px">${TRAVEL.entry}</div></div>`+
+    `<div class="box"><div class="lab">Exit</div><div class="val" style="font-size:15px">${TRAVEL.exit}</div></div>`+
+  '</div>'+
+  '<div class="h3">Leg by leg</div><div class="tl">'+
+  TRAVEL.legs.map(l=>{
+    const fl = l.mode==='flight';
+    return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div>
+      <div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div>
+      <div class="tn">${l.tn}</div>${l.work?`<div class="work">Work · ${l.work}</div>`:''}</div></div>`;
+  }).join('')+
+  '</div>'+
+  '<div class="h3">Notes</div><div class="cav"><ul style="padding-left:18px;margin:0">'+
+  TRAVEL.caveats.map(c=>`<li>${c}</li>`).join('')+'</ul></div>';
+
+/* ITINERARY view */
+const MOVE={1:'~11 h 45',2:'~4 h',3:'~2.5 h',4:'~3 h 20',5:'~3 h',6:'~1 h 30',7:'~10 h 30'};
+document.getElementById('itin').innerHTML =
+  '<h2>7-day plan</h2><p class="lead">Depart Brisbane 24 Jul 2026 (or 23rd for a buffer) · Shanghai in, Guangzhou out · 1 travel + 6 working days. "On the move" = flights + trains + airport drives that day.</p>'+
+  ITINERARY.map(d=>{
+    const col=REGIONS[d.region].color;
+    return `<div class="day">
+      <div class="day-hd"><div class="n" style="background:${col}"><small>DAY</small>${d.day}</div>
+        <div><div class="rg">${d.rg}</div><div class="dt">${d.date}</div></div>
+        <div class="movebadge"><b>${MOVE[d.day]||'—'}</b><small>on the move</small></div></div>
+      <div class="day-bd">${d.legs.map(l=>`<div class="leg"><div class="slot">${l.slot}</div>
+        <div><div class="who">${l.who}</div><div class="buy">${l.buy}</div></div></div>`).join('')}
+        <div class="note">${d.note}</div></div></div>`;
+  }).join('');
+
+/* SUPPLIERS view */
+const card = (nm,ct,chip,chipcol,meta)=>`<div class="card"><div class="top">
+  <div><div class="nm">${nm}</div><div class="ct">${ct}</div></div>
+  ${chip?`<span class="chip" style="background:${chipcol}">${chip}</span>`:''}</div>
+  <div class="meta">${meta}</div></div>`;
+let scards = SUPPLIERS.map(s=>card(
+  s.nm, s.city, s.day>0?('Day '+s.day):'Optional', s.day>0?REGIONS[s.region].color:'#86868b',
+  `<b>Contact:</b> ${CONTACT[s.nm]||'TBC'}<br><b>Makes:</b> ${s.cat}<br><b>Buying:</b> ${s.buy}<br><b>Airport:</b> ${s.ap}<br><b>HSR:</b> ${HSR[s.nm]||'—'}`+(CAT[s.nm]?`<br><b>Catalogue:</b> ${CAT[s.nm].url?`<a href="${CAT[s.nm].url}" target="_blank" rel="noopener">${CAT[s.nm].label}</a>`:CAT[s.nm].label}`:'')
+)).join('');
+document.getElementById('supp').innerHTML =
+  '<h2>Suppliers</h2><p class="lead">12 China factories, 10 on the visit route + 2 optional (HBS, and the Yishui flooring alternative). Click a marker on the map for the same detail.</p>'+
+  `<div class="cards">${scards}</div>`;
+
+/* JUSTIN view */
 const JUSTIN={
  legs:[
   {seg:'Shanghai → Nantong',mode:'rail',dur:'~1–1.5 h',tn:'High-speed rail, frequent from Shanghai Hongqiao. Easier than an airport transfer.'},
   {seg:'Nantong → Qingdao',mode:'rail',dur:'~3.5–5 h',tn:'Direct HSR, ~7/day, fastest ~3.5 h into Qingdao West. Take the train over connecting flights from Nantong’s small airport.'},
   {seg:'Qingdao → Dezhou',mode:'rail',dur:'~2–3 h',tn:'Comfortable and reliable — both in Shandong. More efficient than flying that distance.'},
   {seg:'Dezhou → Xiamen',mode:'fly',dur:'flight',tn:'The big jump south. Fly out of Jinan (close to Dezhou) rather than lose most of a day on trains.'},
-  {seg:'Xiamen → Guangzhou',mode:'fly',dur:'~1.5 h air / 3–5 h rail',tn:'Either works. Pick whichever fits your meeting times.'},
+  {seg:'Xiamen → Guangzhou',mode:'fly',dur:'~1.5 h air / 3–5 h rail',tn:'Either works. Flight ~1.5 h airborne; HSR ~3–5 h. Pick whichever fits your meeting times.'},
  ],
  airlines:[['China Southern','Best for Guangzhou-based travel'],['China Eastern','Strong Shanghai network'],['Air China','Reliable major carrier'],['Xiamen Air','Excellent around Fujian and Xiamen'],['Shenzhen Airlines','Reasonable secondary option']],
  budget:[['High-speed rail sectors','AUD 20–80 per leg'],['Domestic flights','AUD 150–400 per leg'],['Airport hotels','AUD 80–200 per night'],['Taxis & Didi','Generally cheap vs Australia']],
 };
-const ITIN=[
- {day:1,date:'Jul 24',region:'jiangsu',rg:'Arrive · Brisbane → Shanghai',move:'~11 h 45',
-  legs:[['Daytime','Fly Brisbane → Shanghai (PVG)','China Eastern, direct daily (~10h30)'],['On arrival','HSR to Nantong','~1–1.5 h from Shanghai Hongqiao. Overnight Nantong.']],note:'Direct daily from Brisbane, so no date squeeze.'},
- {day:2,date:'Jul 25',region:'jiangsu',rg:'Jiangsu · Nantong',move:'~4 h',
-  legs:[['AM','Free-weights supplier','Dumbbells, barbells'],['PM','Travel','Direct HSR Nantong → Qingdao (~3.5–5 h)']],note:'Take the direct train over a connecting flight from Nantong’s small airport.'},
- {day:3,date:'Jul 26',region:'shandong',rg:'Shandong · Qingdao',move:'~2.5 h',
-  legs:[['AM / PM','Qingdao cluster','Strength & cardio — 4 factories, plan a full day'],['Evening','Travel','HSR Qingdao → Dezhou (~2–3 h)']],note:'Four suppliers all around Qingdao / Jimo.'},
- {day:4,date:'Jul 27',region:'shandong',rg:'Shandong · Ningjin',move:'~3 h 20',
-  legs:[['AM / PM','Dezhou machines',''],['Evening','Fly Jinan TNA → Xiamen XMN','the big jump south']],note:'Optional detour: Yishui flooring (south Shandong).'},
- {day:5,date:'Jul 28',region:'fujian',rg:'Fujian · Zhangzhou',move:'~3 h',
-  legs:[['AM','Racks supplier',''],['PM','Xiamen → Guangzhou','fly ~1.5 h, or HSR 3–5 h']],note:'Pick flight vs rail by your meeting times.'},
- {day:6,date:'Jul 29',region:'guangdong',rg:'Guangdong',move:'~1 h 30',
-  legs:[['AM','Guangzhou cardio',''],['PM','Foshan treadmills','~45 min from Guangzhou']],note:'Same driver both stops.'},
- {day:7,date:'Jul 30',region:'guangdong',rg:'Guangdong · depart',move:'~10 h 30',
-  legs:[['AM','Dongguan flooring',''],['PM','Fly home','Guangzhou → Brisbane, direct']],note:'Ends in Guangzhou for the direct flight home.'},
-];
+document.getElementById('justin').innerHTML =
+ '<h2>Justin’s plan</h2><p class="lead">Route sanity-checked by Justin (pilot) and a contact working in China. His take on flights, connections and on-the-ground prep.</p>'+
+ '<div class="h3">International flights</div><div class="intlgrid">'+
+   '<div class="jcard"><h4>✈ Into China</h4>Brisbane → Shanghai<div class="big">China Eastern · direct daily</div></div>'+
+   '<div class="jcard"><h4>✈ Home</h4>Guangzhou → Brisbane<div class="big">China Southern · direct daily</div></div>'+
+ '</div>'+
+ '<div class="rec">Both run direct daily from Brisbane, so no backtracking. Cathay via Hong Kong is fine if a lot cheaper — but for three of you with luggage on a tight schedule, lean direct: HK adds a stop, a connection and a border crossing.</div>'+
+ '<div class="h3">Recommended sequence</div><div class="seqrow">'+
+   ['Shanghai / Nantong','Qingdao','Dezhou','Xiamen / Zhangzhou','Guangzhou','Home'].map((s,i,a)=>`<span class="s">${s}</span>${i<a.length-1?'<span class="a">→</span>':''}`).join('')+
+ '</div>'+
+ '<div class="h3">Connections — rail vs flying</div><div class="tl">'+
+   JUSTIN.legs.map(l=>{const fl=l.mode==='fly';return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div><div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div><div class="tn">${l.tn}</div></div></div>`;}).join('')+
+ '</div>'+
+ '<div class="h3">Domestic airlines</div><table class="jtbl"><thead><tr><th>Airline</th><th>Notes</th></tr></thead><tbody>'+
+   JUSTIN.airlines.map(a=>`<tr><td>${a[0]}</td><td class="muted" style="color:var(--text2)">${a[1]}</td></tr>`).join('')+'</tbody></table>'+
+ '<div class="h3">Before you go</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Payments</h4><ul><li>Install Alipay + WeChat</li><li>Link an Australian card to both</li><li>Mobile payment is easiest day-to-day; having both means no merchant catches you out</li></ul></div>'+
+   '<div class="jcard"><h4>Data &amp; connectivity</h4><ul><li>Roaming or eSIM before departure</li><li>Check email, Teams, WhatsApp + business systems work before flying</li><li>Test before you leave, not on landing</li><li>VPN — NordVPN or ExpressVPN</li></ul></div>'+
+   '<div class="jcard"><h4>Booking</h4><ul><li>Use Trip.com for rail — easy for foreigners, handles HSR, domestic flights + hotels in one place</li></ul></div>'+
+ '</div>'+
+ '<div class="h3">Budget guide (indicative)</div><table class="jtbl"><thead><tr><th>Item</th><th>Expected cost</th></tr></thead><tbody>'+
+   JUSTIN.budget.map(b=>`<tr><td>${b[0]}</td><td>${b[1]}</td></tr>`).join('')+'</tbody></table>'+
+ '<div class="cav"><ul style="padding-left:18px;margin:0"><li>Achievable but busy — Shanghai, Shandong, Fujian and Guangdong in six days. <b>Lock the factory appointments first, then build transport around them</b> rather than chasing the cheapest fares.</li><li>Justin is happy to sanity-check the bookings once dates are set against each factory.</li></ul></div>';
 
-const map=L.map('map',{zoomControl:true,minZoom:3}).setView([31,113],4);window.map=map;
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
-const allPts=[],markerByCity={};
-fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json').then(r=>r.json()).then(gj=>{
-  const trip={};Object.values(REGIONS).forEach(r=>trip[r.adcode]=r);
-  L.geoJSON(gj,{style:f=>{const t=trip[f.properties.adcode];return t?{color:t.color,weight:1.5,opacity:.95,fillColor:t.color,fillOpacity:.14}:{color:'#b9bcc4',weight:.6,opacity:.7,fillOpacity:0};},onEachFeature:(f,l)=>l.bindTooltip(f.properties.name,{sticky:true,direction:'top'})}).addTo(map).bringToBack();
-  Object.values(REGIONS).forEach(r=>L.marker([r.center[1],r.center[0]],{interactive:false,icon:L.divIcon({html:`<div class="prov-label" style="color:${r.color}">${r.name}</div>`,iconSize:[120,18]})}).addTo(map));
-}).catch(()=>{});
-LEGS.forEach(s=>{const g=s.mode==='ground';L.polyline([s.from,s.to],{color:g?'#ff9500':'#0071e3',weight:g?3:2.6,opacity:.92,dashArray:g?null:'3,7'}).addTo(map).bindTooltip(s.label,{sticky:true});});
-const planeSVG=c=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="${c}" style="filter:drop-shadow(0 0 2px #fff) drop-shadow(0 1px 1px #fff)"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>`;
-AIRPORTS.forEach(a=>{const html=`<div class="pp-nm">✈ ${a.code} — ${a.nm}</div><div class="pp-row"><b>Serves:</b> ${a.serves}</div>`;
-  const m=L.marker(a.ll,{icon:L.divIcon({html:planeSVG('#0071e3'),iconSize:[20,20],iconAnchor:[10,10]})}).addTo(map);
-  m.bindTooltip(html,{direction:'top',offset:[0,-8],className:'rich-tip',sticky:false});m.bindPopup(html);allPts.push(a.ll);});
-STOPS.forEach(s=>{const col=REGIONS[s.region].color,v=s.day>0;
-  const icon=L.divIcon({className:'',iconSize:[28,28],iconAnchor:[14,14],html:`<div class="pin${v?'':' opt'}" style="background:${col}">${v?s.day:'+'}</div>`});
-  const m=L.marker(s.ll,{icon}).addTo(map);
-  const html=`<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span><div class="pp-nm">${s.city}</div><div class="pp-city">${v?'Day '+s.day:'Optional'} · ${s.kind}</div><div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div><div class="pp-row"><b>Airport → site:</b> ${s.drive}</div><div class="pp-row"><b>Nearest HSR:</b> ${s.hsr}</div>`;
-  m.bindTooltip(html,{direction:'top',offset:[0,-14],className:'rich-tip',sticky:false});m.bindPopup(html,{maxWidth:280});
-  markerByCity[s.city]=m;allPts.push(s.ll);});
-const b=L.latLngBounds(allPts).pad(.12);
-document.getElementById('fitStops').onclick=()=>map.flyToBounds(b,{duration:.6});
-document.getElementById('fitChina').onclick=()=>map.flyTo([31,110],4,{duration:.6});
-let h='<h4>Route stops</h4>';STOPS.filter(s=>s.day>0).sort((a,b)=>a.day-b.day).forEach(s=>{const col=REGIONS[s.region].color;h+=`<div class="stop" data-c="${s.city}"><div class="daybadge" style="background:${col}"><small>DAY</small>${s.day}</div><div><div class="nm">${s.city}</div><div class="mt">${s.kind}</div><div class="ap">✈ ${s.ap}</div></div></div>`;});
-document.getElementById('stops').innerHTML=h;
-document.querySelectorAll('#stops .stop').forEach(el=>el.onclick=()=>{const m=markerByCity[el.dataset.c];map.flyTo(m.getLatLng(),9,{duration:.6});m.openPopup();});
-document.getElementById('legend').innerHTML='<h4>Legend</h4>'+Object.values(REGIONS).map(r=>`<div class="lg"><span class="dot" style="background:${r.color}"></span>${r.name}</div>`).join('')+'<div class="lg"><span class="swatch" style="border-top-color:#ff9500"></span>Ground (rail / drive)</div><div class="lg"><span class="swatch" style="border-top-color:#0071e3;border-top-style:dashed"></span>Flight</div><div class="lg">✈ &nbsp;Airport</div>';
-
-document.getElementById('travel').innerHTML='<h2>Optimal flight path</h2><p class="lead">Fly direct into Shanghai, high-speed rail up the coast through Shandong, fly the big jump south, exit Guangzhou direct to Brisbane.</p><div class="tsum">'+`<div class="box"><div class="lab">In transit</div><div class="val">${TRAVEL.total} <small>flying + rail</small></div></div><div class="box"><div class="lab">Entry</div><div class="val">${TRAVEL.entry}</div></div><div class="box"><div class="lab">Exit</div><div class="val">${TRAVEL.exit}</div></div>`+'</div><div class="h3">Leg by leg</div><div class="tl">'+TRAVEL.legs.map(l=>{const fl=l.mode==='flight';return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div><div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div><div class="tn">${l.tn}</div>${l.work?`<div class="work">Work · ${l.work}</div>`:''}</div></div>`;}).join('')+'</div><div class="h3">Notes</div><div class="cav"><ul style="padding-left:18px;margin:0">'+TRAVEL.caveats.map(c=>`<li>${c}</li>`).join('')+'</ul></div>';
-
-document.getElementById('justin').innerHTML='<h2>Justin’s plan</h2><p class="lead">Route sanity-checked by Justin (pilot) and a contact working in China. His take on flights, connections and on-the-ground prep.</p><div class="h3">International flights</div><div class="intlgrid"><div class="jcard"><h4>✈ Into China</h4>Brisbane → Shanghai<div class="big">China Eastern · direct daily</div></div><div class="jcard"><h4>✈ Home</h4>Guangzhou → Brisbane<div class="big">China Southern · direct daily</div></div></div><div class="rec">Both run direct daily from Brisbane, so no backtracking. Cathay via Hong Kong is fine if a lot cheaper — but for three of you with luggage on a tight schedule, lean direct: HK adds a stop, a connection and a border crossing.</div><div class="h3">Recommended sequence</div><div class="seqrow">'+['Shanghai / Nantong','Qingdao','Dezhou','Xiamen / Zhangzhou','Guangzhou','Home'].map((s,i,a)=>`<span class="s">${s}</span>${i<a.length-1?'<span class="a">→</span>':''}`).join('')+'</div><div class="h3">Connections — rail vs flying</div><div class="tl">'+JUSTIN.legs.map(l=>{const fl=l.mode==='fly';return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div><div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div><div class="tn">${l.tn}</div></div></div>`;}).join('')+'</div><div class="h3">Domestic airlines</div><table class="jtbl"><thead><tr><th>Airline</th><th>Notes</th></tr></thead><tbody>'+JUSTIN.airlines.map(a=>`<tr><td>${a[0]}</td><td style="color:var(--text2)">${a[1]}</td></tr>`).join('')+'</tbody></table><div class="h3">Before you go</div><div class="jgrid"><div class="jcard"><h4>Payments</h4><ul><li>Install Alipay + WeChat</li><li>Link an Australian card to both</li><li>Mobile payment is easiest day-to-day; having both means no merchant catches you out</li></ul></div><div class="jcard"><h4>Data &amp; connectivity</h4><ul><li>Roaming or eSIM before departure</li><li>Check email, Teams, WhatsApp + business systems work before flying</li><li>Test before you leave, not on landing</li><li>VPN — NordVPN or ExpressVPN</li></ul></div><div class="jcard"><h4>Booking</h4><ul><li>Use Trip.com for rail — easy for foreigners, handles HSR, domestic flights + hotels in one place</li></ul></div></div><div class="h3">Budget guide (indicative)</div><table class="jtbl"><thead><tr><th>Item</th><th>Expected cost</th></tr></thead><tbody>'+JUSTIN.budget.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')+'</tbody></table><div class="cav"><ul style="padding-left:18px;margin:0"><li>Achievable but busy — Shanghai, Shandong, Fujian and Guangdong in six days. <b>Lock the factory appointments first, then build transport around them.</b></li><li>Justin is happy to sanity-check the bookings once dates are set against each factory.</li></ul></div>';
-
-document.getElementById('itin').innerHTML='<h2>7-day plan</h2><p class="lead">Depart Brisbane 24 Jul 2026 (or 23rd for a buffer) · Shanghai in, Guangzhou out. "On the move" = flights + trains + airport drives that day.</p>'+ITIN.map(d=>{const col=REGIONS[d.region].color;return `<div class="day"><div class="day-hd"><div class="n" style="background:${col}"><small>DAY</small>${d.day}</div><div><div class="rg">${d.rg}</div><div class="dt">${d.date}</div></div><div class="movebadge"><b>${d.move}</b><small>on the move</small></div></div><div class="day-bd">${d.legs.map(l=>`<div class="leg"><div class="slot">${l[0]}</div><div><div class="who">${l[1]}</div>${l[2]?`<div class="buy">${l[2]}</div>`:''}</div></div>`).join('')}<div class="note">${d.note}</div></div></div>`;}).join('');
-
-document.querySelectorAll('.seg button').forEach(bt=>bt.onclick=()=>{document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));bt.classList.add('active');document.getElementById('view-'+bt.dataset.view).classList.add('active');if(bt.dataset.view==='map')setTimeout(()=>map.invalidateSize(),60);});
+/* tab nav */
+document.querySelectorAll('.seg button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('view-'+b.dataset.view).classList.add('active');
+    if(b.dataset.view==='map') setTimeout(()=>map.invalidateSize(),60);
+  };
+});
 </script>
 </body>
 </html>

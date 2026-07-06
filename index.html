@@ -250,29 +250,29 @@ const REGIONS = {
 };
 
 const SUPPLIERS = [
-  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:2, slot:'Day 2 · AM',
+  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:24, slot:'24 Jul · AM',
    cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
-  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:3, slot:'Day 3 · AM',
+  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:25, slot:'25 Jul · AM',
    cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Relax Fitness', city:'Qingdao / Rizhao', region:'shandong', ll:[36.190,120.310], day:3, slot:'Day 3 · PM',
+  {nm:'Relax Fitness', city:'Qingdao / Rizhao', region:'shandong', ll:[36.190,120.310], day:26, slot:'26 Jul · AM',
    cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC)', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Hongbinsheng (HBS)', city:'Qingdao', region:'shandong', ll:[36.070,120.375], day:0, slot:'Optional · Qingdao Day 3',
+  {nm:'Hongbinsheng (HBS)', city:'Qingdao', region:'shandong', ll:[36.070,120.375], day:0, slot:'Optional · Qingdao 26 Jul',
    cat:'FID bench', buy:'HBS-2603 FID Bench ×12', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:3, slot:'Day 3 · Qingdao',
+  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:25, slot:'25 Jul · PM',
    cat:'V-squat · belt squat · hip ext · deadlift', buy:'PB311 V-Squat, PB312 Belt Squat, PB410 Hip Ext, PB411 Deadlift (via Insight)', ap:'TAO Qingdao (~15 km)'},
-  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:4, slot:'Day 4 · AM',
+  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:27, slot:'27 Jul · AM',
    cat:'Plate loaded · cardio · glute', buy:'3D Glute Drive (RS-1013), Orbital Row (RS-3011)', ap:'TNA Jinan (~90 km)'},
-  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:4, slot:'Day 4 · PM',
+  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:27, slot:'27 Jul · PM',
    cat:'Pin + plate loaded', buy:'HM plate machines + consumables consolidation RFQ', ap:'TNA Jinan (~90 km)'},
   {nm:'Flooring — Yishui', city:'Yishui, Linyi', region:'shandong', ll:[35.830,118.520], day:0, slot:'Optional · flooring vs Chuanyu',
    cat:'Flooring (alternative)', buy:'Gym flooring — compare with Dongguan Chuanyu', ap:'LYI Linyi Qiyang (~70 km)'},
-  {nm:'Rayton', city:'Zhangzhou (Changtai)', region:'fujian', ll:[24.570,117.850], day:5, slot:'Day 5 · AM',
+  {nm:'Rayton', city:'Zhangzhou (Changtai)', region:'fujian', ll:[24.570,117.850], day:28, slot:'28 Jul · AM',
    cat:'Nexa rack', buy:'Nexa rack manufacture (China-made alternative)', ap:'XMN Xiamen (~50 km)'},
-  {nm:'Conlin Fitness', city:'Guangzhou', region:'guangdong', ll:[23.130,113.260], day:6, slot:'Day 6 · AM',
+  {nm:'Conlin Fitness', city:'Guangzhou', region:'guangdong', ll:[23.130,113.260], day:29, slot:'29 Jul · AM',
    cat:'Treadmill', buy:'GT X Luxury Commercial Treadmill ×3 (price TBC)', ap:'CAN Guangzhou (~28 km)'},
-  {nm:'OMA Fitness', city:'Foshan (Shunde)', region:'guangdong', ll:[22.860,113.260], day:6, slot:'Day 6 · PM',
+  {nm:'OMA Fitness', city:'Foshan (Shunde)', region:'guangdong', ll:[22.860,113.260], day:29, slot:'29 Jul · PM',
    cat:'Slatted treadmill', buy:'OMA-6367TA Slatted Treadmill ×3 (locked)', ap:'CAN Guangzhou (~45 km)'},
-  {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:7, slot:'Day 7 · AM',
+  {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:30, slot:'30 Jul · AM',
    cat:'Flooring', buy:'Gym flooring (or drop if sourcing in Shandong)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
 ];
 
@@ -548,7 +548,7 @@ SUPPLIERS.filter(s=>s.day>0).sort((a,b)=>a.day-b.day).forEach(s=>{
   const col = REGIONS[s.region].color;
   const dlabel = s.slot.includes('AM')?'AM':s.slot.includes('PM')?'PM':'';
   html += `<div class="stop" data-nm="${s.nm}">
-    <div class="daybadge" style="background:${col}"><small>DAY</small>${s.day}</div>
+    <div class="daybadge" style="background:${col}"><small>JUL</small>${s.day}</div>
     <div><div class="nm">${s.nm}</div><div class="mt">${s.city}${dlabel?' · '+dlabel:''}</div>
     <div class="ap">✈ ${s.ap}</div></div></div>`;
 });
@@ -685,7 +685,7 @@ document.getElementById('supp').innerHTML =
    const c=CAT[s.nm];
    const web = c&&c.url ? `<div class="kv"><b>Website:</b> ${c.url.replace('https://','')}${/on file/.test(c.label)?' · quote / catalogue on file':''}</div>`:'';
    return `<div class="acc"><div class="acc-hd">`+
-     `<div class="daybadge" style="background:${v?col:'#c7c7cc'}"><small>${v?'DAY':''}</small>${v?s.day:'·'}</div>`+
+     `<div class="daybadge" style="background:${v?col:'#c7c7cc'}"><small>${v?'JUL':''}</small>${v?s.day:'·'}</div>`+
      `<div style="min-width:0"><div class="acc-nm">${s.nm}</div><div class="acc-sub">${s.city} · ${s.cat}</div></div>`+
      `<div class="chev">▶</div></div>`+
      `<div class="acc-bd">`+

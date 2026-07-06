@@ -66,6 +66,21 @@
   .opttbl .lt{font-weight:600}.opttbl .ld{color:var(--text2)}.opttbl .lsvc{color:var(--text3)}
   .daytip{background:#eff6ee;border:1px solid #cfe6cf;border-radius:10px;padding:9px 12px;font-size:12.5px;margin-top:8px;line-height:1.5}
   .acc-hd .movebadge{margin-left:auto}
+  .chsum{font-size:12.5px;color:var(--text);font-weight:600;margin:4px 0 8px}
+  .chtbl{width:100%;border-collapse:collapse;font-size:12px;margin:0 0 6px}
+  .chtbl th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text3);font-weight:600;padding:0 8px 5px;border-bottom:1px solid var(--hair)}
+  .chtbl td{padding:5px 8px;border-bottom:1px solid var(--hair2);vertical-align:top}
+  .chtbl tr:last-child td{border-bottom:0}
+  .chtbl .cm{color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .chtbl .cq{color:var(--text2);text-align:center}.chtbl .cp{color:var(--text2);white-space:nowrap}
+  .calgrid{display:grid;grid-template-columns:repeat(7,minmax(96px,1fr));gap:6px;margin-top:12px;min-width:700px}
+  .caldow{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;text-align:center;padding:2px 0}
+  .calcell{min-height:94px;border:1px solid var(--hair2);border-radius:10px;padding:6px 7px;background:#fff}
+  .calcell.empty{background:transparent;border:0}
+  .calcell .cn{font-size:12px;font-weight:600;color:var(--text3)}
+  .calcell.ev{border-color:var(--hair);box-shadow:var(--shadow-sm)}
+  .calcell .evt{font-size:10.5px;font-weight:600;color:#fff;border-radius:7px;padding:4px 6px;margin-top:5px;line-height:1.3;cursor:pointer}
+  .calcell .evt:hover{filter:brightness(1.05)}
   .seg button{appearance:none;border:0;background:transparent;color:var(--text);
     padding:6px 18px;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;letter-spacing:-.01em;transition:all .15s}
   .seg button:hover{color:#000}
@@ -198,11 +213,12 @@
 <body>
 <header>
   <div class="h-title">China sourcing trip</div>
-  <div class="h-sub">22 Jul – 1 Aug 2026 · Shanghai in, Hong Kong out · 10 factories · 4 provinces</div>
+  <div class="h-sub">21–31 Jul 2026 · Shanghai in, Hong Kong out · 10 factories · 4 provinces</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
   <button data-view="itinerary">Itinerary</button>
+  <button data-view="calendar">Calendar</button>
   <button data-view="justin">Justin</button>
   <button data-view="suppliers">Suppliers</button>
 </div></nav>
@@ -218,6 +234,7 @@
     <div id="legend" class="panel"></div>
   </section>
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
+  <section id="view-calendar" class="view"><div class="wrap" id="cal"></div></section>
   <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
 </div>
@@ -346,6 +363,30 @@ const GEAR = {
   'Dongguan Chuanyu':['Gym flooring (rubber tiles / rolls)'],
   'Flooring — Yishui':['Gym flooring — alternative to Chuanyu, compare on price + quality'],
 };
+
+// What we're chasing — itemised catalogue per supplier (from the confirmed equipment list)
+const CHASE = {
+ 'Baopeng Fitness':{sum:'Free weights — the consumables build',items:[['Dumbbell set (PU / rubber hex)','TBC','set','TBC'],['Olympic barbell 20 kg','TBC','×','TBC'],['Olympic barbell 15 kg (women’s)','TBC','×','TBC'],['Shorter / specialty bars','TBC','×','TBC']]},
+ 'Quick Body':{sum:'Pin + plate machines, the 8-station jungle, racks + benches, and the frame colour',items:[
+   ['Seated Chest Press','KS1006','1','$713'],['Shoulder Press','KS1011','1','$656'],['Machine Row','KS1040','1','$661'],['Pec Fly / Rear Delt','KS1056','1','$665'],['Leg Extension','KS1065','1','$617'],['Seated Leg Ext/Curl','KS1068','1','$742'],['Prone Leg Curl','KS1070','1','$623'],['Abductor / Adductor','KSD1053','1','$644'],
+   ['8-station jungle — frame','KS13030','1','bundle'],['— Seated Row station','KS13007','2','≈$3,431'],['— Lat Pulldown station','KS13002','2','total'],['— Assisted Chin/Dip','KS13004','1',''],['— Leg Press station','KS13008','1',''],
+   ['Standing Chest Press (plate)','KP1003','1','$667'],['Pec Fly (plate)','KP1056','1','$461'],['Leg Press (plate)','KP1062','1','$960'],['Pendulum Squat (plate)','KP1060','1','$789'],
+   ['Double DB Rack','KF1660','2','$207 ea'],['DB Tree Rack','KF1662','1','$121'],['Barbell Rack','KF1664','1','$227'],['Flat Olympic Bench','OFB02','1','$214'],['Preacher Bench','XHA-040','1','$278'],['Seated Calf Raise','KF1636','1','TBC'],
+   ['Frame colour','RAL 8017','—','negotiating']]},
+ 'Relax Fitness':{sum:'Cardio — stair climbers',items:[['Commercial Stair Climber','PP-007 / 007T','2','TBC']]},
+ 'Hongbinsheng (HBS)':{sum:'Benches (optional stop)',items:[['Adjustable FID Bench','HBS-2603','12','$150 ea']]},
+ 'Peach Builder':{sum:'Booty / lower-body plate machines (via Insight)',items:[['V-Squat (hack squat)','PB311','1','$695'],['Belt Squat','PB312','1','$371'],['Multi Hip Extension','PB410','1','$507'],['Multi Deadlift','PB411','1','$519']]},
+ 'Rosen Fitness':{sum:'Glute + feature plate-loaded pieces',items:[['3D Glute Drive (Smith hip thrust)','RS-1013','1','$1,180'],['Orbital Row','RS-3011','1','$1,514']]},
+ 'MBH Fitness':{sum:'HM plate machines + the consumables consolidation (rebut the counter-quote)',items:[['Decline Chest Press','HM-08','1','$439'],['Shoulder Press','HM-17','1','$439'],['High Row Pull Down','HM-16','1','$439'],['Flat Bench Press','HM-18','1','$439'],['Seated Row','HM-14','1','$439'],['Side Arm Lift / Lateral Raise','HM-06','1','$439'],['Consumables: bars, plates, DBs, KBs, wall balls','341-SKU cat.','bulk','RFQ']]},
+ 'Rayton':{sum:'Custom Nexa-style racks — China-made alternative to Iron Edge',items:[['Nexa-style rack combo double','custom rig','~10','vs $3,000/rack (Iron Edge)']]},
+ 'Conlin Fitness':{sum:'Cardio — main-floor treadmills',items:[['GT X Luxury Commercial Treadmill','GT X','3','TBC']]},
+ 'OMA Fitness':{sum:'Cardio — slatted / curved treadmills',items:[['Slatted Treadmill','OMA-6367TA','3','$2,500 ea · locked']]},
+ 'Dongguan Chuanyu':{sum:'Flooring',items:[['Gym flooring (rubber tiles / rolls)','—','fitout','quote']]},
+ 'Flooring — Yishui':{sum:'Flooring — alternative to Chuanyu',items:[['Gym flooring','—','fitout','quote (compare)']]},
+};
+const chaseTable = nm => { const c=CHASE[nm]; if(!c) return '';
+  return `<div class="chsum">${c.sum}</div><table class="chtbl"><thead><tr><th>Item</th><th>Model</th><th>Qty</th><th>Price</th></tr></thead><tbody>`+
+   c.items.map(x=>`<tr><td>${x[0]}</td><td class="cm">${x[1]}</td><td class="cq">${x[2]}</td><td class="cp">${x[3]}</td></tr>`).join('')+`</tbody></table>`; };
 
 const AIRPORTS = [
   {code:'PVG', nm:'Shanghai Pudong Int’l', ll:[31.143,121.805], serves:'Entry from Brisbane · gateway to Baopeng (Nantong ~1 h rail) + Qingdao'},
@@ -529,11 +570,10 @@ const iconFor = m => m==='fly'?'✈':(m==='car'?'🚗':'🚄');
 const facBlock = nm => {
   const s = SUPPLIERS.find(x=>x.nm===nm); if(!s) return '';
   const col = REGIONS[s.region].color;
-  const gear = (GEAR[nm]||[]).map(g=>`<li>${g}</li>`).join('');
   const c = CAT[nm];
-  return `<div class="facblk"><div class="facblk-hd"><span class="fdot" style="background:${col}"></span><b>${nm}</b>${CONTACT[nm]&&CONTACT[nm]!=='TBC'?`<span class="fcontact"> · ${CONTACT[nm]}</span>`:''}</div>`+
-    `<ul class="gearlist">${gear}</ul>`+
-    (c?`<div class="kv" style="margin:0"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener">${c.label}</a>`:c.label}</div>`:'')+
+  const web = c && c.url ? ` <span class="fcontact">· ${c.url.replace('https://','')}</span>` : '';
+  return `<div class="facblk"><div class="facblk-hd"><span class="fdot" style="background:${col}"></span><b>${nm}</b>${CONTACT[nm]&&CONTACT[nm]!=='TBC'?`<span class="fcontact"> · ${CONTACT[nm]}</span>`:''}${web}</div>`+
+    chaseTable(nm)+
     `</div>`;
 };
 const legBlock = l => {
@@ -545,55 +585,59 @@ const legBlock = l => {
     `</div></div>`;
 };
 const DAYS = [
- {dnum:'22',mon:'Jul',region:'jiangsu',title:'Daniel + Konstantine land Shanghai',sub:'Advance pair arrive',move:'~13 h',
+ {dnum:'21',mon:'Jul',region:'jiangsu',title:'Daniel + Konstantine land Shanghai',sub:'Advance pair arrive',move:'~13 h',
   plan:'The pair fly in first and settle in Shanghai (near the Bund).',
   legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep 12:05am, arr 11:05am. Clear HK airside as a transit, then mainland immigration at Shanghai.'}]},
- {dnum:'23',mon:'Jul',region:'jiangsu',title:'Shanghai — pair',sub:'Buffer / setup day',
-  plan:'Daniel + Konstantine in Shanghai. Good day to sort eSIMs, Alipay + WeChat, and book the onward HSR (tickets release ~15 days out at 2pm Beijing time).'},
- {dnum:'24',mon:'Jul',region:'jiangsu',title:'Georgio lands Shanghai',sub:'Team together in Shanghai',move:'~13 h',
-  plan:'Georgio flies in (same Cathay routing, arr 11:05am) and rests. Team overnight near the Bund, ready for the early Baopeng pickup.',
+ {dnum:'22',mon:'Jul',region:'jiangsu',title:'Shanghai — pair',sub:'Buffer / setup day',
+  plan:'Daniel + Konstantine in Shanghai. Sort eSIMs, Alipay + WeChat, and book the onward HSR — tickets release ~15 days out at 2pm Beijing time, and the Nantong→Qingdao leg (below) is sparse so book it first.'},
+ {dnum:'23',mon:'Jul',region:'jiangsu',title:'Georgio lands Shanghai',sub:'Team together in Shanghai',move:'~13 h',
+  plan:'Georgio flies in (same Cathay routing, arr 11:05am) and rests. Team overnight near the Bund, ready for an early start to Baopeng.',
   legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific, dep 12:05am, arr 11:05am.'}]},
- {dnum:'25',mon:'Jul',region:'jiangsu',title:'Baopeng, then up to Qingdao',sub:'Jiangsu → Shandong · big travel day',move:'~6–7 h',
-  plan:'Early factory car pickup near the Bund. Visit Baopeng during the day, then straight to Qingdao by HSR (have the car drop you at Nantong West station).',
+ {dnum:'24',mon:'Jul',region:'jiangsu',title:'Baopeng, then up to Qingdao',sub:'Jiangsu → Shandong · big travel day',move:'~5–7 h',
+  plan:'To Baopeng in the morning, visit during the day, then straight to Qingdao. Two ways to reach Baopeng: high-speed rail from Shanghai (fast, recommended), or a factory car from the Bund.',
   visit:['Baopeng Fitness'],
   legs:[
-   {mode:'car',route:'The Bund → Baopeng (Rudong, Nantong)',dur:'~2h45–3h30',note:'~200–230 km, crosses the Yangtze. Early pickup to beat Shanghai traffic.'},
-   {mode:'rail',route:'Nantong West → Qingdao West',dur:'~3h28–4h',note:'~7–11 direct/day. Take an afternoon/evening train after the visit.',opts:[{t:'08:41',d:'~3h39',svc:'D2152'},{t:'16:43',d:'~3h28 (fastest)',svc:'G688'},{t:'06:12',d:'~3h54',svc:'G2658'}]}],
-  tip:'Long day. If it runs late, split it: Baopeng on the 25th, sleep Nantong, rail to Qingdao early on the 26th.'},
- {dnum:'26',mon:'Jul',region:'shandong',title:'Qingdao — two factories',sub:'Quick Body (AM + lunch) · Peach Builder (PM + dinner)',move:'~1 h local',
+   {mode:'rail',route:'Shanghai Hongqiao → Nantong West',dur:'~1h07–1h21',note:'RECOMMENDED. ~52 trains/day, every 15–40 min. Then ~1 h by car to the factory in Rudong.',opts:[{t:'06:57',d:'1h21',svc:'C3792'},{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'},{t:'~16:xx',d:'~1h10',svc:'G/D (verify)'},{t:'21:53',d:'~1h15',svc:'last'}]},
+   {mode:'car',route:'Alt: The Bund → Baopeng (Rudong) by car',dur:'~2h45–3h30',note:'~200–230 km, crosses the Yangtze. The factory can send a car. Slower than the train.'},
+   {mode:'rail',route:'Nantong West → Qingdao West',dur:'~3h28–4h14',note:'⚠ Sparse: only ~7–11/day and the LAST is 16:43. Book this first and time Baopeng around it. Lands at Qingdao WEST (see next day).',opts:[{t:'06:12',d:'~3h30',svc:'first'},{t:'07:27',d:'4h14',svc:'D1664'},{t:'08:41',d:'3h39',svc:'D2152'},{t:'16:43',d:'3h28 (fastest, last)',svc:'G688'}]}],
+  tip:'The Nantong→Qingdao train is the pinch point. If Baopeng runs long and you miss the 16:43, sleep in Nantong and take the 06:12 next morning.'},
+ {dnum:'25',mon:'Jul',region:'shandong',title:'Qingdao — two factories',sub:'Quick Body (AM + lunch) · Peach Builder (PM + dinner)',move:'~1 h local',
   plan:'Anchor day. Quick Body in the morning and over lunch, Peach Builder in the afternoon and over dinner.',
   visit:['Quick Body','Peach Builder'],
-  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25 min',note:'~18 km across north Qingdao.'}]},
- {dnum:'27',mon:'Jul',region:'shandong',title:'Relax, then up to Dezhou',sub:'Qingdao → Dezhou',move:'~3 h',
+  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25 min',note:'~18 km across north Qingdao. Both are near Qingdao airport (TAO).'}]},
+ {dnum:'26',mon:'Jul',region:'shandong',title:'Relax, then up to Dezhou',sub:'Qingdao → Dezhou',move:'~3–4 h',
   plan:'Relax in the morning (quick, just the stair climbers), then HSR to Dezhou. Enjoy the evening there.',
   visit:['Relax Fitness'],
-  legs:[{mode:'rail',route:'Qingdao North → Dezhou East',dur:'~2h30–3h41',note:'Frequent. Filter for DIRECT on Trip.com — some route via a Jinan West change.',opts:[{t:'Morning G',d:'~2h30–3h',svc:'fastest, direct'},{t:'15:58',d:'~3h41',svc:'D1633 (direct)'}]}],
+  legs:[
+   {mode:'car',route:'Cross-bay transfer: Qingdao West → Qingdao North',dur:'~45–75 min',note:'⚠ You arrived at Qingdao WEST, but the Dezhou train leaves from Qingdao NORTH, across Jiaozhou Bay. Allow time (metro/taxi).'},
+   {mode:'rail',route:'Qingdao North → Dezhou East',dur:'~2h30–3h41',note:'For a morning start, take a G train and change at Jinan West (frequent, ~2h30–3h). The 15:58 D1632/D1633 is a single no-change direct (3h41).',opts:[{t:'Morning G',d:'~2h30–3h',svc:'via Jinan West change'},{t:'15:58',d:'3h41',svc:'D1632/33 (direct)'}]}],
   tip:'HBS (the benches) is also in Qingdao — fold it in this morning if there is time, or drop it (small line).'},
- {dnum:'28',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'Ningjin, same industrial park',move:'local',
-  plan:'Two factories back to back in the same park. Enjoy the afternoon and evening in Dezhou.',
+ {dnum:'27',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'Ningjin, same industrial park',move:'local',
+  plan:'Two factories back to back in the same park. Enjoy the afternoon and evening in Dezhou. Dezhou East is a short drive away.',
   visit:['Rosen Fitness','MBH Fitness']},
- {dnum:'29',mon:'Jul',region:'fujian',title:'Fly to Xiamen, Rayton, on to Guangzhou',sub:'Shandong → Fujian → Guangdong · biggest travel day',move:'~7 h',
+ {dnum:'28',mon:'Jul',region:'fujian',title:'Fly to Xiamen, Rayton, on to Guangzhou',sub:'Shandong → Fujian → Guangdong · biggest travel day',move:'~7 h',
   plan:'Drive to Jinan airport, fly to Xiamen, straight to Rayton, then an evening flight to Guangzhou.',
   visit:['Rayton'],
   legs:[
-   {mode:'car',route:'Dezhou → Jinan Yaoqiang airport (TNA)',dur:'~1h15–1h35',note:'~125 km. No early nonstop to Xiamen, so no pre-dawn start needed.'},
-   {mode:'fly',route:'Jinan TNA → Xiamen XMN',dur:'~2h15–2h20',note:'~4/day, Xiamen Air / Shandong Air. Skews midday to evening.',opts:[{t:'11:35',d:'~2h15',svc:'MF/SC'},{t:'early PM',d:'~2h20',svc:'SC'},{t:'~21:00',d:'~2h15',svc:'SC (last)'}]},
-   {mode:'fly',route:'Xiamen XMN → Guangzhou CAN',dur:'~1h25–1h35',note:'A few/day, China Southern / Xiamen Air. Evening departure after Rayton.',opts:[{t:'~07:30',d:'~1h35',svc:'CZ/MF'},{t:'midday',d:'~1h30',svc:'CZ'},{t:'~22:35',d:'~1h35',svc:'MF (last)'}]}],
-  tip:'Tight day. Realistically the 11:35 Jinan→Xiamen (arr ~13:50), Rayton mid-afternoon (~1 h from Xiamen), then an evening Xiamen→Guangzhou. Keep the Rayton visit focused.'},
- {dnum:'30',mon:'Jul',region:'guangdong',title:'Guangzhou — two factories',sub:'Conlin (AM) · OMA (PM, Foshan)',move:'~1 h local',
+   {mode:'car',route:'Dezhou → Jinan Yaoqiang airport (TNA)',dur:'~1h15–1h35',note:'~125 km. The earliest Xiamen flight is 11:35, so no pre-dawn start needed.'},
+   {mode:'fly',route:'Jinan TNA → Xiamen XMN',dur:'~2h15',note:'Only ~4/day (Xiamen Air / Shandong Air), and the earliest is 11:35 — this leg eats the afternoon.',opts:[{t:'11:35',d:'2h15',svc:'MF8520 / SC8407'},{t:'~14:xx',d:'2h15',svc:'SC8409'},{t:'~17:xx',d:'2h15',svc:'SC8411'},{t:'21:00',d:'2h15',svc:'SC8415 (last)'}]},
+   {mode:'rail',route:'Xiamen → Zhangzhou (Rayton)',dur:'~30 min',note:'~51 trains/day, or ~45 min by road. No constraint — go on arrival.'},
+   {mode:'fly',route:'Xiamen XMN → Guangzhou CAN',dur:'~1h35',note:'~5–6/day (China Southern / Xiamen Air). Evening departure after Rayton.',opts:[{t:'07:30',d:'1h35',svc:'CZ3724 (first)'},{t:'~16:xx',d:'1h35',svc:'CZ3806'},{t:'~19:xx',d:'1h35',svc:'MF8305'},{t:'22:35',d:'1h35',svc:'CZ3880 (last)'}]}],
+  tip:'Tight day. Realistically: 11:35 Jinan→Xiamen (arr ~13:50), Rayton mid-afternoon (~30 min out), then an evening Xiamen→Guangzhou. Keep Rayton focused. (HSR Xiamen North→Guangzhou South ~3.5–4 h is a fallback if flight timing slips.)'},
+ {dnum:'29',mon:'Jul',region:'guangdong',title:'Guangzhou — two factories',sub:'Conlin (AM) · OMA (PM, Foshan)',move:'~1 h local',
   plan:'Conlin in the city in the morning, OMA in Foshan (Shunde) in the afternoon.',
   visit:['Conlin Fitness','OMA Fitness'],
   legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
- {dnum:'31',mon:'Jul',region:'guangdong',title:'Chuanyu, then HSR to Hong Kong',sub:'Guangdong → Hong Kong',move:'~1.5 h',
+ {dnum:'30',mon:'Jul',region:'guangdong',title:'Chuanyu, then HSR to Hong Kong',sub:'Guangdong → Hong Kong',move:'~1.5 h',
   plan:'Last factory (Chuanyu, Dongguan) in the morning, then the short cross-border train to Hong Kong. Overnight in HK.',
   visit:['Dongguan Chuanyu'],
-  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~38 min–1 h',note:'Cross-border: clear mainland exit + HK entry inside West Kowloon station. Passport needed.',opts:[{t:'~08:47',d:'~40 min',svc:'Humen (first)'},{t:'midday',d:'~38–50 min',svc:'Humen / Dongguan'},{t:'~21:00',d:'~40 min',svc:'Humen (last)'}]}]},
- {dnum:'01',mon:'Aug',region:'guangdong',title:'Georgio flies home · the boys stay',sub:'Hong Kong',move:'~8h35',
-  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine stay in Hong Kong for the holiday and fly home ~2 days later.',
+  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'~42 trains/day, all G. Cross-border: clear mainland exit + HK entry inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'06:51',d:'~40 min',svc:'first'},{t:'09:05',d:'1h16',svc:'G6545'},{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
+ {dnum:'31',mon:'Jul',region:'guangdong',title:'Georgio flies home · the boys stay',sub:'Hong Kong',move:'~8h35',
+  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine stay in Hong Kong for the holiday and fly home ~2 days later (~2 Aug).',
   legs:[{mode:'fly',route:'Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Dep 11:55am.'}]},
 ];
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 22 Jul → 1 Aug. Tap any day to expand: who you see, the gear, and the travel options with times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 21–31 Jul. Tap any day to expand: who you see, the itemised gear, and the travel options with real sample times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
    const vis = (d.visit||[]).map(facBlock).join('');
@@ -611,21 +655,43 @@ document.getElementById('itin').innerHTML =
      `</div></div>`;
  }).join('');
 
+/* ===== CALENDAR view (July 2026) ===== */
+(function(){
+  const cal=document.getElementById('cal'); if(!cal) return;
+  const byDay={}; DAYS.forEach(d=>{ if(d.mon==='Jul') byDay[parseInt(d.dnum,10)]=d; });
+  const startDow=new Date(2026,6,1).getDay(); const dim=31;
+  const dows=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let cells='';
+  for(let i=0;i<startDow;i++) cells+='<div class="calcell empty"></div>';
+  for(let d=1;d<=dim;d++){
+    const ev=byDay[d]; const col=ev?REGIONS[ev.region].color:'';
+    cells+=`<div class="calcell${ev?' ev':''}"><div class="cn">${d}</div>${ev?`<div class="evt" data-d="${d}" style="background:${col}">${ev.title}</div>`:''}</div>`;
+  }
+  cal.innerHTML='<h2>Calendar</h2><p class="lead">The trip on a July 2026 calendar — for Daniel. Tap a coloured day to jump to it in the Itinerary.</p>'+
+   '<div style="overflow-x:auto"><div class="calgrid">'+dows.map(x=>`<div class="caldow">${x}</div>`).join('')+cells+'</div></div>';
+  cal.querySelectorAll('.evt').forEach(e=>e.onclick=()=>{
+    [...document.querySelectorAll('.seg button')].find(b=>b.dataset.view==='itinerary').click();
+    const dn=String(e.dataset.d).padStart(2,'0');
+    const acc=[...document.querySelectorAll('#itin .acc')].find(a=>{const dd=a.querySelector('.ddate');return dd&&dd.textContent.trim().startsWith(dn);});
+    if(acc){acc.classList.add('open');setTimeout(()=>acc.scrollIntoView({behavior:'smooth',block:'start'}),60);}
+  });
+})();
+
 /* ===== SUPPLIERS (expandable, click-through) ===== */
 document.getElementById('supp').innerHTML =
- '<h2>Suppliers</h2><p class="lead">Every shortlisted factory. Tap to expand for the gear we are looking at, the contact, and the catalogue.</p>'+
+ '<h2>Suppliers</h2><p class="lead">Every shortlisted factory. Tap to expand for the itemised list of what we’re chasing, the contact, and the details.</p>'+
  SUPPLIERS.map(s=>{
    const col=REGIONS[s.region].color; const v=s.day>0;
-   const gear=(GEAR[s.nm]||[]).map(g=>`<li>${g}</li>`).join('');
    const c=CAT[s.nm];
+   const web = c&&c.url ? `<div class="kv"><b>Website:</b> ${c.url.replace('https://','')}${/on file/.test(c.label)?' · quote / catalogue on file':''}</div>`:'';
    return `<div class="acc"><div class="acc-hd">`+
      `<div class="daybadge" style="background:${v?col:'#c7c7cc'}"><small>${v?'DAY':''}</small>${v?s.day:'·'}</div>`+
      `<div style="min-width:0"><div class="acc-nm">${s.nm}</div><div class="acc-sub">${s.city} · ${s.cat}</div></div>`+
      `<div class="chev">▶</div></div>`+
      `<div class="acc-bd">`+
        (CONTACT[s.nm]&&CONTACT[s.nm]!=='TBC'?`<div class="kv"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
-       `<div class="sub-h">Gear we're looking at</div><ul class="gearlist">${gear}</ul>`+
-       (c?`<div class="kv"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener">${c.label}</a>`:c.label}</div>`:'')+
+       `<div class="sub-h">What we’re chasing</div>${chaseTable(s.nm)}`+
+       web+
        `<div class="kv"><b>Nearest airport:</b> ${s.ap}${DRIVE[s.nm]?' · '+DRIVE[s.nm]:''}</div>`+
        `<div class="kv"><b>Nearest HSR:</b> ${HSR[s.nm]||'—'}</div>`+
      `</div></div>`;

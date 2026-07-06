@@ -24,7 +24,14 @@
   .h-sub{font-size:12.5px;color:var(--text2);margin-top:2px;letter-spacing:-.005em}
 
   nav{display:flex;justify-content:center;padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--hair2)}
-  .seg{display:inline-flex;background:var(--hair2);border-radius:10px;padding:3px;gap:2px}
+  .seg{display:inline-flex;flex-wrap:wrap;justify-content:center;background:var(--hair2);border-radius:10px;padding:3px;gap:2px}
+  .tphase{display:flex;gap:14px;margin:0 0 12px;align-items:flex-start}
+  .ttag{flex:0 0 auto;min-width:82px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.05em;color:#fff;padding:6px 8px;border-radius:8px;margin-top:2px}
+  .tph-bd{flex:1;border:1px solid var(--hair);border-radius:14px;padding:12px 16px;background:#fff;box-shadow:var(--shadow-sm)}
+  .tph-hd{font-weight:600;font-size:15px;letter-spacing:-.01em}
+  .tph-dt{color:var(--text3);font-weight:600;font-size:12px;margin-left:6px}
+  .tph-bd ul{margin:6px 0 0;padding-left:17px}.tph-bd li{font-size:12.5px;margin:5px 0;line-height:1.5}
+  .tperson{border-left:4px solid var(--hair)}
   .seg button{appearance:none;border:0;background:transparent;color:var(--text);
     padding:6px 18px;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;letter-spacing:-.01em;transition:all .15s}
   .seg button:hover{color:#000}
@@ -161,6 +168,7 @@
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
+  <button data-view="team">Team</button>
   <button data-view="justin">Justin</button>
   <button data-view="travel">Travel</button>
   <button data-view="itinerary">Itinerary</button>
@@ -177,6 +185,7 @@
     <div id="stops" class="panel"></div>
     <div id="legend" class="panel"></div>
   </section>
+  <section id="view-team" class="view"><div class="wrap" id="team"></div></section>
   <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-travel" class="view"><div class="wrap" id="travel"></div></section>
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
@@ -288,6 +297,15 @@ const CAT = {
 const catRow = nm => { const c=CAT[nm]; if(!c) return '';
   return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
 
+// Who visits (split-team plan)
+const WHO = {
+  'Baopeng Fitness':'Advance pair (Daniel + Konstantine), before Georgio arrives',
+  'Conlin Fitness':'Georgio (his Guangzhou day)',
+  'OMA Fitness':'Daniel + Konstantine',
+  'Dongguan Chuanyu':'Daniel + Konstantine',
+};
+const whoRow = nm => WHO[nm]?`<div class="pp-row"><b>Who visits:</b> ${WHO[nm]}</div>`:'';
+
 const AIRPORTS = [
   {code:'PVG', nm:'Shanghai Pudong Int’l', ll:[31.143,121.805], serves:'Entry from Brisbane · gateway to Baopeng (Nantong ~1 h rail) + Qingdao'},
   {code:'NTG', nm:'Nantong Xingdong Int’l', ll:[32.071,120.976], serves:'Baopeng (Jiangsu) — rail via Shanghai preferred'},
@@ -301,7 +319,8 @@ const AIRPORTS = [
 // Map route legs in trip order
 const LEGS = [
   {from:[31.143,121.805], to:[32.320,121.610], mode:'ground', label:'Shanghai PVG → Nantong (HSR ~1–1.5 h)'},
-  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Nantong → Qingdao (direct HSR ~3.5–5 h)'},
+  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Pair: Nantong → Qingdao (direct HSR ~3.5–5 h)'},
+  {from:[31.143,121.805], to:[36.310,120.400], mode:'flight', label:'Georgio: Shanghai → Qingdao (~1.5 h)'},
   {from:[36.310,120.400], to:[37.668,116.805], mode:'ground', label:'Qingdao → Dezhou (HSR ~2–3 h)'},
   {from:[36.857,117.216], to:[24.544,118.127], mode:'flight', label:'Jinan TNA → Xiamen XMN (the big jump south)'},
   {from:[24.544,118.127], to:[24.570,117.850], mode:'ground', label:'Xiamen → Zhangzhou (1.5 h)'},
@@ -418,6 +437,7 @@ function detailHTML(s){
     (CONTACT[s.nm]?`<div class="pp-row"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
     `<div class="pp-row"><b>Makes:</b> ${s.cat}</div>`+
     `<div class="pp-row"><b>Buying:</b> ${s.buy}</div>`+
+    whoRow(s.nm)+
     catRow(s.nm)+
     `<div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div>`+
     (DRIVE[s.nm]?`<div class="pp-row"><b>Airport → site:</b> ${DRIVE[s.nm]}</div>`:'')+
@@ -510,6 +530,31 @@ let scards = SUPPLIERS.map(s=>card(
 document.getElementById('supp').innerHTML =
   '<h2>Suppliers</h2><p class="lead">12 China factories, 10 on the visit route + 2 optional (HBS, and the Yishui flooring alternative). Click a marker on the map for the same detail.</p>'+
   `<div class="cards">${scards}</div>`;
+
+/* TEAM view */
+const TEAM={
+ people:[
+  {who:'Advance pair',names:'Daniel + Konstantine',color:'#0FA36B',note:'Fly in first (~23 Jul) and do Baopeng before Georgio lands.'},
+  {who:'Georgio',names:'Georgio',color:'#0071e3',note:'Flies in 25 or 26 Jul, joins the team at Qingdao.'},
+ ],
+ phases:[
+  {tag:'PAIR',color:'#0FA36B',title:'Advance pair fly in',date:'~23 Jul',items:['Daniel + Konstantine fly Brisbane → Shanghai (China Eastern, direct daily, ~10h30).']},
+  {tag:'PAIR',color:'#0FA36B',title:'Baopeng — before Georgio',date:'~24 Jul',items:['HSR Shanghai Hongqiao → Nantong (~1–1.5 h), then ~40 min local to Rudong.','Visit Baopeng Fitness (dumbbells, barbells, smaller / specialty bars).']},
+  {tag:'GEORGIO',color:'#0071e3',title:'Georgio flies in',date:'25 or 26 Jul',items:['Georgio flies Brisbane → Shanghai (same direct flight).']},
+  {tag:'MERGE',color:'#1d1d1f',title:'Regroup at Qingdao',date:'',items:['Pair: direct HSR Nantong → Qingdao (~3.5–5 h). No backtrack to Shanghai — this is the easy move.','Georgio: fly Shanghai → Qingdao (TAO) ~1.5 h on arrival.','Meet in Qingdao that evening.']},
+  {tag:'TOGETHER',color:'#6e6e73',title:'Qingdao, all together',date:'',items:['Quick Body, Relax, HBS, Peach Builder — plan a full day (4 factories around the city).']},
+  {tag:'TOGETHER',color:'#6e6e73',title:'Dezhou',date:'',items:['HSR Qingdao North → Dezhou East (~2.5 h).','Rosen + MBH — same Ningjin park, back to back.']},
+  {tag:'TOGETHER',color:'#6e6e73',title:'Down to Rayton',date:'',items:['Drive Dezhou → Jinan (~1 h), fly Jinan TNA → Xiamen XMN (~2h20).','Rayton (Zhangzhou), ~1 h from Xiamen.']},
+  {tag:'TOGETHER',color:'#6e6e73',title:'Rayton → Guangzhou',date:'',items:['Fly Xiamen XMN → Guangzhou CAN (~1.5 h) — recommended, same airport Georgio flies home from.','Or HSR Xiamen North → Guangzhou South (~3.5–4 h).']},
+  {tag:'SPLIT',color:'#c0392b',title:'Guangzhou — split & finish',date:'',items:['Georgio: 1 factory (Conlin, Guangzhou city), then fly Guangzhou → Brisbane, direct.','Daniel + Konstantine: OMA (Foshan) + Chuanyu (Dongguan), then Hong Kong for a holiday (Dongguan → HK West Kowloon ~35 min HSR).']},
+ ],
+};
+document.getElementById('team').innerHTML=
+ '<h2>Team split</h2><p class="lead">Daniel and Konstantine fly in first and knock out Baopeng before Georgio lands. Everyone meets at Qingdao, works the middle together, then splits in Guangzhou.</p>'+
+ '<div class="jgrid">'+TEAM.people.map(p=>`<div class="jcard tperson" style="border-left-color:${p.color}"><h4 style="color:${p.color}">${p.who}</h4><div class="big">${p.names}</div><div style="color:var(--text2);font-size:12.5px;margin-top:5px">${p.note}</div></div>`).join('')+'</div>'+
+ '<div class="h3">Phase by phase</div>'+
+ TEAM.phases.map(ph=>`<div class="tphase"><div class="ttag" style="background:${ph.color}">${ph.tag}</div><div class="tph-bd"><div class="tph-hd">${ph.title}${ph.date?`<span class="tph-dt">${ph.date}</span>`:''}</div><ul>${ph.items.map(i=>`<li>${i}</li>`).join('')}</ul></div></div>`).join('')+
+ '<div class="cav" style="margin-top:14px"><ul style="padding-left:18px;margin:0"><li>Baopeng gets done before Georgio lands, so his clock starts at Qingdao.</li><li>Nobody backtracks: the pair rail straight up the coast, Georgio flies in over the top, they meet in the north.</li><li>The Guangzhou split matches the map — Georgio stays central for the home flight, the pair sweep out to Foshan and Dongguan and roll into Hong Kong.</li></ul></div>';
 
 /* JUSTIN view */
 const JUSTIN={

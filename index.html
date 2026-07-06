@@ -32,6 +32,40 @@
   .tph-dt{color:var(--text3);font-weight:600;font-size:12px;margin-left:6px}
   .tph-bd ul{margin:6px 0 0;padding-left:17px}.tph-bd li{font-size:12.5px;margin:5px 0;line-height:1.5}
   .tperson{border-left:4px solid var(--hair)}
+  .acc{border:1px solid var(--hair);border-radius:16px;margin:0 0 12px;background:#fff;box-shadow:var(--shadow-sm);overflow:hidden}
+  .acc-hd{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+  .acc-hd:hover{background:rgba(0,0,0,.025)}
+  .acc-hd .chev{margin-left:auto;color:var(--text3);transition:transform .2s;font-size:12px}
+  .acc.open .acc-hd .chev{transform:rotate(90deg)}
+  .acc-bd{display:none;padding:4px 16px 16px}
+  .acc.open .acc-bd{display:block}
+  .acc-nm{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .acc-sub{font-size:12px;color:var(--text2);margin-top:1px}
+  .gearlist{margin:6px 0 10px;padding-left:17px}.gearlist li{font-size:12.5px;margin:5px 0;line-height:1.45}
+  .kv{font-size:12.5px;margin:6px 0;line-height:1.5}.kv b{color:var(--text3);font-weight:600}
+  .kv a{color:var(--blue)}
+  .sub-h{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;margin:12px 0 6px}
+  .ddate{flex:0 0 auto;width:46px;height:46px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;line-height:1}
+  .ddate small{font-size:8.5px;font-weight:600;opacity:.9;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+  .facblk{border:1px solid var(--hair2);border-radius:12px;padding:10px 13px;margin:0 0 9px;background:var(--bg2)}
+  .facblk-hd{font-size:13.5px}.facblk-hd b{font-weight:600}
+  .fdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  .fcontact{color:var(--text2);font-size:12px}
+  .legrow{display:flex;gap:12px;margin:0 0 13px}
+  .legrow .ic .badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:#fff;border:1.5px solid var(--hair)}
+  .legrow .badge.fl{border-color:var(--flight);color:var(--flight)}
+  .legrow .badge.gr{border-color:var(--ground);color:var(--ground)}
+  .legbd{flex:1;min-width:0}
+  .legseg{font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .legseg .dur{font-weight:600;font-size:13px;color:var(--text2);white-space:nowrap}
+  .legrow .tn{color:var(--text2);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .opttbl{width:100%;border-collapse:collapse;margin:8px 0 0;font-size:12px}
+  .opttbl th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text3);font-weight:600;padding:0 8px 4px;border-bottom:1px solid var(--hair2)}
+  .opttbl td{padding:5px 8px;border-bottom:1px solid var(--hair2)}
+  .opttbl tr:last-child td{border-bottom:0}
+  .opttbl .lt{font-weight:600}.opttbl .ld{color:var(--text2)}.opttbl .lsvc{color:var(--text3)}
+  .daytip{background:#eff6ee;border:1px solid #cfe6cf;border-radius:10px;padding:9px 12px;font-size:12.5px;margin-top:8px;line-height:1.5}
+  .acc-hd .movebadge{margin-left:auto}
   .seg button{appearance:none;border:0;background:transparent;color:var(--text);
     padding:6px 18px;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;letter-spacing:-.01em;transition:all .15s}
   .seg button:hover{color:#000}
@@ -164,14 +198,12 @@
 <body>
 <header>
   <div class="h-title">China sourcing trip</div>
-  <div class="h-sub">Depart 24 Jul 2026 · Shanghai in, Guangzhou out · 10 factories (+2 optional) · 4 provinces</div>
+  <div class="h-sub">22 Jul – 1 Aug 2026 · Shanghai in, Hong Kong out · 10 factories · 4 provinces</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
-  <button data-view="team">Team</button>
-  <button data-view="justin">Justin</button>
-  <button data-view="travel">Travel</button>
   <button data-view="itinerary">Itinerary</button>
+  <button data-view="justin">Justin</button>
   <button data-view="suppliers">Suppliers</button>
 </div></nav>
 
@@ -185,10 +217,8 @@
     <div id="stops" class="panel"></div>
     <div id="legend" class="panel"></div>
   </section>
-  <section id="view-team" class="view"><div class="wrap" id="team"></div></section>
-  <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
-  <section id="view-travel" class="view"><div class="wrap" id="travel"></div></section>
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
+  <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
 </div>
 
@@ -298,13 +328,24 @@ const catRow = nm => { const c=CAT[nm]; if(!c) return '';
   return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
 
 // Who visits (split-team plan)
-const WHO = {
-  'Baopeng Fitness':'Advance pair (Daniel + Konstantine), before Georgio arrives',
-  'Conlin Fitness':'Georgio (his Guangzhou day)',
-  'OMA Fitness':'Daniel + Konstantine',
-  'Dongguan Chuanyu':'Daniel + Konstantine',
-};
+const WHO = {}; // all three travel together now; only split is Georgio flies home first at the end
 const whoRow = nm => WHO[nm]?`<div class="pp-row"><b>Who visits:</b> ${WHO[nm]}</div>`:'';
+
+// Gear we're looking at per factory
+const GEAR = {
+  'Baopeng Fitness':['Dumbbell sets (fixed + adjustable)','Olympic barbells (20 kg + 15 kg)','Shorter / specialty bars'],
+  'Quick Body':['Pin-loaded KS series: Chest Press (KS1006), Shoulder Press (KS1011), Row (KS1040), Pec Fly (KS1056), Leg Ext (KS1065), Leg Curls (KS1068), Prone Curl (KS1070), Ab/Adductor (KSD1053)','Plate-loaded KP: Standing Chest Press (KP1003), Pec Fly (KP1056), Leg Press (KP1062), Pendulum Squat (KP1060)','8-station multi-jungle (KS13030 frame + stations)','Racks + benches: DB rack ×2 (KF1660), barbell rack (KF1664), flat bench (OFB02), preacher (XHA-040)','Seated Calf Raise (KF1636) — price TBC','Frame colour: RAL 8017 Deep Espresso (negotiating)'],
+  'Relax Fitness':['PP-007 Commercial Stair Climber ×2 — price TBC'],
+  'Hongbinsheng (HBS)':['HBS-2603 adjustable FID bench ×12'],
+  'Peach Builder':['PB311 V-Squat (hack squat)','PB312 Belt Squat','PB410 Multi Hip Extension','PB411 Multi Deadlift'],
+  'Rosen Fitness':['RS-1013 3D Glute Drive (Smith hip thrust)','RS-3011 Orbital Row'],
+  'MBH Fitness':['HM plate machines: Decline Chest (HM-08), Shoulder Press (HM-17), High Row (HM-16), Flat Bench (HM-18), Seated Row (HM-14), Side Arm Lift (HM-06)','Consumables consolidation: bars, plates, dumbbells, kettlebells, wall balls (341-SKU catalogue)','Rebut the $36k counter-quote: ZH-021 rack substitution + missing consumables'],
+  'Rayton':['Custom 4-rack Nexa-style rig (China-made alternative to Iron Edge)'],
+  'Conlin Fitness':['GT X Luxury Commercial Treadmill ×3 — price TBC'],
+  'OMA Fitness':['OMA-6367TA slatted / curved treadmill ×3 (locked)'],
+  'Dongguan Chuanyu':['Gym flooring (rubber tiles / rolls)'],
+  'Flooring — Yishui':['Gym flooring — alternative to Chuanyu, compare on price + quality'],
+};
 
 const AIRPORTS = [
   {code:'PVG', nm:'Shanghai Pudong Int’l', ll:[31.143,121.805], serves:'Entry from Brisbane · gateway to Baopeng (Nantong ~1 h rail) + Qingdao'},
@@ -319,8 +360,7 @@ const AIRPORTS = [
 // Map route legs in trip order
 const LEGS = [
   {from:[31.143,121.805], to:[32.320,121.610], mode:'ground', label:'Shanghai PVG → Nantong (HSR ~1–1.5 h)'},
-  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Pair: Nantong → Qingdao (direct HSR ~3.5–5 h)'},
-  {from:[31.143,121.805], to:[36.310,120.400], mode:'flight', label:'Georgio: Shanghai → Qingdao (~1.5 h)'},
+  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Nantong → Qingdao (direct HSR ~3.5–4 h)'},
   {from:[36.310,120.400], to:[37.668,116.805], mode:'ground', label:'Qingdao → Dezhou (HSR ~2–3 h)'},
   {from:[36.857,117.216], to:[24.544,118.127], mode:'flight', label:'Jinan TNA → Xiamen XMN (the big jump south)'},
   {from:[24.544,118.127], to:[24.570,117.850], mode:'ground', label:'Xiamen → Zhangzhou (1.5 h)'},
@@ -484,77 +524,115 @@ document.getElementById('legend').innerHTML =
   '<div class="lg"><span class="swatch" style="border-top-color:#0071e3;border-top-style:dashed"></span>Flight</div>'+
   '<div class="lg">✈ &nbsp;Airport</div>';
 
-/* TRAVEL view */
-document.getElementById('travel').innerHTML =
-  '<h2>Optimal flight path</h2><p class="lead">Enter mid-coast at Shanghai (best of the three China-direct entries), do Baopeng on arrival, sweep north to Shandong then south, exit Guangzhou direct to Brisbane.</p>'+
-  '<div class="tsum">'+
-    `<div class="box"><div class="lab">In transit</div><div class="val">${TRAVEL.total} <small>flying + rail</small></div></div>`+
-    `<div class="box"><div class="lab">Entry</div><div class="val" style="font-size:15px">${TRAVEL.entry}</div></div>`+
-    `<div class="box"><div class="lab">Exit</div><div class="val" style="font-size:15px">${TRAVEL.exit}</div></div>`+
-  '</div>'+
-  '<div class="h3">Leg by leg</div><div class="tl">'+
-  TRAVEL.legs.map(l=>{
-    const fl = l.mode==='flight';
-    return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div>
-      <div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div>
-      <div class="tn">${l.tn}</div>${l.work?`<div class="work">Work · ${l.work}</div>`:''}</div></div>`;
-  }).join('')+
-  '</div>'+
-  '<div class="h3">Notes</div><div class="cav"><ul style="padding-left:18px;margin:0">'+
-  TRAVEL.caveats.map(c=>`<li>${c}</li>`).join('')+'</ul></div>';
-
-/* ITINERARY view */
-const MOVE={1:'~11 h 45',2:'~4 h',3:'~2.5 h',4:'~3 h 20',5:'~3 h',6:'~1 h 30',7:'~10 h 30'};
-document.getElementById('itin').innerHTML =
-  '<h2>7-day plan</h2><p class="lead">Depart Brisbane 24 Jul 2026 (or 23rd for a buffer) · Shanghai in, Guangzhou out · 1 travel + 6 working days. "On the move" = flights + trains + airport drives that day.</p>'+
-  ITINERARY.map(d=>{
-    const col=REGIONS[d.region].color;
-    return `<div class="day">
-      <div class="day-hd"><div class="n" style="background:${col}"><small>DAY</small>${d.day}</div>
-        <div><div class="rg">${d.rg}</div><div class="dt">${d.date}</div></div>
-        <div class="movebadge"><b>${MOVE[d.day]||'—'}</b><small>on the move</small></div></div>
-      <div class="day-bd">${d.legs.map(l=>`<div class="leg"><div class="slot">${l.slot}</div>
-        <div><div class="who">${l.who}</div><div class="buy">${l.buy}</div></div></div>`).join('')}
-        <div class="note">${d.note}</div></div></div>`;
-  }).join('');
-
-/* SUPPLIERS view */
-const card = (nm,ct,chip,chipcol,meta)=>`<div class="card"><div class="top">
-  <div><div class="nm">${nm}</div><div class="ct">${ct}</div></div>
-  ${chip?`<span class="chip" style="background:${chipcol}">${chip}</span>`:''}</div>
-  <div class="meta">${meta}</div></div>`;
-let scards = SUPPLIERS.map(s=>card(
-  s.nm, s.city, s.day>0?('Day '+s.day):'Optional', s.day>0?REGIONS[s.region].color:'#86868b',
-  `<b>Contact:</b> ${CONTACT[s.nm]||'TBC'}<br><b>Makes:</b> ${s.cat}<br><b>Buying:</b> ${s.buy}<br><b>Airport:</b> ${s.ap}<br><b>HSR:</b> ${HSR[s.nm]||'—'}`+(CAT[s.nm]?`<br><b>Catalogue:</b> ${CAT[s.nm].url?`<a href="${CAT[s.nm].url}" target="_blank" rel="noopener">${CAT[s.nm].label}</a>`:CAT[s.nm].label}`:'')
-)).join('');
-document.getElementById('supp').innerHTML =
-  '<h2>Suppliers</h2><p class="lead">12 China factories, 10 on the visit route + 2 optional (HBS, and the Yishui flooring alternative). Click a marker on the map for the same detail.</p>'+
-  `<div class="cards">${scards}</div>`;
-
-/* TEAM view */
-const TEAM={
- people:[
-  {who:'Advance pair',names:'Daniel + Konstantine',color:'#0FA36B',note:'Fly in first (~23 Jul) and do Baopeng before Georgio lands.'},
-  {who:'Georgio',names:'Georgio',color:'#0071e3',note:'Flies in 25 or 26 Jul, joins the team at Qingdao.'},
- ],
- phases:[
-  {tag:'PAIR',color:'#0FA36B',title:'Advance pair fly in',date:'~23 Jul',items:['Daniel + Konstantine fly Brisbane → Shanghai (China Eastern, direct daily, ~10h30).']},
-  {tag:'PAIR',color:'#0FA36B',title:'Baopeng — before Georgio',date:'~24 Jul',items:['HSR Shanghai Hongqiao → Nantong (~1–1.5 h), then ~40 min local to Rudong.','Visit Baopeng Fitness (dumbbells, barbells, smaller / specialty bars).']},
-  {tag:'GEORGIO',color:'#0071e3',title:'Georgio flies in',date:'25 or 26 Jul',items:['Georgio flies Brisbane → Shanghai (same direct flight).']},
-  {tag:'MERGE',color:'#1d1d1f',title:'Regroup at Qingdao',date:'',items:['Pair: direct HSR Nantong → Qingdao (~3.5–5 h). No backtrack to Shanghai — this is the easy move.','Georgio: fly Shanghai → Qingdao (TAO) ~1.5 h on arrival.','Meet in Qingdao that evening.']},
-  {tag:'TOGETHER',color:'#6e6e73',title:'Qingdao, all together',date:'',items:['Quick Body, Relax, HBS, Peach Builder — plan a full day (4 factories around the city).']},
-  {tag:'TOGETHER',color:'#6e6e73',title:'Dezhou',date:'',items:['HSR Qingdao North → Dezhou East (~2.5 h).','Rosen + MBH — same Ningjin park, back to back.']},
-  {tag:'TOGETHER',color:'#6e6e73',title:'Down to Rayton',date:'',items:['Drive Dezhou → Jinan (~1 h), fly Jinan TNA → Xiamen XMN (~2h20).','Rayton (Zhangzhou), ~1 h from Xiamen.']},
-  {tag:'TOGETHER',color:'#6e6e73',title:'Rayton → Guangzhou',date:'',items:['Fly Xiamen XMN → Guangzhou CAN (~1.5 h) — recommended, same airport Georgio flies home from.','Or HSR Xiamen North → Guangzhou South (~3.5–4 h).']},
-  {tag:'SPLIT',color:'#c0392b',title:'Guangzhou — split & finish',date:'',items:['Georgio: 1 factory (Conlin, Guangzhou city), then fly Guangzhou → Brisbane, direct.','Daniel + Konstantine: OMA (Foshan) + Chuanyu (Dongguan), then Hong Kong for a holiday (Dongguan → HK West Kowloon ~35 min HSR).']},
- ],
+/* ===== ITINERARY (merged: plan + travel + team, click-through) ===== */
+const iconFor = m => m==='fly'?'✈':(m==='car'?'🚗':'🚄');
+const facBlock = nm => {
+  const s = SUPPLIERS.find(x=>x.nm===nm); if(!s) return '';
+  const col = REGIONS[s.region].color;
+  const gear = (GEAR[nm]||[]).map(g=>`<li>${g}</li>`).join('');
+  const c = CAT[nm];
+  return `<div class="facblk"><div class="facblk-hd"><span class="fdot" style="background:${col}"></span><b>${nm}</b>${CONTACT[nm]&&CONTACT[nm]!=='TBC'?`<span class="fcontact"> · ${CONTACT[nm]}</span>`:''}</div>`+
+    `<ul class="gearlist">${gear}</ul>`+
+    (c?`<div class="kv" style="margin:0"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener">${c.label}</a>`:c.label}</div>`:'')+
+    `</div>`;
 };
-document.getElementById('team').innerHTML=
- '<h2>Team split</h2><p class="lead">Daniel and Konstantine fly in first and knock out Baopeng before Georgio lands. Everyone meets at Qingdao, works the middle together, then splits in Guangzhou.</p>'+
- '<div class="jgrid">'+TEAM.people.map(p=>`<div class="jcard tperson" style="border-left-color:${p.color}"><h4 style="color:${p.color}">${p.who}</h4><div class="big">${p.names}</div><div style="color:var(--text2);font-size:12.5px;margin-top:5px">${p.note}</div></div>`).join('')+'</div>'+
- '<div class="h3">Phase by phase</div>'+
- TEAM.phases.map(ph=>`<div class="tphase"><div class="ttag" style="background:${ph.color}">${ph.tag}</div><div class="tph-bd"><div class="tph-hd">${ph.title}${ph.date?`<span class="tph-dt">${ph.date}</span>`:''}</div><ul>${ph.items.map(i=>`<li>${i}</li>`).join('')}</ul></div></div>`).join('')+
- '<div class="cav" style="margin-top:14px"><ul style="padding-left:18px;margin:0"><li>Baopeng gets done before Georgio lands, so his clock starts at Qingdao.</li><li>Nobody backtracks: the pair rail straight up the coast, Georgio flies in over the top, they meet in the north.</li><li>The Guangzhou split matches the map — Georgio stays central for the home flight, the pair sweep out to Foshan and Dongguan and roll into Hong Kong.</li></ul></div>';
+const legBlock = l => {
+  const opts = (l.opts||[]).map(o=>`<tr><td class="lt">${o.t}</td><td class="ld">${o.d}</td><td class="lsvc">${o.svc||''}</td></tr>`).join('');
+  return `<div class="legrow"><div class="ic"><div class="badge ${l.mode==='fly'?'fl':'gr'}">${iconFor(l.mode)}</div></div>`+
+    `<div class="legbd"><div class="legseg">${l.route}<span class="dur">${l.dur}</span></div>`+
+    (l.note?`<div class="tn">${l.note}</div>`:'')+
+    (opts?`<table class="opttbl"><thead><tr><th>Departs</th><th>Duration</th><th>Service</th></tr></thead><tbody>${opts}</tbody></table>`:'')+
+    `</div></div>`;
+};
+const DAYS = [
+ {dnum:'22',mon:'Jul',region:'jiangsu',title:'Daniel + Konstantine land Shanghai',sub:'Advance pair arrive',move:'~13 h',
+  plan:'The pair fly in first and settle in Shanghai (near the Bund).',
+  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep 12:05am, arr 11:05am. Clear HK airside as a transit, then mainland immigration at Shanghai.'}]},
+ {dnum:'23',mon:'Jul',region:'jiangsu',title:'Shanghai — pair',sub:'Buffer / setup day',
+  plan:'Daniel + Konstantine in Shanghai. Good day to sort eSIMs, Alipay + WeChat, and book the onward HSR (tickets release ~15 days out at 2pm Beijing time).'},
+ {dnum:'24',mon:'Jul',region:'jiangsu',title:'Georgio lands Shanghai',sub:'Team together in Shanghai',move:'~13 h',
+  plan:'Georgio flies in (same Cathay routing, arr 11:05am) and rests. Team overnight near the Bund, ready for the early Baopeng pickup.',
+  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific, dep 12:05am, arr 11:05am.'}]},
+ {dnum:'25',mon:'Jul',region:'jiangsu',title:'Baopeng, then up to Qingdao',sub:'Jiangsu → Shandong · big travel day',move:'~6–7 h',
+  plan:'Early factory car pickup near the Bund. Visit Baopeng during the day, then straight to Qingdao by HSR (have the car drop you at Nantong West station).',
+  visit:['Baopeng Fitness'],
+  legs:[
+   {mode:'car',route:'The Bund → Baopeng (Rudong, Nantong)',dur:'~2h45–3h30',note:'~200–230 km, crosses the Yangtze. Early pickup to beat Shanghai traffic.'},
+   {mode:'rail',route:'Nantong West → Qingdao West',dur:'~3h28–4h',note:'~7–11 direct/day. Take an afternoon/evening train after the visit.',opts:[{t:'08:41',d:'~3h39',svc:'D2152'},{t:'16:43',d:'~3h28 (fastest)',svc:'G688'},{t:'06:12',d:'~3h54',svc:'G2658'}]}],
+  tip:'Long day. If it runs late, split it: Baopeng on the 25th, sleep Nantong, rail to Qingdao early on the 26th.'},
+ {dnum:'26',mon:'Jul',region:'shandong',title:'Qingdao — two factories',sub:'Quick Body (AM + lunch) · Peach Builder (PM + dinner)',move:'~1 h local',
+  plan:'Anchor day. Quick Body in the morning and over lunch, Peach Builder in the afternoon and over dinner.',
+  visit:['Quick Body','Peach Builder'],
+  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25 min',note:'~18 km across north Qingdao.'}]},
+ {dnum:'27',mon:'Jul',region:'shandong',title:'Relax, then up to Dezhou',sub:'Qingdao → Dezhou',move:'~3 h',
+  plan:'Relax in the morning (quick, just the stair climbers), then HSR to Dezhou. Enjoy the evening there.',
+  visit:['Relax Fitness'],
+  legs:[{mode:'rail',route:'Qingdao North → Dezhou East',dur:'~2h30–3h41',note:'Frequent. Filter for DIRECT on Trip.com — some route via a Jinan West change.',opts:[{t:'Morning G',d:'~2h30–3h',svc:'fastest, direct'},{t:'15:58',d:'~3h41',svc:'D1633 (direct)'}]}],
+  tip:'HBS (the benches) is also in Qingdao — fold it in this morning if there is time, or drop it (small line).'},
+ {dnum:'28',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'Ningjin, same industrial park',move:'local',
+  plan:'Two factories back to back in the same park. Enjoy the afternoon and evening in Dezhou.',
+  visit:['Rosen Fitness','MBH Fitness']},
+ {dnum:'29',mon:'Jul',region:'fujian',title:'Fly to Xiamen, Rayton, on to Guangzhou',sub:'Shandong → Fujian → Guangdong · biggest travel day',move:'~7 h',
+  plan:'Drive to Jinan airport, fly to Xiamen, straight to Rayton, then an evening flight to Guangzhou.',
+  visit:['Rayton'],
+  legs:[
+   {mode:'car',route:'Dezhou → Jinan Yaoqiang airport (TNA)',dur:'~1h15–1h35',note:'~125 km. No early nonstop to Xiamen, so no pre-dawn start needed.'},
+   {mode:'fly',route:'Jinan TNA → Xiamen XMN',dur:'~2h15–2h20',note:'~4/day, Xiamen Air / Shandong Air. Skews midday to evening.',opts:[{t:'11:35',d:'~2h15',svc:'MF/SC'},{t:'early PM',d:'~2h20',svc:'SC'},{t:'~21:00',d:'~2h15',svc:'SC (last)'}]},
+   {mode:'fly',route:'Xiamen XMN → Guangzhou CAN',dur:'~1h25–1h35',note:'A few/day, China Southern / Xiamen Air. Evening departure after Rayton.',opts:[{t:'~07:30',d:'~1h35',svc:'CZ/MF'},{t:'midday',d:'~1h30',svc:'CZ'},{t:'~22:35',d:'~1h35',svc:'MF (last)'}]}],
+  tip:'Tight day. Realistically the 11:35 Jinan→Xiamen (arr ~13:50), Rayton mid-afternoon (~1 h from Xiamen), then an evening Xiamen→Guangzhou. Keep the Rayton visit focused.'},
+ {dnum:'30',mon:'Jul',region:'guangdong',title:'Guangzhou — two factories',sub:'Conlin (AM) · OMA (PM, Foshan)',move:'~1 h local',
+  plan:'Conlin in the city in the morning, OMA in Foshan (Shunde) in the afternoon.',
+  visit:['Conlin Fitness','OMA Fitness'],
+  legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
+ {dnum:'31',mon:'Jul',region:'guangdong',title:'Chuanyu, then HSR to Hong Kong',sub:'Guangdong → Hong Kong',move:'~1.5 h',
+  plan:'Last factory (Chuanyu, Dongguan) in the morning, then the short cross-border train to Hong Kong. Overnight in HK.',
+  visit:['Dongguan Chuanyu'],
+  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~38 min–1 h',note:'Cross-border: clear mainland exit + HK entry inside West Kowloon station. Passport needed.',opts:[{t:'~08:47',d:'~40 min',svc:'Humen (first)'},{t:'midday',d:'~38–50 min',svc:'Humen / Dongguan'},{t:'~21:00',d:'~40 min',svc:'Humen (last)'}]}]},
+ {dnum:'01',mon:'Aug',region:'guangdong',title:'Georgio flies home · the boys stay',sub:'Hong Kong',move:'~8h35',
+  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine stay in Hong Kong for the holiday and fly home ~2 days later.',
+  legs:[{mode:'fly',route:'Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Dep 11:55am.'}]},
+];
+document.getElementById('itin').innerHTML =
+ '<h2>Itinerary</h2><p class="lead">The full run, 22 Jul → 1 Aug. Tap any day to expand: who you see, the gear, and the travel options with times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
+ DAYS.map(d=>{
+   const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
+   const vis = (d.visit||[]).map(facBlock).join('');
+   const legs = (d.legs||[]).map(legBlock).join('');
+   return `<div class="acc"><div class="acc-hd">`+
+     `<div class="ddate" style="background:${col}">${d.dnum}<small>${d.mon}</small></div>`+
+     `<div style="min-width:0"><div class="acc-nm">${d.title}</div><div class="acc-sub">${d.sub}</div></div>`+
+     (d.move?`<div class="movebadge"><b>${d.move}</b><small>on the move</small></div>`:'')+
+     `<div class="chev">▶</div></div>`+
+     `<div class="acc-bd">`+
+       (d.plan?`<div class="kv" style="margin-top:2px">${d.plan}</div>`:'')+
+       (vis?`<div class="sub-h">Who you see</div>${vis}`:'')+
+       (legs?`<div class="sub-h">Getting there</div>${legs}`:'')+
+       (d.tip?`<div class="daytip">${d.tip}</div>`:'')+
+     `</div></div>`;
+ }).join('');
+
+/* ===== SUPPLIERS (expandable, click-through) ===== */
+document.getElementById('supp').innerHTML =
+ '<h2>Suppliers</h2><p class="lead">Every shortlisted factory. Tap to expand for the gear we are looking at, the contact, and the catalogue.</p>'+
+ SUPPLIERS.map(s=>{
+   const col=REGIONS[s.region].color; const v=s.day>0;
+   const gear=(GEAR[s.nm]||[]).map(g=>`<li>${g}</li>`).join('');
+   const c=CAT[s.nm];
+   return `<div class="acc"><div class="acc-hd">`+
+     `<div class="daybadge" style="background:${v?col:'#c7c7cc'}"><small>${v?'DAY':''}</small>${v?s.day:'·'}</div>`+
+     `<div style="min-width:0"><div class="acc-nm">${s.nm}</div><div class="acc-sub">${s.city} · ${s.cat}</div></div>`+
+     `<div class="chev">▶</div></div>`+
+     `<div class="acc-bd">`+
+       (CONTACT[s.nm]&&CONTACT[s.nm]!=='TBC'?`<div class="kv"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
+       `<div class="sub-h">Gear we're looking at</div><ul class="gearlist">${gear}</ul>`+
+       (c?`<div class="kv"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener">${c.label}</a>`:c.label}</div>`:'')+
+       `<div class="kv"><b>Nearest airport:</b> ${s.ap}${DRIVE[s.nm]?' · '+DRIVE[s.nm]:''}</div>`+
+       `<div class="kv"><b>Nearest HSR:</b> ${HSR[s.nm]||'—'}</div>`+
+     `</div></div>`;
+ }).join('');
+
+/* accordion click-to-expand (itinerary days + supplier cards) */
+document.querySelectorAll('.acc-hd').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
 
 /* JUSTIN view */
 const JUSTIN={

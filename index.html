@@ -215,7 +215,7 @@
 <body>
 <header>
   <div class="h-title">China sourcing trip</div>
-  <div class="h-sub">21 Jul – 1 Aug 2026 · Shanghai in, Hong Kong out · 10 factories · 4 provinces</div>
+  <div class="h-sub">21 Jul – 2 Aug 2026 · Shanghai in, Hong Kong out · 10 factories · 4 provinces</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
@@ -631,18 +631,20 @@ const DAYS = [
   visit:['Conlin Fitness','OMA Fitness'],
   legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
  {dnum:'30',mon:'Jul',region:'guangdong',title:'Chuanyu, then HSR to Hong Kong',sub:'Guangdong → Hong Kong',move:'~1.5 h',
-  plan:'Last factory (Chuanyu, Dongguan) in the morning, then the short cross-border train to Hong Kong. Everyone overnight in HK — night 1 of the boys’ 3 days / 2 nights.',
+  plan:'Last factory (Chuanyu, Dongguan) in the morning, then the short cross-border train to Hong Kong. Everyone overnight in HK — night 1 of the boys’ 4 days / 3 nights.',
   visit:['Dongguan Chuanyu'],
   legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'~42 trains/day, all G. Cross-border: clear mainland exit + HK entry inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'06:51',d:'~40 min',svc:'first'},{t:'09:05',d:'1h16',svc:'G6545'},{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
- {dnum:'31',mon:'Jul',region:'guangdong',title:'Georgio flies home · boys in Hong Kong',sub:'Hong Kong · boys’ full day (night 2)',move:'~8h35',
-  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine spend the day in Hong Kong on holiday — the middle of their 3 days / 2 nights.',
-  legs:[{mode:'fly',route:'Georgio: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Dep 11:55am. (Boys stay in HK.)'}]},
- {dnum:'01',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine fly home',sub:'Hong Kong → Brisbane · end of the HK stay',move:'~8h35',
-  plan:'Daniel + Konstantine check out and fly Hong Kong → Brisbane, closing out 3 days / 2 nights in HK (arrived 30 Jul, out 1 Aug).',
+ {dnum:'31',mon:'Jul',region:'guangdong',title:'Georgio flies home · boys in Hong Kong',sub:'Hong Kong · boys’ HK (night 2)',move:'~8h35',
+  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine stay on for the holiday.',
+  legs:[{mode:'fly',route:'Georgio: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Dep 11:55am. (Boys stay in HK.) Alt: Georgio can leave on the 30th instead — but only on an evening HKG→BNE flight, not this 11:55am one.'}]},
+ {dnum:'01',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine — Hong Kong',sub:'Boys’ holiday day (night 3)',
+  plan:'Full day in Hong Kong for Daniel + Konstantine.'},
+ {dnum:'02',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine fly home',sub:'Hong Kong → Brisbane · end of the HK stay',move:'~8h35',
+  plan:'Daniel + Konstantine fly Hong Kong → Brisbane, closing out 4 days / 3 nights in HK (arrived 30 Jul, out 2 Aug).',
   legs:[{mode:'fly',route:'Daniel + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct.'}]},
 ];
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 21 Jul – 1 Aug. Tap any day to expand: who you see, the itemised gear, and the travel options with real sample times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 21 Jul – 2 Aug. Tap any day to expand: who you see, the itemised gear, and the travel options with real sample times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
    const vis = (d.visit||[]).map(facBlock).join('');
@@ -676,10 +678,10 @@ document.getElementById('itin').innerHTML =
   };
   cal.innerHTML='<h2>Calendar</h2><p class="lead">The whole trip on a calendar — for Daniel. Tap a coloured day to jump to it in the Itinerary.</p>'+
    '<div class="tsum">'+
-    '<div class="box"><div class="lab">Total trip</div><div class="val">12 days <small>21 Jul – 1 Aug</small></div></div>'+
+    '<div class="box"><div class="lab">Total trip</div><div class="val">13 days <small>21 Jul – 2 Aug</small></div></div>'+
     '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">23–31 Jul · 9 days</div></div>'+
-    '<div class="box"><div class="lab">Daniel + Konstantine</div><div class="val" style="font-size:14px">21 Jul – 1 Aug · 12 days</div></div>'+
-    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">3 days / 2 nights <small>30 Jul – 1 Aug</small></div></div>'+
+    '<div class="box"><div class="lab">Daniel + Konstantine</div><div class="val" style="font-size:14px">21 Jul – 2 Aug · 13 days</div></div>'+
+    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">4 days / 3 nights <small>30 Jul – 2 Aug</small></div></div>'+
    '</div>'+
    monthGrid(6,'Jul')+monthGrid(7,'Aug');
   cal.querySelectorAll('.evt').forEach(el=>el.onclick=()=>{

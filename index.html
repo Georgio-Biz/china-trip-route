@@ -65,6 +65,7 @@
   .opttbl tr:last-child td{border-bottom:0}
   .opttbl .lt{font-weight:600}.opttbl .ld{color:var(--text2)}.opttbl .lsvc{color:var(--text3)}
   .daytip{background:#eff6ee;border:1px solid #cfe6cf;border-radius:10px;padding:9px 12px;font-size:12.5px;margin-top:8px;line-height:1.5}
+  .wx{display:inline-block;font-size:12px;font-weight:500;color:#8a5a1a;background:#fff6ec;border:1px solid #f2e2cf;border-radius:8px;padding:5px 11px;margin:2px 0 6px}
   .acc-hd .movebadge{margin-left:auto}
   .chsum{font-size:12.5px;color:var(--text);font-weight:600;margin:4px 0 8px}
   .chtbl{width:100%;border-collapse:collapse;font-size:12px;margin:0 0 6px}
@@ -643,8 +644,15 @@ const DAYS = [
   plan:'Daniel + Konstantine fly Hong Kong → Brisbane, closing out 4 days / 3 nights in HK (arrived 30 Jul, out 2 Aug).',
   legs:[{mode:'fly',route:'Daniel + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct.'}]},
 ];
+// Typical late-July / early-Aug temperatures per day (climate averages, high / low °C)
+const TEMP={
+ Jul21:'Shanghai ~34° / 27°', Jul22:'Shanghai ~34° / 27°', Jul23:'Shanghai ~34° / 27°',
+ Jul24:'Nantong ~33° · Qingdao ~28°', Jul25:'Qingdao ~28° / 24°', Jul26:'Qingdao ~28° → Dezhou ~32°',
+ Jul27:'Dezhou ~32° / 24°', Jul28:'Xiamen ~33° · Guangzhou ~34°', Jul29:'Guangzhou ~34° / 27°',
+ Jul30:'Dongguan ~34° · Hong Kong ~31°', Jul31:'Hong Kong ~31° / 27°', Aug01:'Hong Kong ~31° / 27°', Aug02:'Hong Kong ~31° / 27°',
+};
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 21 Jul – 2 Aug. Tap any day to expand: who you see, the itemised gear, and the travel options with real sample times and durations. Rail/flight times are indicative — confirm on Trip.com (tickets release ~15 days out).</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 21 Jul – 2 Aug. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
    const vis = (d.visit||[]).map(facBlock).join('');
@@ -655,6 +663,7 @@ document.getElementById('itin').innerHTML =
      (d.move?`<div class="movebadge"><b>${d.move}</b><small>on the move</small></div>`:'')+
      `<div class="chev">▶</div></div>`+
      `<div class="acc-bd">`+
+       (TEMP[d.mon+d.dnum]?`<div class="wx">🌡 ${TEMP[d.mon+d.dnum]} · hot &amp; humid, late-Jul avg</div>`:'')+
        (d.plan?`<div class="kv" style="margin-top:2px">${d.plan}</div>`:'')+
        (vis?`<div class="sub-h">Who you see</div>${vis}`:'')+
        (legs?`<div class="sub-h">Getting there</div>${legs}`:'')+

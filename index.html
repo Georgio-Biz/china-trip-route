@@ -224,6 +224,7 @@
   <button data-view="calendar">Calendar</button>
   <button data-view="justin">Justin</button>
   <button data-view="suppliers">Suppliers</button>
+  <button data-view="info">Info</button>
 </div></nav>
 
 <div id="content">
@@ -240,6 +241,7 @@
   <section id="view-calendar" class="view"><div class="wrap" id="cal"></div></section>
   <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
+  <section id="view-info" class="view"><div class="wrap" id="info"></div></section>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -398,7 +400,8 @@ const AIRPORTS = [
   {code:'LYI', nm:'Linyi Qiyang Int’l', ll:[35.046,118.412], serves:'Optional — Yishui flooring supplier (~70 km)'},
   {code:'TNA', nm:'Jinan Yaoqiang Int’l', ll:[36.857,117.216], serves:'Rosen, MBH (Dezhou/Ningjin, ~90 km) · fly to Xiamen'},
   {code:'XMN', nm:'Xiamen Gaoqi Int’l', ll:[24.544,118.127], serves:'Rayton (Zhangzhou, ~50 km)'},
-  {code:'CAN', nm:'Guangzhou Baiyun Int’l', ll:[23.392,113.299], serves:'Guangdong cluster · direct flight home to Brisbane'},
+  {code:'CAN', nm:'Guangzhou Baiyun Int’l', ll:[23.392,113.299], serves:'Guangdong cluster (Conlin, OMA, Chuanyu)'},
+  {code:'HKG', nm:'Hong Kong Int’l', ll:[22.308,113.918], serves:'Exit — fly home to Brisbane (Cathay). The boys’ Hong Kong holiday base.'},
 ];
 
 // Map route legs in trip order
@@ -411,6 +414,7 @@ const LEGS = [
   {from:[24.544,118.127], to:[23.392,113.299], mode:'flight', label:'Xiamen XMN → Guangzhou CAN (~1.5 h, or 3–5 h rail)'},
   {from:[23.130,113.260], to:[22.860,113.260], mode:'ground', label:'Guangzhou → Foshan (45 min)'},
   {from:[23.130,113.260], to:[23.070,113.950], mode:'ground', label:'Guangzhou → Dongguan (1 h)'},
+  {from:[23.070,113.950], to:[22.304,114.168], mode:'ground', label:'Dongguan (Humen) → Hong Kong West Kowloon (~40 min)'},
 ];
 
 const ITINERARY = [
@@ -464,8 +468,13 @@ const TRAVEL = {
   ]
 };
 
-/* ---------- MAP ---------- */
-const map = L.map('map',{zoomControl:true, attributionControl:true, minZoom:3}).setView([31,113],4);
+/* ---------- MAP (guarded: content tabs still work if the map libs are blocked, e.g. behind China's firewall without a VPN) ---------- */
+let map;
+if (typeof L === 'undefined') {
+  const _m=document.getElementById('map');
+  if(_m) _m.innerHTML='<div style="padding:26px 22px;max-width:520px;font:14px/1.55 -apple-system,BlinkMacSystemFont,sans-serif;color:#6e6e73"><b style="color:#1d1d1f;font-size:16px">Map couldn’t load</b><br>It needs internet — and inside mainland China it needs a VPN (the map tiles are hosted offshore). Everything else — Itinerary, Calendar, Suppliers, Info — works without it.</div>';
+} else try {
+map = L.map('map',{zoomControl:true, attributionControl:true, minZoom:3}).setView([31,113],4);
 window.map = map;
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
   attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
@@ -567,6 +576,7 @@ document.getElementById('legend').innerHTML =
   '<div class="lg"><span class="swatch" style="border-top-color:#ff9500"></span>Ground (rail / drive)</div>'+
   '<div class="lg"><span class="swatch" style="border-top-color:#0071e3;border-top-style:dashed"></span>Flight</div>'+
   '<div class="lg">✈ &nbsp;Airport</div>';
+} catch(e){ console.warn('Map init failed:', e); }
 
 /* ===== ITINERARY (merged: plan + travel + team, click-through) ===== */
 const iconFor = m => m==='fly'?'✈':(m==='car'?'🚗':'🚄');
@@ -738,11 +748,11 @@ const JUSTIN={
 };
 document.getElementById('justin').innerHTML =
  '<h2>Justin’s plan</h2><p class="lead">Route sanity-checked by Justin (pilot) and a contact working in China. His take on flights, connections and on-the-ground prep.</p>'+
- '<div class="h3">International flights</div><div class="intlgrid">'+
-   '<div class="jcard"><h4>✈ Into China</h4>Brisbane → Shanghai<div class="big">China Eastern · direct daily</div></div>'+
-   '<div class="jcard"><h4>✈ Home</h4>Guangzhou → Brisbane<div class="big">China Southern · direct daily</div></div>'+
+ '<div class="h3">International flights (as booked)</div><div class="intlgrid">'+
+   '<div class="jcard"><h4>✈ Into China</h4>Brisbane → Shanghai (PVG)<div class="big">Cathay Pacific · via Hong Kong</div></div>'+
+   '<div class="jcard"><h4>✈ Home</h4>Hong Kong → Brisbane<div class="big">Cathay Pacific · direct</div></div>'+
  '</div>'+
- '<div class="rec">Both run direct daily from Brisbane, so no backtracking. Cathay via Hong Kong is fine if a lot cheaper — but for three of you with luggage on a tight schedule, lean direct: HK adds a stop, a connection and a border crossing.</div>'+
+ '<div class="rec">Booked as Cathay via Hong Kong (in to Shanghai, home from HK) — it suits the boys’ Hong Kong holiday at the end. Justin’s original call was direct China Eastern in / China Southern home; that’s the play only if the Cathay fare isn’t much cheaper and you don’t want the HK stop.</div>'+
  '<div class="h3">Recommended sequence</div><div class="seqrow">'+
    ['Shanghai / Nantong','Qingdao','Dezhou','Xiamen / Zhangzhou','Guangzhou','Home'].map((s,i,a)=>`<span class="s">${s}</span>${i<a.length-1?'<span class="a">→</span>':''}`).join('')+
  '</div>'+
@@ -760,6 +770,29 @@ document.getElementById('justin').innerHTML =
    JUSTIN.budget.map(b=>`<tr><td>${b[0]}</td><td>${b[1]}</td></tr>`).join('')+'</tbody></table>'+
  '<div class="cav"><ul style="padding-left:18px;margin:0"><li>Achievable but busy — Shanghai, Shandong, Fujian and Guangdong in six days. <b>Lock the factory appointments first, then build transport around them</b> rather than chasing the cheapest fares.</li><li>Justin is happy to sanity-check the bookings once dates are set against each factory.</li></ul></div>';
 
+/* ===== INFO / ESSENTIALS view ===== */
+document.getElementById('info').innerHTML =
+ '<h2>Info &amp; essentials</h2><p class="lead">The on-the-ground basics — save these before you fly. Works offline / without a VPN.</p>'+
+ '<div class="h3">Emergency</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Mainland China</h4><ul><li>Police <b>110</b></li><li>Ambulance <b>120</b></li><li>Fire <b>119</b></li></ul></div>'+
+   '<div class="jcard"><h4>Hong Kong</h4><ul><li>All emergencies <b>999</b></li></ul></div>'+
+   '<div class="jcard"><h4>Australian help</h4><ul><li>DFAT Consular Emergency Centre, 24 h: <b>+61 2 6261 3305</b></li><li>Consulates-General in Shanghai, Guangzhou &amp; Hong Kong</li><li>Register the trip at smartraveller.gov.au</li></ul></div>'+
+ '</div>'+
+ '<div class="h3">Money · power · time</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Currency</h4><ul><li>Mainland: RMB ¥ (≈ 4.7 to 1 AUD)</li><li>Hong Kong: HKD $ (≈ 5.1 to 1 AUD)</li><li>Alipay + WeChat Pay run everything on the mainland; HK also takes cards / Octopus</li></ul></div>'+
+   '<div class="jcard"><h4>Power</h4><ul><li>Mainland 220 V — plug type A / I</li><li><b>Hong Kong differs:</b> 220 V, UK-style type G</li><li>Bring a universal adapter</li></ul></div>'+
+   '<div class="jcard"><h4>Time</h4><ul><li>All China + HK = UTC+8, one zone</li><li>2 hours behind Brisbane</li></ul></div>'+
+ '</div>'+
+ '<div class="h3">Apps — install &amp; test before you fly</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Essential</h4><ul><li>VPN (set up + test at home — Google, WhatsApp, Insta are blocked on the mainland)</li><li>Alipay + WeChat (link an AU card)</li><li>Trip.com (rail, flights, hotels)</li></ul></div>'+
+   '<div class="jcard"><h4>Getting around</h4><ul><li>Didi (rides; also inside Alipay/WeChat)</li><li>Amap or Baidu Maps (Google Maps is poor in China)</li><li>Translator: Google Translate offline pack, or Pleco</li></ul></div>'+
+   '<div class="jcard"><h4>Documents</h4><ul><li>Australians: 30-day visa-free mainland (to end-2026); HK separate 90-day</li><li>Passport valid 6+ months</li><li>Save photos of passport + tickets offline</li></ul></div>'+
+ '</div>'+
+ '<div class="h3">Handy Mandarin</div><table class="jtbl"><thead><tr><th>English</th><th>中文 · pinyin</th></tr></thead><tbody>'+
+   [['Hello','你好 · Nǐ hǎo'],['Thank you','谢谢 · Xièxie'],['How much?','多少钱 · Duōshǎo qián'],['Airport','机场 · Jīchǎng'],['Train station','火车站 · Huǒchēzhàn'],['Toilet','厕所 · Cèsuǒ'],['This one','这个 · Zhège'],['No spicy','不辣 · Bù là']].map(r=>`<tr><td>${r[0]}</td><td style="color:var(--text2)">${r[1]}</td></tr>`).join('')+
+ '</tbody></table>'+
+ '<div class="cav"><ul style="padding-left:18px;margin:0"><li><b>Show your driver:</b> taxi / Didi drivers often don’t read English — have each supplier text you their address in Chinese and show it on your phone. (Peach Builder: 青岛驰健英赛特 五谷河一路 赵家岭村106号.)</li><li><b>Luggage:</b> travel carry-on + daypack for the rail-heavy circuit; the boys can forward a bag to Hong Kong (SF Express) for the holiday tail. Domestic cabin limit is ~5 kg — gate-check the roller if it’s over.</li></ul></div>';
+
 /* tab nav */
 document.querySelectorAll('.seg button').forEach(b=>{
   b.onclick=()=>{
@@ -767,7 +800,7 @@ document.querySelectorAll('.seg button').forEach(b=>{
     document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
     document.getElementById('view-'+b.dataset.view).classList.add('active');
-    if(b.dataset.view==='map') setTimeout(()=>map.invalidateSize(),60);
+    if(b.dataset.view==='map' && map) setTimeout(()=>map.invalidateSize(),60);
   };
 });
 </script>

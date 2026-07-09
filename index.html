@@ -216,7 +216,7 @@
 <body>
 <header>
   <div class="h-title">China sourcing trip</div>
-  <div class="h-sub">22 Jul – 4 Aug 2026 · staggered start · Shanghai in, Hong Kong out · 10 factories</div>
+  <div class="h-sub">22 Jul – 4 Aug 2026 · staggered · Shanghai in · Georgio out Guangzhou, boys out Hong Kong</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
@@ -638,13 +638,14 @@ const DAYS = [
   plan:'Conlin in the city in the morning, OMA in Foshan (Shunde) in the afternoon.',
   visit:['Conlin Fitness','OMA Fitness'],
   legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
- {dnum:'01',mon:'Aug',region:'guangdong',title:'Chuanyu, then HSR to Hong Kong',sub:'All three · Guangdong → Hong Kong',move:'~1.5 h',
-  plan:'Last factory (Chuanyu, Dongguan) in the morning, then the cross-border train to Hong Kong. Everyone overnight in HK.',
+ {dnum:'01',mon:'Aug',region:'guangdong',title:'Georgio home (Guangzhou) · boys do Chuanyu → HK',sub:'Guangzhou split · Saturday',move:'~1.5 h',
+  plan:'Georgio flies home from Guangzhou (CAN → Brisbane, direct, China Southern). Daniel + Konstantine do the last factory, Chuanyu (Dongguan), then take the cross-border train to Hong Kong for the holiday.',
   visit:['Dongguan Chuanyu'],
-  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'~42/day, all G. Cross-border immigration inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
- {dnum:'02',mon:'Aug',region:'guangdong',title:'Georgio flies home · boys in Hong Kong',sub:'Hong Kong',move:'~8h35',
-  plan:'Georgio flies Hong Kong → Brisbane (dep 11:55am, ~8h35 direct, Cathay). Daniel + Konstantine stay on for the holiday.',
-  legs:[{mode:'fly',route:'Georgio: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Dep 11:55am. (Boys stay in HK.)'}]},
+  legs:[
+   {mode:'fly',route:'Georgio: Guangzhou (CAN) → Brisbane',dur:'~9h30',note:'China Southern, direct daily. Georgio’s last factory day is Fri 31 (Conlin + OMA) — he skips Chuanyu.'},
+   {mode:'rail',route:'Boys: Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'After Chuanyu. Cross-border immigration inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
+ {dnum:'02',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine — Hong Kong',sub:'Boys’ holiday day',
+  plan:'Full day in Hong Kong for Daniel + Konstantine (Georgio flew home from Guangzhou yesterday).'},
  {dnum:'03',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine — Hong Kong',sub:'Boys’ holiday day',
   plan:'Full day in Hong Kong for Daniel + Konstantine.'},
  {dnum:'04',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
@@ -696,7 +697,7 @@ document.getElementById('itin').innerHTML =
     '<div class="box"><div class="lab">Total window</div><div class="val">14 days <small>22 Jul – 4 Aug</small></div></div>'+
     '<div class="box"><div class="lab">Daniel</div><div class="val" style="font-size:14px">22 Jul – 4 Aug · Baopeng solo (23rd)</div></div>'+
     '<div class="box"><div class="lab">Konstantine</div><div class="val" style="font-size:14px">joins 24 Jul – 4 Aug</div></div>'+
-    '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">Qingdao 26 Jul → home 2 Aug</div></div>'+
+    '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">Qingdao 26 Jul → home 1 Aug (Guangzhou)</div></div>'+
     '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">1–4 Aug · 3 nights</div></div>'+
    '</div>'+
    monthGrid(6,'Jul')+monthGrid(7,'Aug');

@@ -216,7 +216,7 @@
 <body>
 <header>
   <div class="h-title">China sourcing trip</div>
-  <div class="h-sub">22 Jul – 4 Aug 2026 · staggered · Shanghai in · Georgio out Guangzhou, boys out Hong Kong</div>
+  <div class="h-sub">23 Jul – 5 Aug 2026 · Shanghai in · Georgio out Guangzhou, boys out Hong Kong</div>
 </header>
 <nav><div class="seg">
   <button class="active" data-view="map">Map</button>
@@ -255,7 +255,7 @@ const REGIONS = {
 };
 
 const SUPPLIERS = [
-  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:23, slot:'23 Jul · Daniel solo',
+  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:24, slot:'24 Jul · Danny + K',
    cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
   {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:27, slot:'27 Jul · AM',
    cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
@@ -598,21 +598,20 @@ const legBlock = l => {
     `</div></div>`;
 };
 const DAYS = [
- {dnum:'22',mon:'Jul',region:'jiangsu',title:'Daniel flies out',sub:'Australia → Shanghai · Daniel solo',move:'~13 h',
-  plan:'Daniel flies Brisbane → Shanghai (Cathay via Hong Kong) and settles in, ready for Baopeng tomorrow.',
-  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep 12:05am, arr 11:05am.'}]},
- {dnum:'23',mon:'Jul',region:'jiangsu',title:'Baopeng — Daniel solo',sub:'First factory (Thu) · Daniel',move:'~4–6 h',
-  plan:'Daniel does the first factory, Baopeng (Rudong), on his own. Reach it from Shanghai Hongqiao → Nantong West (~1h15) then ~1 h by car to Rudong. Overnight Nantong.',
+ {dnum:'23',mon:'Jul',region:'jiangsu',title:'Danny + Konstantine arrive · relax at the Bund',sub:'Australia → Shanghai · together',move:'~13 h',
+  plan:'Danny + Konstantine fly in together on the Cathay flight (dep Thu, arr 11:05am), then relax around the Bund in Shanghai.',
+  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep Thu morning, arr 11:05am. Clear HK airside as a transit, then mainland immigration at Shanghai. (See the Flights panel in Info for booking links.)'}]},
+ {dnum:'24',mon:'Jul',region:'jiangsu',title:'Baopeng — first factory',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
+  plan:'The first factory, Baopeng (Rudong). Easiest as a day trip from Shanghai: Hongqiao → Nantong West (~1h15) + ~1 h car to Rudong, back to Shanghai in the evening. No rush — you sightsee tomorrow.',
   visit:['Baopeng Fitness'],
-  legs:[{mode:'rail',route:'Shanghai Hongqiao → Nantong West',dur:'~1h07–1h21',note:'~52/day. Then ~1 h car to the factory in Rudong.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
- {dnum:'24',mon:'Jul',region:'shandong',title:'Konstantine joins · up to Qingdao',sub:'Daniel + K · Shanghai/Nantong → Qingdao',move:'~4–5 h',
-  plan:'Konstantine flies in and meets Daniel this morning. The pair head up to Qingdao by high-speed rail. Remember the last direct Nantong→Qingdao is 16:43.',
-  legs:[{mode:'rail',route:'Nantong West → Qingdao',dur:'~3h28–4 h',note:'⚠ Last direct is 16:43 (G688). Miss it and it’s an overnight, then the 08:41.',opts:[{t:'08:41',d:'3h39',svc:'D2152'},{t:'16:43',d:'3h28 · LAST',svc:'G688'}]}]},
- {dnum:'25',mon:'Jul',region:'shandong',title:'Qingdao — settle',sub:'Daniel + K · buffer',
-  plan:'Daniel + Konstantine in Qingdao. Rest, or knock over the optional HBS benches. Georgio arrives tomorrow evening.'},
- {dnum:'26',mon:'Jul',region:'shandong',title:'Georgio arrives · crew together',sub:'Qingdao · Sunday evening',move:'~14 h',
-  plan:'Georgio flies in and meets the crew in Qingdao on Sunday evening. From here, all three visit every factory together.',
-  legs:[{mode:'fly',route:'Georgio: Brisbane → Qingdao (via HK + Shanghai)',dur:'~14 h',note:'Cathay to Shanghai, then a domestic hop to Qingdao (TAO). Arrive Sunday evening.'}]},
+  legs:[{mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Then ~1 h car to Rudong, back to Shanghai after the visit.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
+ {dnum:'25',mon:'Jul',region:'jiangsu',title:'Shanghai — sightseeing',sub:'Danny + K',
+  plan:'Danny + Konstantine sightsee in Shanghai — the Bund, Yu Garden, the French Concession, the Pudong skyline.'},
+ {dnum:'26',mon:'Jul',region:'shandong',title:'To Qingdao · Georgio arrives · crew together',sub:'Sunday — everyone converges on Qingdao',move:'~2 h / ~14 h',
+  plan:'Danny + K fly Shanghai → Qingdao (~1h50, frequent). Georgio flies in (best via Seoul — see the Flights panel in Info). All meet in Qingdao on Sunday evening; from here the trip runs as planned.',
+  legs:[
+   {mode:'fly',route:'Danny + K: Shanghai → Qingdao (TAO)',dur:'~1h50',note:'Frequent Shanghai→Qingdao flights (or ~4–5 h by HSR).'},
+   {mode:'fly',route:'Georgio: Brisbane → Qingdao (via Seoul)',dur:'~13–14 h',note:'Korean Air via Incheon; land Qingdao Sunday evening.'}]},
  {dnum:'27',mon:'Jul',region:'shandong',title:'Qingdao — two factories',sub:'All three · Quick Body (AM + lunch) · Peach Builder (PM + dinner)',move:'~1 h local',
   plan:'First full day together. Quick Body in the morning and over lunch, Peach Builder in the afternoon and over dinner.',
   visit:['Quick Body','Peach Builder'],
@@ -644,19 +643,21 @@ const DAYS = [
   legs:[
    {mode:'fly',route:'Georgio: Guangzhou (CAN) → Brisbane',dur:'~9h30',note:'China Southern, direct daily. Georgio’s last factory day is Fri 31 (Conlin + OMA) — he skips Chuanyu.'},
    {mode:'rail',route:'Boys: Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'After Chuanyu. Cross-border immigration inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
- {dnum:'02',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine — Hong Kong',sub:'Boys’ holiday day',
-  plan:'Full day in Hong Kong for Daniel + Konstantine (Georgio flew home from Guangzhou yesterday).'},
- {dnum:'03',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine — Hong Kong',sub:'Boys’ holiday day',
-  plan:'Full day in Hong Kong for Daniel + Konstantine.'},
- {dnum:'04',mon:'Aug',region:'guangdong',title:'Daniel + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
-  plan:'Daniel + Konstantine fly Hong Kong → Brisbane, closing out the trip (HK from 1 Aug, ~3 nights).',
-  legs:[{mode:'fly',route:'Daniel + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct.'}]},
+ {dnum:'02',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
+  plan:'Full day in Hong Kong for Danny + Konstantine (Georgio flew home from Guangzhou yesterday).'},
+ {dnum:'03',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
+  plan:'Full day in Hong Kong.'},
+ {dnum:'04',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
+  plan:'Last full day in Hong Kong.'},
+ {dnum:'05',mon:'Aug',region:'guangdong',title:'Danny + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
+  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from 1 Aug, 4 nights.',
+  legs:[{mode:'fly',route:'Danny + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Return via Hong Kong on the 5th.'}]},
 ];
 // Typical late-July / early-Aug temperatures per day (climate averages, high / low °C)
 const TEMP={
- Jul22:'Shanghai ~34° / 27°', Jul23:'Nantong ~33° / 27°', Jul24:'Qingdao ~28° / 24°', Jul25:'Qingdao ~28° / 24°', Jul26:'Qingdao ~28° / 24°', Jul27:'Qingdao ~28° / 24°',
+ Jul23:'Shanghai ~34° / 27°', Jul24:'Nantong ~33° · Shanghai ~34°', Jul25:'Shanghai ~34° / 27°', Jul26:'Qingdao ~28° / 24°', Jul27:'Qingdao ~28° / 24°',
  Jul28:'Qingdao ~28° → Dezhou ~32°', Jul29:'Dezhou ~32° / 24°', Jul30:'Xiamen ~33° · Guangzhou ~34°', Jul31:'Guangzhou ~34° / 27°',
- Aug01:'Dongguan ~34° · Hong Kong ~31°', Aug02:'Hong Kong ~31° / 27°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°',
+ Aug01:'Dongguan ~34° · Hong Kong ~31°', Aug02:'Hong Kong ~31° / 27°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
 };
 document.getElementById('itin').innerHTML =
  '<h2>Itinerary</h2><p class="lead">The full run, 22 Jul – 4 Aug. Staggered start: Daniel does Baopeng solo (23rd), Konstantine joins (24th), Georgio joins in Qingdao (26th), then all three together. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
@@ -694,11 +695,10 @@ document.getElementById('itin').innerHTML =
   };
   cal.innerHTML='<h2>Calendar</h2><p class="lead">The whole trip on a calendar — for Daniel. Tap a coloured day to jump to it in the Itinerary.</p>'+
    '<div class="tsum">'+
-    '<div class="box"><div class="lab">Total window</div><div class="val">14 days <small>22 Jul – 4 Aug</small></div></div>'+
-    '<div class="box"><div class="lab">Daniel</div><div class="val" style="font-size:14px">22 Jul – 4 Aug · Baopeng solo (23rd)</div></div>'+
-    '<div class="box"><div class="lab">Konstantine</div><div class="val" style="font-size:14px">joins 24 Jul – 4 Aug</div></div>'+
+    '<div class="box"><div class="lab">Total window</div><div class="val">14 days <small>23 Jul – 5 Aug</small></div></div>'+
+    '<div class="box"><div class="lab">Danny + Konstantine</div><div class="val" style="font-size:14px">23 Jul – 5 Aug · together</div></div>'+
     '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">Qingdao 26 Jul → home 1 Aug (Guangzhou)</div></div>'+
-    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">1–4 Aug · 3 nights</div></div>'+
+    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">1–5 Aug · 4 nights</div></div>'+
    '</div>'+
    monthGrid(6,'Jul')+monthGrid(7,'Aug');
   cal.querySelectorAll('.evt').forEach(el=>el.onclick=()=>{
@@ -771,6 +771,21 @@ document.getElementById('justin').innerHTML =
 /* ===== INFO / ESSENTIALS view ===== */
 document.getElementById('info').innerHTML =
  '<h2>Info &amp; essentials</h2><p class="lead">The on-the-ground basics — save these before you fly. Works offline / without a VPN.</p>'+
+ '<div class="h3">Flights — book now (dates are bookable)</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Danny + Konstantine</h4><ul>'+
+     '<li><b>Out:</b> Brisbane → Shanghai (via Hong Kong) — Cathay Pacific, <b>Thu 23 Jul</b>, arrive 11:05am</li>'+
+     '<li><b>Home:</b> Hong Kong → Brisbane — Cathay Pacific, direct, <b>Wed 5 Aug</b></li>'+
+     '<li>Cheapest as <b>one Cathay multi-city</b> ticket (BNE→PVG out, HKG→BNE return), rather than two one-ways. Indicative <b>~A$1,300–1,900</b>.</li>'+
+     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Brisbane%20to%20Shanghai%20on%202026-07-23" target="_blank">Google Flights: out ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/bne/pvg/260723/" target="_blank">Skyscanner: out ↗</a></li>'+
+     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Hong%20Kong%20to%20Brisbane%20on%202026-08-05" target="_blank">Google Flights: home ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/hkg/bne/260805/" target="_blank">Skyscanner: home ↗</a></li>'+
+     '<li><a style="color:var(--blue);font-weight:600" href="https://www.cathaypacific.com/" target="_blank">Book direct at cathaypacific.com ↗</a></li></ul></div>'+
+   '<div class="jcard"><h4>Georgio</h4><ul>'+
+     '<li><b>In:</b> Brisbane → Qingdao <b>via Seoul</b> (Korean Air) — land Qingdao <b>Sun 26 Jul</b> evening. Smoothest connection + most onward flights as backup. (China Eastern via Shanghai is the cheaper fallback.)</li>'+
+     '<li><b>Home:</b> Guangzhou → Brisbane — China Southern, <b>direct, Sat 1 Aug</b> (~9h20; daytime or overnight)</li>'+
+     '<li>Book as a <b>multi-city open-jaw</b> (in via Qingdao, out via Guangzhou). Indicative <b>~A$1,400–2,000</b>.</li>'+
+     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Brisbane%20to%20Qingdao%20on%202026-07-26" target="_blank">Google Flights: in ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/bne/tao/260726/" target="_blank">Skyscanner: in ↗</a></li>'+
+     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Guangzhou%20to%20Brisbane%20on%202026-08-01" target="_blank">Google Flights: home ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/can/bne/260801/" target="_blank">Skyscanner: home ↗</a></li></ul></div>'+
+ '</div>'+
  '<div class="h3">Emergency</div><div class="jgrid">'+
    '<div class="jcard"><h4>Mainland China</h4><ul><li>Police <b>110</b></li><li>Ambulance <b>120</b></li><li>Fire <b>119</b></li></ul></div>'+
    '<div class="jcard"><h4>Hong Kong</h4><ul><li>All emergencies <b>999</b></li></ul></div>'+

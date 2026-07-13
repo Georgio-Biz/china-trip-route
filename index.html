@@ -257,6 +257,8 @@ const REGIONS = {
 const SUPPLIERS = [
   {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:24, slot:'24 Jul · Danny + K',
    cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
+  {nm:'Nantong Record — Primiz / Proesce', city:'Nantong', region:'jiangsu', ll:[31.985,120.865], day:24, slot:'24 Jul · Danny + K',
+   cat:'Benches · racks · free weights · accessories', buy:'Primiz: benches, power racks, Smith / competition racks, plates, DBs, KBs, bars. Proesce: balls, balance, resistance, agility, recovery, rubber flooring.', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
   {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:27, slot:'27 Jul · AM',
    cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
   {nm:'Relax Fitness', city:'Qingdao / Rizhao', region:'shandong', ll:[36.190,120.310], day:28, slot:'28 Jul · AM',
@@ -286,6 +288,7 @@ const OFFMAP = [];
 // Nearest high-speed rail station per factory
 const HSR = {
   'Baopeng Fitness':'Nantong West / Rugao South (Rudong stn is not HSR)',
+  'Nantong Record — Primiz / Proesce':'Nantong West / Nantong (Huahui Zhigu Park, city side)',
   'Quick Body':'Hongdao / Qingdao Airport HSR',
   'Relax Fitness':'Qingdao North',
   'Hongbinsheng (HBS)':'Qingdao North',
@@ -302,6 +305,7 @@ const HSR = {
 // Approx airport → factory drive time
 const DRIVE = {
   'Baopeng Fitness':'Shanghai→Nantong rail ~1 h, then ~30 min local',
+  'Nantong Record — Primiz / Proesce':'Shanghai→Nantong rail ~1 h, then ~20 min to the park',
   'Quick Body':'~40 min from TAO',
   'Relax Fitness':'~50 min from TAO',
   'Hongbinsheng (HBS)':'~50 min from TAO',
@@ -318,6 +322,7 @@ const DRIVE = {
 // Contact person per factory
 const CONTACT = {
   'Baopeng Fitness':'Kang Kang (康康)',
+  'Nantong Record — Primiz / Proesce':'sales@record-fitness.com · +86 513 8951 9500',
   'Quick Body':'Crystal / Josie',
   'Relax Fitness':'TBC',
   'Hongbinsheng (HBS)':'TBC',
@@ -342,6 +347,7 @@ const CAT = {
   'Conlin Fitness':{url:'https://conlinfitness.com',label:'conlinfitness.com ↗'},
   'Peach Builder':{url:'',label:'via Insight (PB311/312/410/411 on file)'},
   'Baopeng Fitness':{url:'',label:'catalogue TBC'},
+  'Nantong Record — Primiz / Proesce':{url:'https://www.primiz-fitness.com',label:'primiz-fitness.com ↗ (strength) · proescefitness.com (accessories) · 2026 catalogues on file'},
   'Rayton':{url:'',label:'catalogue TBC'},
   'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
   'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
@@ -356,6 +362,7 @@ const whoRow = nm => WHO[nm]?`<div class="pp-row"><b>Who visits:</b> ${WHO[nm]}<
 // Gear we're looking at per factory
 const GEAR = {
   'Baopeng Fitness':['Dumbbell sets (fixed + adjustable)','Olympic barbells (20 kg + 15 kg)','Shorter / specialty bars'],
+  'Nantong Record — Primiz / Proesce':['PRIMIZ strength: adjustable + flat benches (PZ102xx), power racks, Smith / bench-press + competition combo racks (PZ103xx), tower chest press','PRIMIZ free weights: bumper + weight plates, dumbbells, kettlebells, Olympic + specialty bars, powerlifting platform','PROESCE accessories: medicine / wall balls, plyo boxes, battle ropes, resistance bands, agility (ladders, hurdles, cones), recovery (foam rollers, mats)','PROESCE flooring: rubber ground mat + sport turf','Note: one factory, two brands (Nantong Record) — good for a consolidated container'],
   'Quick Body':['Pin-loaded KS series: Chest Press (KS1006), Shoulder Press (KS1011), Row (KS1040), Pec Fly (KS1056), Leg Ext (KS1065), Leg Curls (KS1068), Prone Curl (KS1070), Ab/Adductor (KSD1053)','Plate-loaded KP: Standing Chest Press (KP1003), Pec Fly (KP1056), Leg Press (KP1062), Pendulum Squat (KP1060)','8-station multi-jungle (KS13030 frame + stations)','Racks + benches: DB rack ×2 (KF1660), barbell rack (KF1664), flat bench (OFB02), preacher (XHA-040)','Seated Calf Raise (KF1636) — price TBC','Frame colour: RAL 8017 Deep Espresso (negotiating)'],
   'Relax Fitness':['PP-007 Commercial Stair Climber ×2 — price TBC'],
   'Hongbinsheng (HBS)':['HBS-2603 adjustable FID bench ×12'],
@@ -372,6 +379,10 @@ const GEAR = {
 // What we're chasing — itemised catalogue per supplier (from the confirmed equipment list)
 const CHASE = {
  'Baopeng Fitness':{sum:'Free weights — the consumables build',items:[['Dumbbell set (PU / rubber hex)','TBC','set','TBC'],['Olympic barbell 20 kg','TBC','×','TBC'],['Olympic barbell 15 kg (women’s)','TBC','×','TBC'],['Shorter / specialty bars','TBC','×','TBC']]},
+ 'Nantong Record — Primiz / Proesce':{sum:'One factory, two brands — Primiz strength + Proesce accessories. Scope on the visit, price a consolidated container.',items:[
+   ['Adjustable bench','PZ 10203 / 10214','TBC','TBC'],['Flat / foldable bench','PZ 10201 / 10202','TBC','TBC'],['Power rack / Smith','PZ 103xx','TBC','TBC'],['Competition combo rack','PZ 10304','TBC','TBC'],['Tower chest press','PZ 10309','TBC','TBC'],
+   ['Bumper + weight plates','Primiz','TBC','TBC'],['Dumbbells / kettlebells','Primiz','TBC','TBC'],['Olympic + specialty bars','Primiz','TBC','TBC'],
+   ['Medicine / wall balls','Proesce','TBC','TBC'],['Resistance bands / agility','Proesce','TBC','TBC'],['Recovery — rollers / mats','Proesce','TBC','TBC'],['Rubber flooring + turf','Proesce','TBC','TBC']]},
  'Quick Body':{sum:'Pin + plate machines, the 8-station jungle, racks + benches, and the frame colour',items:[
    ['Seated Chest Press','KS1006','1','$713'],['Shoulder Press','KS1011','1','$656'],['Machine Row','KS1040','1','$661'],['Pec Fly / Rear Delt','KS1056','1','$665'],['Leg Extension','KS1065','1','$617'],['Seated Leg Ext/Curl','KS1068','1','$742'],['Prone Leg Curl','KS1070','1','$623'],['Abductor / Adductor','KSD1053','1','$644'],
    ['8-station jungle — frame','KS13030','1','bundle'],['— Seated Row station','KS13007','2','≈$3,431'],['— Lat Pulldown station','KS13002','2','total'],['— Assisted Chin/Dip','KS13004','1',''],['— Leg Press station','KS13008','1',''],
@@ -601,10 +612,10 @@ const DAYS = [
  {dnum:'23',mon:'Jul',region:'jiangsu',title:'Danny + Konstantine arrive · relax at the Bund',sub:'Australia → Shanghai · together',move:'~13 h',
   plan:'Danny + Konstantine fly in together on the Cathay flight (dep Thu, arr 11:05am), then relax around the Bund in Shanghai.',
   legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep Thu morning, arr 11:05am. Clear HK airside as a transit, then mainland immigration at Shanghai. (See the Flights panel in Info for booking links.)'}]},
- {dnum:'24',mon:'Jul',region:'jiangsu',title:'Baopeng — first factory',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
-  plan:'The first factory, Baopeng (Rudong). Easiest as a day trip from Shanghai: Hongqiao → Nantong West (~1h15) + ~1 h car to Rudong, back to Shanghai in the evening. No rush — you sightsee tomorrow.',
-  visit:['Baopeng Fitness'],
-  legs:[{mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Then ~1 h car to Rudong, back to Shanghai after the visit.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
+ {dnum:'24',mon:'Jul',region:'jiangsu',title:'Nantong — two factories',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
+  plan:'Both Nantong factories in one day trip from Shanghai. Take an early Hongqiao → Nantong West train (~1h15). Do Nantong Record (Primiz / Proesce) first — it is right in the city (~20 min from the station), a one-stop for benches, racks, plates, dumbbells, accessories and flooring. Then ~1 h east to Baopeng (Rudong) for the free-weight consumables. Back to Shanghai in the evening — you sightsee tomorrow.',
+  visit:['Nantong Record — Primiz / Proesce','Baopeng Fitness'],
+  legs:[{mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Nantong Record in the city first, then ~1 h car east to Baopeng (Rudong), back to Shanghai after.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
  {dnum:'25',mon:'Jul',region:'jiangsu',title:'Shanghai — sightseeing',sub:'Danny + K',
   plan:'Danny + Konstantine sightsee in Shanghai — the Bund, Yu Garden, the French Concession, the Pudong skyline.'},
  {dnum:'26',mon:'Jul',region:'shandong',title:'To Qingdao · Georgio arrives · crew together',sub:'Sunday — everyone converges on Qingdao',move:'~2 h / ~14 h',
@@ -660,7 +671,7 @@ const TEMP={
  Aug01:'Dongguan ~34° · Hong Kong ~31°', Aug02:'Hong Kong ~31° / 27°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
 };
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 22 Jul – 4 Aug. Staggered start: Daniel does Baopeng solo (23rd), Konstantine joins (24th), Georgio joins in Qingdao (26th), then all three together. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in together (23rd), do the two Nantong factories (24th), sightsee Shanghai (25th), then everyone meets in Qingdao (26th) — Georgio flies in via Seoul — and the crew works the factory sweep together. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
    const vis = (d.visit||[]).map(facBlock).join('');

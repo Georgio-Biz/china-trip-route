@@ -261,17 +261,17 @@ const SUPPLIERS = [
    cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
   {nm:'Nantong Record — Primiz / Proesce', city:'Nantong', region:'jiangsu', ll:[31.985,120.865], day:24, slot:'24 Jul · Danny + K',
    cat:'Benches · racks · free weights · accessories', buy:'Primiz: benches, power racks, Smith / competition racks, plates, DBs, KBs, bars. Proesce: balls, balance, resistance, agility, recovery, rubber flooring.', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
-  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:27, slot:'27 Jul · AM',
+  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:29, slot:'29 Jul · AM',
    cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Relax Fitness', city:'Rizhao', region:'shandong', ll:[35.445,119.510], day:0, slot:'Remote · WeChat quote (not visited)',
-   cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC) — quoting by WeChat', ap:'RIZ Rizhao Shanzihe (~25 km) / TAO Qingdao (~130 km)'},
+  {nm:'Relax Fitness', city:'Rizhao', region:'shandong', ll:[35.445,119.510], day:28, slot:'28 Jul · Rizhao',
+   cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC)', ap:'RIZ Rizhao Shanzihe (~25 km) / TAO Qingdao (~130 km)'},
   {nm:'Hongbinsheng (HBS)', city:'Qingdao', region:'shandong', ll:[36.070,120.375], day:0, slot:'Optional · Qingdao 25 Jul',
    cat:'FID bench', buy:'HBS-2603 FID Bench ×12', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:27, slot:'27 Jul · PM',
+  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:29, slot:'29 Jul · PM',
    cat:'V-squat · belt squat · hip ext · deadlift', buy:'PB311 V-Squat, PB312 Belt Squat, PB410 Hip Ext, PB411 Deadlift (via Insight)', ap:'TAO Qingdao (~15 km)'},
-  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:29, slot:'29 Jul · AM',
+  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:27, slot:'27 Jul · AM',
    cat:'Plate loaded · cardio · glute', buy:'3D Glute Drive (RS-1013), Orbital Row (RS-3011)', ap:'TNA Jinan (~90 km)'},
-  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:29, slot:'29 Jul · PM',
+  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:27, slot:'27 Jul · AM',
    cat:'Pin + plate loaded', buy:'HM plate machines + consumables consolidation RFQ', ap:'TNA Jinan (~90 km)'},
   {nm:'Flooring — Yishui', city:'Yishui, Linyi', region:'shandong', ll:[35.830,118.520], day:0, slot:'Optional · flooring vs Chuanyu',
    cat:'Flooring (alternative)', buy:'Gym flooring — compare with Dongguan Chuanyu', ap:'LYI Linyi Qiyang (~70 km)'},
@@ -634,59 +634,58 @@ const DAYS = [
   legs:[{mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Nantong Record in the city first, then ~1 h car east to Baopeng (Rudong), back to Shanghai after.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
  {dnum:'25',mon:'Jul',region:'jiangsu',title:'Shanghai — sightseeing',sub:'Danny + K',
   plan:'Danny + Konstantine sightsee in Shanghai — the Bund, Yu Garden, the French Concession, the Pudong skyline.'},
- {dnum:'26',mon:'Jul',region:'shandong',title:'To Qingdao · Georgio arrives · crew together',sub:'Sunday — everyone converges on Qingdao',move:'~2 h / ~14 h',
-  plan:'Danny + K fly Shanghai → Qingdao (~1h50, frequent). Georgio flies in (best via Seoul — see the Flights panel in Info). All meet in Qingdao on Sunday evening; from here the trip runs as planned.',
+ {dnum:'26',mon:'Jul',region:'shandong',title:'Everyone converges in Ningjin',sub:'Sunday evening · Dezhou (Ningjin)',move:'~4 h / ~14 h',
+  plan:'The crew meets in Ningjin (Dezhou) on Sunday evening. Danny + K travel up from Shanghai; Georgio flies in to meet them. Overnight Ningjin/Dezhou, ready for MBH + Rosen first thing Monday.',
   legs:[
-   {mode:'fly',route:'Danny + K: Shanghai → Qingdao (TAO)',dur:'~1h50',note:'Frequent Shanghai→Qingdao flights (or ~4–5 h by HSR).'},
-   {mode:'fly',route:'Georgio: Brisbane → Qingdao (via Seoul)',dur:'~13–14 h',note:'Korean Air via Incheon; land Qingdao Sunday evening.'}]},
- {dnum:'27',mon:'Jul',region:'shandong',title:'Qingdao — two factories',sub:'All three · Quick Body (AM + lunch) · Peach Builder (PM + dinner)',move:'~1 h local',
-  plan:'First full day together. Quick Body in the morning and over lunch, Peach Builder in the afternoon and over dinner.',
+   {mode:'rail',route:'Danny + K: Shanghai → Dezhou East → Ningjin',dur:'~4–4.5 h',note:'HSR Shanghai Hongqiao → Dezhou East (~4 h, Beijing–Shanghai line), then ~40 min car to Ningjin. (Alt: fly Shanghai → Jinan + ~1h15 drive.)'},
+   {mode:'fly',route:'Georgio: Brisbane → Jinan (TNA) → Ningjin',dur:'~14 h + drive',note:'⚠ Jinan has limited international arrivals — likely Brisbane via Shanghai/Seoul then domestic or HSR to Jinan, then ~1h15 to Ningjin. Georgio’s flights still to book.'}]},
+ {dnum:'27',mon:'Jul',region:'shandong',title:'MBH + Rosen',sub:'All three · Ningjin, same park',move:'local',
+  plan:'Straight into the two Ningjin factories on Monday, back to back in the same park — MBH and Rosen. Evening in Ningjin/Dezhou.',
+  visit:['MBH Fitness','Rosen Fitness']},
+ {dnum:'28',mon:'Jul',region:'shandong',title:'Relax (Rizhao), then Qingdao',sub:'All three · Ningjin → Rizhao → Qingdao',move:'~5–6 h',
+  plan:'Tuesday: leave Ningjin by high-speed rail down to Rizhao to see Relax (the stair climbers), then carry on to Qingdao and stay the night — set up for Quick Body + Insight on Wednesday.',
+  visit:['Relax Fitness'],
+  legs:[
+   {mode:'rail',route:'Ningjin / Dezhou → Rizhao (Relax)',dur:'~3–3.5 h',note:'Via Jinan: Dezhou East → Jinan West (~35 min), change to the Rilan HSR → Rizhao West (~2 h). ⚠ Verify same-day connection times.'},
+   {mode:'rail',route:'Rizhao → Qingdao',dur:'~1.5–2 h',note:'Coastal HSR to Qingdao; overnight Qingdao. ⚠ Verify times.'}]},
+ {dnum:'29',mon:'Jul',region:'shandong',title:'Quick Body + Insight',sub:'All three · Qingdao · Quick Body (AM) · Peach Builder / Insight (PM)',move:'~30 min local',
+  plan:'Wednesday in Qingdao: Quick Body in the morning and over lunch, then Peach Builder (via Insight) in the afternoon. Both sit near Qingdao airport.',
   visit:['Quick Body','Peach Builder'],
-  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25 min',note:'~18 km across north Qingdao. Both near Qingdao airport (TAO).'}]},
- {dnum:'28',mon:'Jul',region:'shandong',title:'Qingdao → Dezhou',sub:'All three · up to Dezhou for Rosen + MBH',move:'~3 h',
-  plan:'Straight run north-west to Dezhou, ready for tomorrow’s factories. Relax (Rizhao — 2 stair climbers) is being quoted by WeChat rather than visited: it’s ~2 h the wrong way for a 2-unit line. Evening in Dezhou.',
-  legs:[{mode:'rail',route:'Qingdao → Dezhou East',dur:'~2h30–3h41',note:'15:58 D1633 direct 3h41 → 19:39, or a morning G via Jinan West change ~2h30–3h.',opts:[{t:'Morning G',d:'~2h30–3h',svc:'via Jinan West change'},{t:'15:58',d:'3h41 → 19:39',svc:'D1633 direct'}]}],
-  tip:'HBS (benches) is in Qingdao — do it on a Qingdao day or drop it (small line).'},
- {dnum:'29',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'All three · Ningjin, same park',move:'local',
-  plan:'Two factories back to back in the same Ningjin park. Evening in Dezhou; Dezhou East is a short drive away.',
-  visit:['Rosen Fitness','MBH Fitness']},
- {dnum:'30',mon:'Jul',region:'fujian',title:'Fly to Xiamen, Rayton, on to Guangzhou',sub:'All three · Shandong → Fujian → Guangdong',move:'~7 h',
-  plan:'Drive to Jinan airport, fly to Xiamen, straight to Rayton, then an evening flight to Guangzhou.',
+  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25 min',note:'~18 km across north Qingdao.'}]},
+ {dnum:'30',mon:'Jul',region:'fujian',title:'Fly to Xiamen · Rayton',sub:'All three · Qingdao → Xiamen',move:'~4–5 h',
+  plan:'Thursday: early flight Qingdao → Xiamen, then Rayton through to the evening. Stay in Xiamen.',
   visit:['Rayton'],
   legs:[
-   {mode:'car',route:'Dezhou → Jinan Yaoqiang airport (TNA)',dur:'~1h15–1h35',note:'~125 km. Earliest Xiamen flight is 11:35.'},
-   {mode:'fly',route:'Jinan TNA → Xiamen XMN',dur:'~2h15',note:'~4/day, Xiamen Air / Shandong Air; earliest 11:35.',opts:[{t:'11:35',d:'2h15',svc:'MF8520 / SC8407'},{t:'~17:xx',d:'2h15',svc:'SC8411'},{t:'21:00',d:'2h15',svc:'SC8415 (last)'}]},
-   {mode:'rail',route:'Xiamen → Zhangzhou (Rayton)',dur:'~30 min',note:'~51 trains/day, or ~45 min by road.'},
-   {mode:'fly',route:'Xiamen XMN → Guangzhou CAN',dur:'~1h35',note:'~5–6/day. Evening departure after Rayton.',opts:[{t:'~19:xx',d:'1h35',svc:'MF8305'},{t:'22:35',d:'1h35',svc:'CZ3880 (last)'}]}],
-  tip:'Tight day. 11:35 Jinan→Xiamen (arr ~13:50), Rayton mid-afternoon (~30 min out), evening flight to Guangzhou. HSR Xiamen North→Guangzhou South (~3.5–4 h) is the fallback.'},
- {dnum:'31',mon:'Jul',region:'guangdong',title:'Guangzhou — two factories',sub:'All three · Conlin (AM) · OMA (PM, Foshan)',move:'~1 h local',
-  plan:'Conlin in the city in the morning, OMA in Foshan (Shunde) in the afternoon.',
+   {mode:'fly',route:'Qingdao (TAO) → Xiamen (XMN)',dur:'~2h20',note:'⚠ Check the early flights — aim for the first morning departure for a full day at Rayton. Direct daily, ~2h20.'},
+   {mode:'rail',route:'Xiamen → Zhangzhou (Rayton)',dur:'~30 min',note:'~51 trains/day, or ~45 min by road. Rayton through the afternoon/evening, back to Xiamen for the night.'}]},
+ {dnum:'31',mon:'Jul',region:'guangdong',title:'Proposed: Xiamen → Guangzhou · Conlin + OMA',sub:'All three · Friday (yours to finalise)',move:'~3–5 h',
+  plan:'PROPOSED — Friday, Saturday and Sunday are yours to lock. Suggested: fly (or HSR) Xiamen → Guangzhou in the morning, then Conlin in the city and OMA in Foshan. Evening in Guangzhou.',
   visit:['Conlin Fitness','OMA Fitness'],
-  legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
- {dnum:'01',mon:'Aug',region:'guangdong',title:'Georgio home (Guangzhou) · boys do Chuanyu → HK',sub:'Guangzhou split · Saturday',move:'~1.5 h',
-  plan:'Georgio flies home from Guangzhou (CAN → Brisbane, direct, China Southern). Daniel + Konstantine do the last factory, Chuanyu (Dongguan), then take the cross-border train to Hong Kong for the holiday.',
-  visit:['Dongguan Chuanyu'],
   legs:[
-   {mode:'fly',route:'Georgio: Guangzhou (CAN) → Brisbane',dur:'~9h30',note:'China Southern, direct daily. Georgio’s last factory day is Fri 31 (Conlin + OMA) — he skips Chuanyu.'},
-   {mode:'rail',route:'Boys: Dongguan (Humen) → Hong Kong West Kowloon',dur:'~39 min–1h20',note:'After Chuanyu. Cross-border immigration inside West Kowloon station — board 30–45 min early, passport needed.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'},{t:'21:53',d:'~40 min',svc:'last'}]}]},
- {dnum:'02',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
-  plan:'Full day in Hong Kong for Danny + Konstantine (Georgio flew home from Guangzhou yesterday).'},
+   {mode:'fly',route:'Xiamen (XMN) → Guangzhou (CAN)',dur:'~1h35',note:'~5–6/day; or HSR Xiamen North → Guangzhou South ~3.5–4 h.'},
+   {mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}]},
+ {dnum:'01',mon:'Aug',region:'guangdong',title:'Proposed: Chuanyu (Dongguan) · Georgio can head home',sub:'All three / split · Saturday (yours to finalise)',move:'~1.5 h',
+  plan:'PROPOSED: Chuanyu flooring at Dongguan. Georgio can fly home from Guangzhou around here (CAN → Brisbane, China Southern direct — his flights still to book). Boys carry on toward Hong Kong.',
+  visit:['Dongguan Chuanyu']},
+ {dnum:'02',mon:'Aug',region:'guangdong',title:'Proposed: Boys cross to Hong Kong',sub:'Danny + K · Sunday (yours to finalise)',move:'~1 h',
+  plan:'PROPOSED: Danny + Konstantin cross to Hong Kong (HSR Dongguan/Guangzhou → West Kowloon, ~40 min) to start the HK tail. Adjust Fri–Sun however suits — this is a placeholder.',
+  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~40 min',note:'Cross-border immigration inside West Kowloon; passport, board 30–45 min early.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'}]}]},
  {dnum:'03',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
   plan:'Full day in Hong Kong.'},
  {dnum:'04',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
   plan:'Last full day in Hong Kong.'},
  {dnum:'05',mon:'Aug',region:'guangdong',title:'Danny + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
-  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from 1 Aug, 4 nights. Flight departs 00:15, so be in HK the night of Tue 4 Aug.',
+  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from ~2 Aug, ~3 nights. Flight departs 00:15, so be in HK the night of Tue 4 Aug.',
   legs:[{mode:'fly',route:'Danny + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'✓ Booked — Cathay CX165 HKG 00:15 → BNE 10:50, non-stop. Ref DSZPDZ.'}]},
 ];
 // Typical late-July / early-Aug temperatures per day (climate averages, high / low °C)
 const TEMP={
- Jul23:'Shanghai ~34° / 27°', Jul24:'Nantong ~33° · Shanghai ~34°', Jul25:'Shanghai ~34° / 27°', Jul26:'Qingdao ~28° / 24°', Jul27:'Qingdao ~28° / 24°',
- Jul28:'Qingdao ~28° → Dezhou ~32°', Jul29:'Dezhou ~32° / 24°', Jul30:'Xiamen ~33° · Guangzhou ~34°', Jul31:'Guangzhou ~34° / 27°',
- Aug01:'Dongguan ~34° · Hong Kong ~31°', Aug02:'Hong Kong ~31° / 27°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
+ Jul23:'Shanghai ~34° / 27°', Jul24:'Nantong ~33° · Shanghai ~34°', Jul25:'Shanghai ~34° / 27°', Jul26:'Ningjin / Dezhou ~32° / 24°', Jul27:'Ningjin ~32° / 24°',
+ Jul28:'Rizhao ~29° → Qingdao ~28°', Jul29:'Qingdao ~28° / 24°', Jul30:'Xiamen ~33° / 27°', Jul31:'Guangzhou ~34° / 27°',
+ Aug01:'Dongguan ~34° · Guangzhou ~34°', Aug02:'Guangzhou → Hong Kong ~31°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
 };
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in together (23rd), do the two Nantong factories (24th), sightsee Shanghai (25th), then everyone meets in Qingdao (26th) — Georgio flies in via Seoul — and the crew works the factory sweep together. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in together (23rd), do the two Nantong factories (24th), sightsee Shanghai (25th), then everyone meets in Ningjin (26th) — Georgio flies in — and the crew works the factory sweep together: MBH + Rosen (27th), Relax in Rizhao then Qingdao (28th), Quick Body + Insight (29th), Xiamen + Rayton (30th), with the Guangdong leg Fri–Sun open to finalise. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
    const vis = (d.visit||[]).map(facBlock).join('');
@@ -723,8 +722,8 @@ document.getElementById('itin').innerHTML =
    '<div class="tsum">'+
     '<div class="box"><div class="lab">Total window</div><div class="val">14 days <small>23 Jul – 5 Aug</small></div></div>'+
     '<div class="box"><div class="lab">Danny + Konstantine</div><div class="val" style="font-size:14px">23 Jul – 5 Aug · together</div></div>'+
-    '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">Qingdao 26 Jul → home 1 Aug (Guangzhou)</div></div>'+
-    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">1–5 Aug · 4 nights</div></div>'+
+    '<div class="box"><div class="lab">Georgio</div><div class="val" style="font-size:14px">Ningjin 26 Jul → home ~1 Aug (Guangzhou)</div></div>'+
+    '<div class="box"><div class="lab">Hong Kong · the boys</div><div class="val" style="font-size:14px">~2–5 Aug · ~3 nights</div></div>'+
    '</div>'+
    monthGrid(6,'Jul')+monthGrid(7,'Aug');
   cal.querySelectorAll('.evt').forEach(el=>el.onclick=()=>{

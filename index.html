@@ -283,6 +283,8 @@ const SUPPLIERS = [
    cat:'Slatted treadmill', buy:'OMA-6367TA Slatted Treadmill ×3 (locked)', ap:'CAN Guangzhou (~45 km)'},
   {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:1, mon:'AUG', slot:'1 Aug · AM',
    cat:'Flooring', buy:'Gym flooring (or drop if sourcing in Shandong)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
+  {nm:'Guangdong Berson (flooring)', city:'Jiangmen (Xinhui)', region:'guangdong', ll:[22.205,113.165], day:0, slot:'Optional · flooring option',
+   cat:'Flooring — new materials', buy:'Gym flooring — compare with Chuanyu (Dongguan) + Yishui (Shandong)', ap:'CAN Guangzhou (~110 km) / ZUH Zhuhai (~65 km)'},
 ];
 
 const OFFMAP = [];
@@ -302,6 +304,7 @@ const HSR = {
   'Conlin Fitness':'Guangzhou South',
   'OMA Fitness':'Guangzhou South (Shunde = intercity)',
   'Dongguan Chuanyu':'Dongguan Station (borders Chashan)',
+  'Guangdong Berson (flooring)':'Jiangmen / Yinzhouhu (Shenzhen–Zhanjiang HSR)',
 };
 
 // Approx airport → factory drive time
@@ -319,6 +322,7 @@ const DRIVE = {
   'Conlin Fitness':'~40 min from CAN',
   'OMA Fitness':'~1 h from CAN',
   'Dongguan Chuanyu':'~1 h 15 from CAN',
+  'Guangdong Berson (flooring)':'~1 h 40 from CAN · factory is ~1 h S of Jiangmen city (Shadui)',
 };
 
 // Contact person per factory
@@ -336,6 +340,12 @@ const CONTACT = {
   'Conlin Fitness':'Daily Youth Sports',
   'OMA Fitness':'TBC',
   'Dongguan Chuanyu':'TBC',
+  'Guangdong Berson (flooring)':'Amanda · +86 182 0750 0693',
+};
+
+// Street address per factory (shown in the map popup)
+const ADDR = {
+  'Guangdong Berson (flooring)':'Factory: Shuiliuwang, Dulian Village, Shadui Town, Xinhui District, Jiangmen, Guangdong 529147. Office (if factory undeliverable): 6th Fl, Weifeng Commercial Plaza, Pengjiang District, Jiangmen.',
 };
 
 // Catalogue / quote reference per factory
@@ -353,6 +363,7 @@ const CAT = {
   'Rayton':{url:'',label:'catalogue TBC'},
   'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
   'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
+  'Guangdong Berson (flooring)':{url:'',label:'catalogue TBC · Amanda (WeChat)'},
 };
 const catRow = nm => { const c=CAT[nm]; if(!c) return '';
   return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
@@ -376,6 +387,7 @@ const GEAR = {
   'OMA Fitness':['OMA-6367TA slatted / curved treadmill ×3 (locked)'],
   'Dongguan Chuanyu':['Gym flooring (rubber tiles / rolls)'],
   'Flooring — Yishui':['Gym flooring — alternative to Chuanyu, compare on price + quality'],
+  'Guangdong Berson (flooring)':['Gym flooring — rubber tiles / rolls / new materials','Third flooring quote — compare against Chuanyu (Dongguan) + Yishui (Shandong)','Contact Amanda for samples + catalogue via WeChat'],
 };
 
 // What we're chasing — itemised catalogue per supplier (from the confirmed equipment list)
@@ -543,6 +555,7 @@ function detailHTML(s){
     (CONTACT[s.nm]?`<div class="pp-row"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
     `<div class="pp-row"><b>Makes:</b> ${s.cat}</div>`+
     `<div class="pp-row"><b>Buying:</b> ${s.buy}</div>`+
+    (ADDR[s.nm]?`<div class="pp-row"><b>Address:</b> ${ADDR[s.nm]}</div>`:'')+
     whoRow(s.nm)+
     catRow(s.nm)+
     `<div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div>`+

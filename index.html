@@ -613,7 +613,7 @@ const legBlock = l => {
 const DAYS = [
  {dnum:'23',mon:'Jul',region:'jiangsu',title:'Danny + Konstantine arrive · relax at the Bund',sub:'Australia → Shanghai · together',move:'~13 h',
   plan:'Danny + Konstantine fly in together on the Cathay flight (dep Thu, arr 11:05am), then relax around the Bund in Shanghai.',
-  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'Cathay Pacific. Dep Thu morning, arr 11:05am. Clear HK airside as a transit, then mainland immigration at Shanghai. (See the Flights panel in Info for booking links.)'}]},
+  legs:[{mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'✓ Booked — Cathay ref DSZPDZ. CX156 BNE 00:05 → HKG 06:50, connect 1h20, CX316 HKG 08:10 → Shanghai PVG (T2) 11:05. (Full detail in the Bookings tab.)'}]},
  {dnum:'24',mon:'Jul',region:'jiangsu',title:'Nantong — two factories',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
   plan:'Both Nantong factories in one day trip from Shanghai. Take an early Hongqiao → Nantong West train (~1h15). Do Nantong Record (Primiz / Proesce) first — it is right in the city (~20 min from the station), a one-stop for benches, racks, plates, dumbbells, accessories and flooring. Then ~1 h east to Baopeng (Rudong) for the free-weight consumables. Back to Shanghai in the evening — you sightsee tomorrow.',
   visit:['Nantong Record — Primiz / Proesce','Baopeng Fitness'],
@@ -663,8 +663,8 @@ const DAYS = [
  {dnum:'04',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
   plan:'Last full day in Hong Kong.'},
  {dnum:'05',mon:'Aug',region:'guangdong',title:'Danny + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
-  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from 1 Aug, 4 nights.',
-  legs:[{mode:'fly',route:'Danny + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'Cathay Pacific, direct. Return via Hong Kong on the 5th.'}]},
+  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from 1 Aug, 4 nights. Flight departs 00:15, so be in HK the night of Tue 4 Aug.',
+  legs:[{mode:'fly',route:'Danny + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'✓ Booked — Cathay CX165 HKG 00:15 → BNE 10:50, non-stop. Ref DSZPDZ.'}]},
 ];
 // Typical late-July / early-Aug temperatures per day (climate averages, high / low °C)
 const TEMP={
@@ -790,7 +790,16 @@ const STAYS=[
   tel:'+86 189 1750 6637', via:'Trip.com · prepaid online',
   map:'https://www.google.com/maps/search/?api=1&query=No.%2053%20Jiujiang%20Road%2C%20Huangpu%20District%2C%20Shanghai'}
 ];
-const FLIGHTS=[]; // filled in as tickets are confirmed
+const FLIGHTS=[
+ {who:'Danny + Konstantin — Cathay Pacific', lines:[
+   '<b>Booking reference:</b> DSZPDZ · 2 adults (Daniel Catanzaro, Konstantin Blank)',
+   '<b>Out · Thu 23 Jul</b> — CX156 Brisbane <b>00:05</b> → Hong Kong 06:50 (A350-900), connect 1h20, then CX316 Hong Kong <b>08:10</b> → Shanghai Pudong (T2) <b>11:05</b> (777-300ER). One stop, 13h total. Economy.',
+   '<b>Home · Wed 5 Aug</b> — CX165 Hong Kong <b>00:15</b> → Brisbane 10:50 (A350-900), non-stop, 8h35. Economy.',
+   '<b>Baggage:</b> 1 × 23 kg checked + 1 × 7 kg cabin, each passenger (Economy Light).',
+   '<b>Seats:</b> Danny 59D · 45H · 44H  |  Konstantin 59E · 45J · 44J',
+   '<b>Note:</b> the return departs <b>Hong Kong</b> (not the mainland) at 00:15 on the 5th — be in HK the night of Tue 4 Aug.'
+ ]}
+]; // add Georgio's flights + any others here as confirmed
 document.getElementById('bookings').innerHTML =
  '<h2>Bookings</h2><p class="lead">Confirmed flights &amp; accommodation for the trip. Sensitive details (PINs, card numbers) are kept off this page — ask Georgio or Danny for those.</p>'+
  '<div class="h3">Accommodation</div><div class="jgrid">'+
@@ -816,13 +825,11 @@ document.getElementById('bookings').innerHTML =
 document.getElementById('info').innerHTML =
  '<h2>Info &amp; essentials</h2><p class="lead">The on-the-ground basics — save these before you fly. Works offline / without a VPN.</p>'+
  '<div class="h3">Flights — book now (dates are bookable)</div><div class="jgrid">'+
-   '<div class="jcard"><h4>Danny + Konstantine</h4><ul>'+
-     '<li><b>Out:</b> Brisbane → Shanghai (via Hong Kong) — Cathay Pacific, <b>Thu 23 Jul</b>, arrive 11:05am</li>'+
-     '<li><b>Home:</b> Hong Kong → Brisbane — Cathay Pacific, direct, <b>Wed 5 Aug</b></li>'+
-     '<li>Cheapest as <b>one Cathay multi-city</b> ticket (BNE→PVG out, HKG→BNE return), rather than two one-ways. Indicative <b>~A$1,300–1,900</b>.</li>'+
-     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Brisbane%20to%20Shanghai%20on%202026-07-23" target="_blank">Google Flights: out ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/bne/pvg/260723/" target="_blank">Skyscanner: out ↗</a></li>'+
-     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Hong%20Kong%20to%20Brisbane%20on%202026-08-05" target="_blank">Google Flights: home ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/hkg/bne/260805/" target="_blank">Skyscanner: home ↗</a></li>'+
-     '<li><a style="color:var(--blue);font-weight:600" href="https://www.cathaypacific.com/" target="_blank">Book direct at cathaypacific.com ↗</a></li></ul></div>'+
+   '<div class="jcard"><h4>Danny + Konstantine — ✓ BOOKED</h4><ul>'+
+     '<li><b>Cathay Pacific · ref DSZPDZ</b> — full detail in the <b>Bookings</b> tab.</li>'+
+     '<li><b>Out · Thu 23 Jul:</b> CX156 BNE 00:05 → HKG 06:50, then CX316 HKG 08:10 → Shanghai PVG 11:05.</li>'+
+     '<li><b>Home · Wed 5 Aug:</b> CX165 HKG 00:15 → BNE 10:50 (non-stop).</li>'+
+     '<li>Baggage 1 × 23 kg checked + 1 × 7 kg cabin each. Return departs Hong Kong.</li></ul></div>'+
    '<div class="jcard"><h4>Georgio</h4><ul>'+
      '<li><b>In:</b> Brisbane → Qingdao <b>via Seoul</b> (Korean Air) — land Qingdao <b>Sun 26 Jul</b> evening. Smoothest connection + most onward flights as backup. (China Eastern via Shanghai is the cheaper fallback.)</li>'+
      '<li><b>Home:</b> Guangzhou → Brisbane — China Southern, <b>direct, Sat 1 Aug</b> (~9h20; daytime or overnight)</li>'+

@@ -222,6 +222,7 @@
   <button class="active" data-view="map">Map</button>
   <button data-view="itinerary">Itinerary</button>
   <button data-view="calendar">Calendar</button>
+  <button data-view="bookings">Bookings</button>
   <button data-view="justin">Justin</button>
   <button data-view="suppliers">Suppliers</button>
   <button data-view="info">Info</button>
@@ -239,6 +240,7 @@
   </section>
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
   <section id="view-calendar" class="view"><div class="wrap" id="cal"></div></section>
+  <section id="view-bookings" class="view"><div class="wrap" id="bookings"></div></section>
   <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
   <section id="view-info" class="view"><div class="wrap" id="info"></div></section>
@@ -778,6 +780,37 @@ document.getElementById('justin').innerHTML =
  '<div class="h3">Budget guide (indicative)</div><table class="jtbl"><thead><tr><th>Item</th><th>Expected cost</th></tr></thead><tbody>'+
    JUSTIN.budget.map(b=>`<tr><td>${b[0]}</td><td>${b[1]}</td></tr>`).join('')+'</tbody></table>'+
  '<div class="cav"><ul style="padding-left:18px;margin:0"><li>Achievable but busy — Shanghai, Shandong, Fujian and Guangdong in six days. <b>Lock the factory appointments first, then build transport around them</b> rather than chasing the cheapest fares.</li><li>Justin is happy to sanity-check the bookings once dates are set against each factory.</li></ul></div>';
+
+/* ===== BOOKINGS view ===== */
+const STAYS=[
+ {name:'Diamond Bund Hotel', cn:'戴尔曼·外滩酒店', city:'Shanghai', who:'Danny + Konstantin',
+  cin:'Thu 23 Jul · after 15:00', cout:'Sun 26 Jul · before 12:00', nights:'3 nights · 2 rooms (Special Queen)',
+  conf:'Y0C0D260713022', booking:'1167731100784793', guests:'Daniel Catanzaro, Konstantin Blank',
+  addr:'No. 53 Jiujiang Road, Huangpu District, Shanghai', addrcn:'上海黄浦区九江路53号',
+  tel:'+86 189 1750 6637', via:'Trip.com · prepaid online',
+  map:'https://www.google.com/maps/search/?api=1&query=No.%2053%20Jiujiang%20Road%2C%20Huangpu%20District%2C%20Shanghai'}
+];
+const FLIGHTS=[]; // filled in as tickets are confirmed
+document.getElementById('bookings').innerHTML =
+ '<h2>Bookings</h2><p class="lead">Confirmed flights &amp; accommodation for the trip. Sensitive details (PINs, card numbers) are kept off this page — ask Georgio or Danny for those.</p>'+
+ '<div class="h3">Accommodation</div><div class="jgrid">'+
+   STAYS.map(s=>`<div class="jcard"><h4>${s.name}${s.cn?` <span style="font-weight:400;color:var(--text2)">${s.cn}</span>`:''}</h4><ul>`+
+     `<li><b>Who:</b> ${s.who}</li>`+
+     `<li><b>Check-in:</b> ${s.cin}</li>`+
+     `<li><b>Check-out:</b> ${s.cout}</li>`+
+     `<li><b>Stay:</b> ${s.nights}</li>`+
+     `<li><b>Guests:</b> ${s.guests}</li>`+
+     `<li><b>Confirmation #:</b> ${s.conf}</li>`+
+     `<li><b>Booking #:</b> ${s.booking}</li>`+
+     `<li><b>Address:</b> ${s.addr}${s.addrcn?` · ${s.addrcn}`:''}</li>`+
+     `<li><b>Hotel tel:</b> <a style="color:var(--blue)" href="tel:${s.tel.replace(/[^+0-9]/g,'')}">${s.tel}</a></li>`+
+     `<li><b>Booked via:</b> ${s.via}</li>`+
+     `<li><a style="color:var(--blue);font-weight:600" href="${s.map}" target="_blank" rel="noopener">Open in Maps ↗</a></li>`+
+   `</ul></div>`).join('')+
+ '</div>'+
+ '<div class="h3">Flights</div>'+
+ (FLIGHTS.length? '<div class="jgrid">'+FLIGHTS.map(fl=>`<div class="jcard"><h4>${fl.who}</h4><ul>${fl.lines.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')+'</div>'
+   : '<div class="cav">Flight tickets will appear here as they\'re confirmed. For now, current fares &amp; booking links are in the <b>Info</b> tab.</div>');
 
 /* ===== INFO / ESSENTIALS view ===== */
 document.getElementById('info').innerHTML =

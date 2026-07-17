@@ -815,6 +815,42 @@ const FLIGHTS=[
    '<b>Note:</b> the return departs <b>Hong Kong</b> (not the mainland) at 00:15 on the 5th — be in HK the night of Tue 4 Aug.'
  ]}
 ]; // add Georgio's flights + any others here as confirmed
+// Danny's hotel picks from Trip.com — to confirm
+const PICKS=[
+ {name:'Ningjin Garden Hotel', area:'Central Ningjin (Dezhou)', dates:'26 → 28 Jul · 2 nights', price:'~A$374', who:'All three',
+  fit:'Danny’s pick. ~4★, spacious clean rooms, on-site parking, walkable to town — near the Ningjin factory park (Rosen + MBH).',
+  trip:'https://us.trip.com/hotels/ningjin-1-hotel-detail-99827379/ningjin-garden-hotel/',
+  map:'https://www.google.com/maps/search/?api=1&query=Ningjin%20Garden%20Hotel%20Dezhou'},
+ {name:'Wyndham Qingdao', area:'Chengyang, Qingdao', dates:'28 → 30 Jul · 2 nights', price:'~A$797', who:'All three',
+  fit:'Danny’s pick — “central to all 3 factories.” 5★, 378 rooms, pool + gym, No.220 Heilongjiang Middle Rd, Chengyang (~40 km / shuttle to TAO airport + North station). ~25–30 min to Quick Body + Peach Builder.',
+  trip:'https://us.trip.com/hotels/qingdao-hotel-detail-425590/wyndham-qingdao/',
+  map:'https://www.google.com/maps/search/?api=1&query=Wyndham%20Qingdao%20Chengyang'},
+ {name:'Dong Fang Hotel', area:'Yuexiu, Guangzhou', dates:'30 Jul → 2 Aug · 3 nights', price:'~A$1,068', who:'All three (Georgio flies out 1 Aug)',
+  fit:'Danny’s pick. 5★ landmark by Yuexiu Park, No.120 Liuhua Rd — under 30 min to Baiyun airport + Guangzhou/Guangzhou-East stations. This is the plan if you take the evening HSR (no Xiamen night).',
+  trip:'https://us.trip.com/hotels/guangzhou-hotel-detail-346960/dong-fang-hotel/',
+  map:'https://www.google.com/maps/search/?api=1&query=Dong%20Fang%20Hotel%20Guangzhou%20Liuhua%20Road'},
+ {name:'Regal Hong Kong Hotel', area:'Causeway Bay, Hong Kong', dates:'2 → 5 Aug · 3 nights', price:'~A$871', who:'K & DC only',
+  fit:'Danny’s pick for the HK tail. 5★ in Causeway Bay (88 Yee Wo St) on the MTR — walk to shopping + the harbour. Boys only; Georgio’s home by then.',
+  trip:'https://www.trip.com/hotels/hong-kong-hotel-list/?searchword=Regal+Hong+Kong+Hotel',
+  map:'https://www.google.com/maps/search/?api=1&query=Regal%20Hong%20Kong%20Hotel%20Causeway%20Bay'}
+];
+const PICKS_ALT=[
+ {name:'Zhangzhou Longjia Hotel', area:'Longhai, Zhangzhou', dates:'30 → 31 Jul · 1 night', price:'~A$308', who:'All three',
+  fit:'Closest to Rayton (Zhangzhou). Hot-spring resort, 260 rooms, ~2 km from Jiaomei station, ~38 km from Xiamen airport. Cheapest — but only if you overnight Xiamen instead of the evening HSR.',
+  trip:'https://us.trip.com/hotels/zhangzhou-hotel-detail-11302267/longjia-raytour-hotel/',
+  map:'https://www.google.com/maps/search/?api=1&query=Zhangzhou%20Longjia%20Hotel'},
+ {name:'Conrad Xiamen', area:'West Xiamen island', dates:'30 → 31 Jul · 1 night', price:'~A$962', who:'All three',
+  fit:'Luxury 5★ on the west (harbour) side of Xiamen island — further from Rayton but a nicer stay. Only if you overnight Xiamen.',
+  trip:'https://www.trip.com/hotels/xiamen-hotel-list/?searchword=Conrad+Xiamen',
+  map:'https://www.google.com/maps/search/?api=1&query=Conrad%20Xiamen'}
+];
+const pickCard = p => `<div class="jcard"><h4>${p.name}</h4><ul>`+
+  `<li><b>Where:</b> ${p.area}</li>`+
+  `<li><b>Dates:</b> ${p.dates}</li>`+
+  `<li><b>Price:</b> ${p.price} · <b>Who:</b> ${p.who}</li>`+
+  `<li>${p.fit}</li>`+
+  `<li><a style="color:var(--blue);font-weight:600" href="${p.trip}" target="_blank" rel="noopener">View on Trip.com ↗</a> · <a style="color:var(--blue);font-weight:600" href="${p.map}" target="_blank" rel="noopener">Maps ↗</a></li>`+
+  `</ul></div>`;
 document.getElementById('bookings').innerHTML =
  '<h2>Bookings</h2><p class="lead">Confirmed flights &amp; accommodation for the trip. Sensitive details (PINs, card numbers) are kept off this page — ask Georgio or Danny for those.</p>'+
  '<div class="h3">Accommodation</div><div class="jgrid">'+
@@ -832,6 +868,12 @@ document.getElementById('bookings').innerHTML =
      `<li><a style="color:var(--blue);font-weight:600" href="${s.map}" target="_blank" rel="noopener">Open in Maps ↗</a></li>`+
    `</ul></div>`).join('')+
  '</div>'+
+ '<div class="h3">Hotels to confirm — Danny’s picks</div>'+
+ '<p class="lead" style="margin:-4px 0 10px">Pulled from Trip.com. Tap “View on Trip.com” for the full listing + photos. Prices are Danny’s quotes; Shanghai (Diamond Bund) is already booked above.</p>'+
+ '<div class="jgrid">'+PICKS.map(pickCard).join('')+'</div>'+
+ '<div class="h3">Xiamen overnight — alternative (only if you skip the evening HSR)</div>'+
+ '<p class="lead" style="margin:-4px 0 10px">The current plan takes the evening HSR straight to Guangzhou (no Xiamen night). These two are only if the crew decides to overnight Xiamen — Guangzhou then drops a night.</p>'+
+ '<div class="jgrid">'+PICKS_ALT.map(pickCard).join('')+'</div>'+
  '<div class="h3">Flights</div>'+
  (FLIGHTS.length? '<div class="jgrid">'+FLIGHTS.map(fl=>`<div class="jcard"><h4>${fl.who}</h4><ul>${fl.lines.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')+'</div>'
    : '<div class="cav">Flight tickets will appear here as they\'re confirmed. For now, current fares &amp; booking links are in the <b>Info</b> tab.</div>');

@@ -45,8 +45,8 @@
   .kv{font-size:12.5px;margin:6px 0;line-height:1.5}.kv b{color:var(--text3);font-weight:600}
   .kv a{color:var(--blue)}
   .sub-h{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;margin:12px 0 6px}
-  .ddate{flex:0 0 auto;width:46px;height:46px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;line-height:1}
-  .ddate small{font-size:8.5px;font-weight:600;opacity:.9;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+  .ddate{flex:0 0 auto;width:54px;height:48px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;line-height:1}
+  .ddate small{font-size:8px;font-weight:600;opacity:.9;text-transform:uppercase;letter-spacing:.02em;margin-top:2px;white-space:nowrap}
   .facblk{border:1px solid var(--hair2);border-radius:12px;padding:10px 13px;margin:0 0 9px;background:var(--bg2)}
   .facblk-hd{font-size:13.5px}.facblk-hd b{font-weight:600}
   .fdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
@@ -687,6 +687,9 @@ const TEMP={
  Jul28:'Rizhao ~29° → Qingdao ~28°', Jul29:'Qingdao ~28° / 24°', Jul30:'Xiamen ~33° / 27°', Jul31:'Guangzhou ~34° / 27°',
  Aug01:'Dongguan ~34° · Guangzhou ~34°', Aug02:'Guangzhou → Hong Kong ~31°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
 };
+const DOWK=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONK={Jul:6,Aug:7};
+const dowOf=(mon,dnum)=>DOWK[new Date(2026,MONK[mon],parseInt(dnum,10)).getDay()];
 document.getElementById('itin').innerHTML =
  '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in together (23rd), do the two Nantong factories (24th), sightsee Shanghai (25th), then everyone meets in Ningjin (26th) — Georgio flies in — and the crew works the factory sweep together: MBH + Rosen (27th), Relax in Rizhao then Qingdao (28th), Quick Body + Insight (29th), Xiamen + Rayton (30th), with the Guangdong leg Fri–Sun open to finalise. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
  DAYS.map(d=>{
@@ -694,7 +697,7 @@ document.getElementById('itin').innerHTML =
    const vis = (d.visit||[]).map(facBlock).join('');
    const legs = (d.legs||[]).map(legBlock).join('');
    return `<div class="acc"><div class="acc-hd">`+
-     `<div class="ddate" style="background:${col}">${d.dnum}<small>${d.mon}</small></div>`+
+     `<div class="ddate" style="background:${col}">${d.dnum}<small>${dowOf(d.mon,d.dnum)} ${d.mon}</small></div>`+
      `<div style="min-width:0"><div class="acc-nm">${d.title}</div><div class="acc-sub">${d.sub}</div></div>`+
      (d.move?`<div class="movebadge"><b>${d.move}</b><small>on the move</small></div>`:'')+
      `<div class="chev">▶</div></div>`+

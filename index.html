@@ -639,10 +639,10 @@ const DAYS = [
  {dnum:'25',mon:'Jul',region:'jiangsu',title:'Shanghai — sightseeing',sub:'Danny + K',
   plan:'Danny + Konstantine sightsee in Shanghai — the Bund, Yu Garden, the French Concession, the Pudong skyline.'},
  {dnum:'26',mon:'Jul',region:'shandong',title:'Everyone converges in Ningjin',sub:'Sunday evening · Dezhou (Ningjin)',move:'~4 h / ~14 h',
-  plan:'Danny + K travel up from Shanghai to Ningjin (Dezhou) on Sunday. Georgio’s inbound (Skyscanner option) lands Tianjin ~23:10 Sun — too late to reach Ningjin that night, so he overnights near Tianjin and comes down by HSR on Monday, reaching the Ningjin hotel around midday to rest (he sits out Monday’s factory visits and joins from Tuesday). Overnight Ningjin/Dezhou.',
+  plan:'Danny + K travel up from Shanghai to Ningjin (Dezhou) on Sunday. Georgio’s flight (China Southern, via Guangzhou) lands Jinan ~23:50 Sun — too late to reach Ningjin that night, so he overnights near Jinan and drives up (~1h15) on Monday, reaching the Ningjin hotel to rest (he sits out Monday’s factory visits and joins from Tuesday). Overnight Ningjin/Dezhou.',
   legs:[
    {mode:'rail',route:'Danny + K: Shanghai → Dezhou East → Ningjin',dur:'~5.5–6 h door-to-door',note:'All Shanghai Hongqiao → Dezhou East G-trains below (Beijing–Shanghai line). Getting there: Diamond Bund → Hongqiao by Didi/taxi ~35–50 min (Metro Line 2 direct), at the station ~40 min before the train. At Dezhou East, a pre-arranged car does the ~45 min to Ningjin (no HSR at Ningjin, and Didi is thin there — book the car via the hotel). Checkout is noon, so the 12:20+ departures suit; book early, Sunday afternoon sells out. Alt: fly Shanghai → Jinan (TNA) ~1h50 + ~1h15 drive.',opts:[{t:'06:32',d:'4h44 → 11:16',svc:'G548'},{t:'07:32',d:'5h28 → 13:00',svc:'G1212'},{t:'12:20',d:'4h46 → 17:06',svc:'G738'},{t:'13:26',d:'4h17 → 17:43',svc:'G748 · fastest'},{t:'13:33',d:'4h44 → 18:17',svc:'G750'},{t:'14:18',d:'4h29 → 18:47',svc:'G752'},{t:'15:21',d:'4h27 → 19:48',svc:'G798'},{t:'16:04',d:'4h35 → 20:39',svc:'G802'},{t:'17:25',d:'4h35 → 22:00',svc:'G808'},{t:'17:46',d:'4h25 → 22:11',svc:'G810'}]},
-   {mode:'fly',route:'Georgio: Brisbane → Tianjin (TSN), via Guangzhou',dur:'~15 h',note:'⚠ Skyscanner option (China Southern): BNE 10:20 → Tianjin 23:10, Sun 26 (1 stop via Guangzhou). Lands late — overnight Tianjin, then early HSR Tianjin → Dezhou (~1 h) + ~40 min to Ningjin. He joins the crew Monday morning.'}]},
+   {mode:'fly',route:'Georgio: Brisbane → Jinan (TNA), via Guangzhou',dur:'~15h30',note:'China Southern (Economy Standard, ~A$1,294 return): BNE 10:20 → Jinan 23:50, Sun 26 (1 stop via Guangzhou). Bags 2×23 kg checked + 1×8 kg cabin. Lands late — overnight Jinan, then ~1h15 drive to Ningjin on Monday. He joins the crew Monday.'}]},
  {dnum:'27',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'Danny + K · Rosen (AM) · MBH (after lunch) — Georgio rests at the hotel',
   plan:'Monday: Danny + K do Rosen in the morning and MBH after lunch (same Ningjin park). Georgio reaches Ningjin around midday and heads straight to the hotel to rest after the long haul — he joins the factory visits from Tuesday. Evening in Ningjin/Dezhou.',
   visit:['Rosen Fitness','MBH Fitness'],
@@ -901,12 +901,11 @@ document.getElementById('info').innerHTML =
      '<li><b>Out · Thu 23 Jul:</b> CX156 BNE 00:05 → HKG 06:50, then CX316 HKG 08:10 → Shanghai PVG 11:05.</li>'+
      '<li><b>Home · Wed 5 Aug:</b> CX165 HKG 00:15 → BNE 10:50 (non-stop).</li>'+
      '<li>Baggage 1 × 23 kg checked + 1 × 7 kg cabin each. Return departs Hong Kong.</li></ul></div>'+
-   '<div class="jcard"><h4>Georgio</h4><ul>'+
-     '<li><b>In:</b> Brisbane → Qingdao <b>via Seoul</b> (Korean Air) — land Qingdao <b>Sun 26 Jul</b> evening. Smoothest connection + most onward flights as backup. (China Eastern via Shanghai is the cheaper fallback.)</li>'+
-     '<li><b>Home:</b> Guangzhou → Brisbane — China Southern, <b>direct, Sat 1 Aug</b> (~9h20; daytime or overnight)</li>'+
-     '<li>Book as a <b>multi-city open-jaw</b> (in via Qingdao, out via Guangzhou). Indicative <b>~A$1,400–2,000</b>.</li>'+
-     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Brisbane%20to%20Qingdao%20on%202026-07-26" target="_blank">Google Flights: in ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/bne/tao/260726/" target="_blank">Skyscanner: in ↗</a></li>'+
-     '<li><a style="color:var(--blue);font-weight:600" href="https://www.google.com/travel/flights?q=flights%20Guangzhou%20to%20Brisbane%20on%202026-08-01" target="_blank">Google Flights: home ↗</a> · <a style="color:var(--blue);font-weight:600" href="https://www.skyscanner.com.au/transport/flights/can/bne/260801/" target="_blank">Skyscanner: home ↗</a></li></ul></div>'+
+   '<div class="jcard"><h4>Georgio — China Southern (open-jaw)</h4><ul>'+
+     '<li><b>In:</b> BNE <b>10:20</b> → Jinan (TNA) <b>23:50</b>, Sun 26 Jul (1 stop via Guangzhou). Overnight Jinan, ~1h15 drive to Ningjin Monday.</li>'+
+     '<li><b>Home:</b> Guangzhou (CAN) <b>21:05</b> Sat 1 Aug → BNE <b>08:25</b> (+1), direct.</li>'+
+     '<li>Economy Standard · <b>~A$1,294</b> return · bags 2×23 kg checked + 1×8 kg cabin.</li>'+
+     '<li>Fare tip: Economy Flex (~lower change/cancel fees) was the same baggage — worth it only if his dates might move.</li></ul></div>'+
  '</div>'+
  '<div class="h3">Emergency</div><div class="jgrid">'+
    '<div class="jcard"><h4>Mainland China</h4><ul><li>Police <b>110</b></li><li>Ambulance <b>120</b></li><li>Fire <b>119</b></li></ul></div>'+

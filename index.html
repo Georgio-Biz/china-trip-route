@@ -250,6 +250,7 @@
 <script>
 /* ---------- DATA ---------- */
 const REGIONS = {
+  hebei   :{name:'Hebei 河北',    color:'#C0392B', adcode:130000, center:[114.8,38.6]},
   shandong:{name:'Shandong 山东', color:'#2E6FD6', adcode:370000, center:[118.0,36.4]},
   jiangsu :{name:'Jiangsu 江苏',  color:'#8A4FBE', adcode:320000, center:[119.8,33.0]},
   fujian  :{name:'Fujian 福建',   color:'#CC7A1F', adcode:350000, center:[118.0,26.1]},
@@ -283,6 +284,8 @@ const SUPPLIERS = [
    cat:'Slatted treadmill', buy:'OMA-6367TA Slatted Treadmill ×3 (locked)', ap:'CAN Guangzhou (~45 km)'},
   {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:1, mon:'AUG', slot:'1 Aug · AM',
    cat:'Flooring', buy:'Gym flooring (or drop if sourcing in Shandong)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
+  {nm:'SWIMUXI 水木熙 (flooring)', city:'Shijiazhuang, Hebei (likely)', region:'hebei', ll:[38.045,114.508], day:0, slot:'Optional · likely factory (confirm)',
+   cat:'Rubber-PVC commercial flooring', buy:'Homogeneous rubber-PVC sheet + tile (medical R3 · education M5 · culture P7/P9)', ap:'SJW Shijiazhuang · ~1 h HSR from Dezhou East'},
   {nm:'Guangdong Berson (flooring)', city:'Jiangmen (Xinhui)', region:'guangdong', ll:[22.205,113.165], day:0, slot:'Optional · flooring option',
    cat:'Flooring — new materials', buy:'Gym flooring — compare with Chuanyu (Dongguan) + Yishui (Shandong)', ap:'CAN Guangzhou (~110 km) / ZUH Zhuhai (~65 km)'},
 ];
@@ -294,6 +297,7 @@ const HSR = {
   'Baopeng Fitness':'Nantong West / Rugao South (Rudong stn is not HSR)',
   'Nantong Record — Primiz / Proesce':'Nantong West / Nantong (Huahui Zhigu Park, city side)',
   'Quick Body':'Hongdao / Qingdao Airport HSR',
+  'SWIMUXI 水木熙 (flooring)':'Shijiazhuang (on the Shijiazhuang–Jinan HSR, same line as Dezhou East, ~1 h apart)',
   'Relax Fitness':'Rizhao West (Rilan HSR) / Rizhao station',
   'Hongbinsheng (HBS)':'Qingdao North',
   'Peach Builder':'Qingdao Airport HSR',
@@ -312,6 +316,7 @@ const DRIVE = {
   'Baopeng Fitness':'Shanghai→Nantong rail ~1 h, then ~30 min local',
   'Nantong Record — Primiz / Proesce':'Shanghai→Nantong rail ~1 h, then ~20 min to the park',
   'Quick Body':'~40 min from TAO',
+  'SWIMUXI 水木熙 (flooring)':'~1 h HSR Dezhou East → Shijiazhuang — you’re in Ningjin/Dezhou Mon–Tue, so a side-trip is feasible',
   'Relax Fitness':'~25 min from RIZ Rizhao airport · ~2 h S of Qingdao',
   'Hongbinsheng (HBS)':'~50 min from TAO',
   'Peach Builder':'~30 min from TAO',
@@ -341,10 +346,12 @@ const CONTACT = {
   'OMA Fitness':'TBC',
   'Dongguan Chuanyu':'TBC',
   'Guangdong Berson (flooring)':'Amanda · +86 182 0750 0693 · WeChat: Berson18207500693',
+  'SWIMUXI 水木熙 (flooring)':'WeChat TBC — ask them for the factory address (工厂地址)',
 };
 
 // Street address per factory (shown in the map popup)
 const ADDR = {
+  'SWIMUXI 水木熙 (flooring)':'⚠ Factory address NOT printed in the brochure — footprint pins Beijing · Shijiazhuang · Chongqing · Shanghai · Guangdong. Likely production base = Shijiazhuang, Hebei (China’s rubber-PVC flooring hub). Confirm the exact address with the supplier before planning a visit.',
   'Conlin Fitness':'Daily Youth Sports — No.2 Baixing Rd, Xinhua Industrial Park, Huadu District, Guangzhou 510800 (north, near Baiyun airport).',
   'Relax Fitness':'Shandong Relax Sports Technology Co., Ltd. — north of Shantou Rd, south of Macao Rd, east of Zhanjiang Rd, Rizhao Economic Development Zone, Rizhao, Shandong.',
   'Guangdong Berson (flooring)':'Factory: Shuiliuwang, Dulian Village, Shadui Town, Xinhui District, Jiangmen, Guangdong 529147. Office (if factory undeliverable): 6th Fl, Weifeng Commercial Plaza, Pengjiang District, Jiangmen.',
@@ -366,6 +373,7 @@ const CAT = {
   'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
   'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
   'Guangdong Berson (flooring)':{url:'',label:'catalogue TBC · WeChat Berson18207500693 (Amanda)'},
+  'SWIMUXI 水木熙 (flooring)':{url:'',label:'SWIMUXI product manual on file · ask for factory address'},
 };
 const catRow = nm => { const c=CAT[nm]; if(!c) return '';
   return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
@@ -390,6 +398,7 @@ const GEAR = {
   'Dongguan Chuanyu':['Gym flooring (rubber tiles / rolls)'],
   'Flooring — Yishui':['Gym flooring — alternative to Chuanyu, compare on price + quality'],
   'Guangdong Berson (flooring)':['Gym flooring — rubber tiles / rolls / new materials','Third flooring quote — compare against Chuanyu (Dongguan) + Yishui (Shandong)','Contact Amanda for samples + catalogue via WeChat'],
+  'SWIMUXI 水木熙 (flooring)':['Homogeneous rubber-PVC sheet + tile flooring (2.0–6.0 mm; 2 m rolls + 100×100 tiles)','Series: R3 medical, M5 education, P7/P9 culture — B1 fire rating, anti-static, acoustic, custom colours','Premium look — a step up from basic gym rubber; confirm it suits a gym floor (impact/weights) vs commercial/medical use','⚠ Confirm the actual factory location — likely Shijiazhuang (Hebei), possibly Guangdong'],
 };
 
 // What we're chasing — itemised catalogue per supplier (from the confirmed equipment list)

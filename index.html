@@ -170,6 +170,28 @@
   .jtbl td{padding:10px;border-bottom:1px solid var(--hair2);vertical-align:top}
   .jtbl tr:last-child td{border-bottom:0}
   .jtbl td:first-child{font-weight:600}
+  .ptwrap{margin:6px 0 4px}
+  .ptnote{font-size:12px;color:var(--text3);margin:0 0 8px;line-height:1.5}
+  .ptbl{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
+  .ptbl th{text-align:right;font-weight:600;color:var(--text3);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:0 6px 6px;border-bottom:1px solid var(--line)}
+  .ptbl th:first-child{text-align:left}
+  .ptbl td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+  .ptbl td.pi{text-align:left;width:38%}
+  .ptbl td.pi b{display:block;font-weight:600;font-size:12.5px}
+  .ptbl td.pi small{display:block;color:var(--text3);font-size:10.5px;margin-top:1px;line-height:1.35}
+  .ptbl td.pq{color:var(--text2)}
+  .ptbl td.pt{color:#0071e3;font-weight:600}
+  .ptbl td.pd{color:#c77700;font-size:11.5px}
+  .ptbl td.pa{width:78px}
+  .ptbl tfoot td{border-bottom:none;border-top:2px solid var(--line);font-weight:700;padding-top:9px}
+  input.agr{width:72px;padding:5px 6px;font:inherit;font-size:12px;text-align:right;border:1px dashed var(--line2);border-radius:7px;background:var(--card);color:var(--text);-webkit-appearance:none}
+  input.agr:focus{outline:none;border:1px solid #0071e3;background:#fff}
+  .agrtot{color:#0a8a3c}
+  .shots{display:grid;grid-template-columns:1fr;gap:14px}
+  .shot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .shot img{width:100%;display:block}
+  .shot .cap{padding:10px 13px;font-size:12.5px;color:var(--text2);line-height:1.5}
+  .shot .cap b{color:var(--text);display:block;margin-bottom:2px;font-size:13px}
   .jgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:0 0 10px}
   .jcard{background:var(--bg2);border-radius:16px;padding:16px 18px}
   .jcard h4{margin:0 0 8px;font-size:14px;font-weight:600}
@@ -224,6 +246,7 @@
   <button data-view="calendar">Calendar</button>
   <button data-view="bookings">Bookings</button>
   <button data-view="suppliers">Suppliers</button>
+  <button data-view="showcase">Showcase</button>
   <button data-view="info">Info</button>
 </div></nav>
 
@@ -241,6 +264,7 @@
   <section id="view-calendar" class="view"><div class="wrap" id="cal"></div></section>
   <section id="view-bookings" class="view"><div class="wrap" id="bookings"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
+  <section id="view-showcase" class="view"><div class="wrap" id="showcase"></div></section>
   <section id="view-info" class="view"><div class="wrap" id="info"></div></section>
 </div>
 
@@ -449,13 +473,15 @@ const CAT = {
   'OMA Fitness':{url:'https://oma-fitness.com',label:'oma-fitness.com ↗'},
   'Conlin Fitness':{url:'https://conlinfitness.com',label:'conlinfitness.com ↗'},
   'Peach Builder':{url:'',label:'via Insight (PB311/312/410/411 on file)'},
-  'Baopeng Fitness':{url:'https://www.vanbofitness.com',label:'VANBO 2026 catalogue ↗ (88 pp) · priced RFQ on file'},
+  'Baopeng Fitness':{url:'files/baopeng-vanbo-catalogue-2026.pdf',label:'VANBO 2026 catalogue ↗ (88 pp)',url2:'files/baopeng-quoted-rfq.pdf',label2:'Cam’s priced RFQ ↗'},
   'Rayton':{url:'',label:'catalogue TBC'},
   'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
   'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
 };
 const catRow = nm => { const c=CAT[nm]; if(!c) return '';
-  return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
+  const a=c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label;
+  const b=c.url2?` · <a href="${c.url2}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label2}</a>`:'';
+  return `<div class="pp-row"><b>Catalogue:</b> ${a}${b}</div>`; };
 
 // Who visits (split-team plan)
 const WHO = {}; // all three travel together now; only split is Georgio flies home first at the end
@@ -495,6 +521,36 @@ const CHASE = {
  'Dongguan Chuanyu':{sum:'Flooring',items:[['Gym flooring (rubber tiles / rolls)','—','fitout','quote']]},
  'Hongbinsheng (HBS)':{sum:'Benches — the FID fleet',items:[['Adjustable FID bench','HBS-2603','12','TBC']]},
  'Flooring — Yishui':{sum:'Flooring — alternative to Chuanyu',items:[['Gym flooring','—','fitout','quote (compare)']]},
+};
+// Quoted vs target vs agreed — editable, saves to the browser
+const PRICING = {
+ 'Baopeng Fitness':{note:'Quoted by Cam 23 Jul (VANBO). Alibaba-benchmarked targets. Type your agreed price — it saves on this device.',
+  rows:[['Olympic barbells','14 bars · $71 / $68 ea',982,870],
+        ['Wall balls','12 balls · $13.80–16.50',180,150],
+        ['Dead balls','19 balls · ~$0.71/kg',212,201],
+        ['Kettlebells','30 units · 496 kg · $1.58–1.72/kg',889,783],
+        ['Sandstone bumpers','1,020 kg · $1.13/kg',1186,1075],
+        ['Storage racks','8 units · $210/$120/$79/$62',901,793],
+        ['CPU dumbbells','1,725 kg · $2.19 / $2.95 per kg',3945,3454],
+        ['Specialty bars','4 bars · EZ $22 · trap $60 · SSB $85',190,171],
+        ['Olympic steel plates','1,000 kg · $2.30/kg ⚠ over market',2300,1850],
+        ['Handle / tri-grip plates','1,000 kg · $2.24/kg',2240,2000]]}
+};
+const money = n => '$'+Number(n).toLocaleString();
+const priceTable = nm => { const p=PRICING[nm]; if(!p) return '';
+  const tq=p.rows.reduce((a,r)=>a+r[2],0), tt=p.rows.reduce((a,r)=>a+r[3],0);
+  const body=p.rows.map((r,i)=>{
+    const key='agr:'+nm+':'+i;
+    return `<tr><td class="pi"><b>${r[0]}</b><small>${r[1]}</small></td>`+
+      `<td class="pq">${money(r[2])}</td><td class="pt">${money(r[3])}</td>`+
+      `<td class="pd">${money(r[2]-r[3])}</td>`+
+      `<td class="pa"><input class="agr" data-k="${key}" inputmode="decimal" placeholder="—"></td></tr>`;
+  }).join('');
+  return `<div class="ptwrap"><div class="ptnote">${p.note}</div>`+
+    `<table class="ptbl"><thead><tr><th>Category</th><th>Quoted</th><th>Target</th><th>Save</th><th>Agreed</th></tr></thead>`+
+    `<tbody>${body}</tbody>`+
+    `<tfoot><tr><td class="pi"><b>Total</b></td><td class="pq">${money(tq)}</td><td class="pt">${money(tt)}</td>`+
+    `<td class="pd">${money(tq-tt)}</td><td class="pa"><b class="agrtot" data-nm="${nm}">—</b></td></tr></tfoot></table></div>`;
 };
 const chaseTable = nm => { const c=CHASE[nm]; if(!c) return '';
   return `<div class="chsum">${c.sum}</div><table class="chtbl"><thead><tr><th>Item</th><th>Model</th><th>Qty</th><th>Price</th></tr></thead><tbody>`+
@@ -855,7 +911,7 @@ document.getElementById('supp').innerHTML =
        (ARRIVE[s.nm]?`<div class="kv"><b>Getting there:</b> ${ARRIVE[s.nm]}</div>`:'')+
        (NEXTSTOP[s.nm]?`<div class="kv"><b>To the next stop:</b> ${NEXTSTOP[s.nm]}</div>`:'')+
        (INTEL[s.nm]?`<div class="daytip" style="margin:8px 0">${INTEL[s.nm]}</div>`:'')+
-       `<div class="sub-h">Items we’re after</div>${chaseTable(s.nm)}`+
+       `<div class="sub-h">Items we’re after</div>${PRICING[s.nm]?priceTable(s.nm):chaseTable(s.nm)}`+
        (cm?`<div class="sub-h">Commercials</div><div class="kv"><b>Their quote:</b> ${cm.q}</div><div class="kv"><b>Our target:</b> ${cm.t}</div><div class="kv"><b>Their MOQ:</b> ${cm.m} · <b>Our qty:</b> ${cm.om}</div>`:'')+
      `</div></div>`;
  }).join('');
@@ -999,6 +1055,38 @@ document.getElementById('info').innerHTML =
    [['Hello','你好 · Nǐ hǎo'],['How are you?','你好吗 · Nǐ hǎo ma'],['Good morning','早上好 · Zǎoshang hǎo'],['Goodbye','再见 · Zàijiàn'],['Thank you','谢谢 · Xièxie'],['You’re welcome','不客气 · Bú kèqi'],['No problem','没问题 · Méi wèntí'],['Nice to meet you','很高兴认识你 · Hěn gāoxìng rènshi nǐ'],['How much?','多少钱 · Duōshǎo qián'],['Too expensive!','太贵了 · Tài guì le'],['A bit cheaper?','便宜一点 · Piányi yìdiǎn'],['This one','这个 · Zhège'],['Delicious','好吃 · Hǎochī'],['Cheers!','干杯 · Gānbēi'],['Water','水 · Shuǐ'],['Beer','啤酒 · Píjiǔ'],['No spicy','不辣 · Bú là'],['Where is the toilet?','洗手间在哪里 · Xǐshǒujiān zài nǎlǐ'],['Airport','机场 · Jīchǎng'],['Train station','火车站 · Huǒchēzhàn'],['I don’t understand','我听不懂 · Wǒ tīng bù dǒng'],['We’re from Australia','我们来自澳大利亚 · Wǒmen láizì Àodàlìyà']].map(r=>`<tr><td>${r[0]}</td><td style="color:var(--text2)">${r[1]}</td></tr>`).join('')+
  '</tbody></table>'+
  '<div class="cav"><ul style="padding-left:18px;margin:0"><li><b>Show your driver:</b> taxi / Didi drivers often don’t read English — have each supplier text you their address in Chinese and show it on your phone. (Peach Builder: 青岛驰健英赛特 五谷河一路 赵家岭村106号.)</li><li><b>Luggage:</b> travel carry-on + daypack for the rail-heavy circuit; the boys can forward a bag to Hong Kong (SF Express) for the holiday tail. Domestic cabin limit is 8 kg on your MF8526 tickets.</li></ul></div>';
+
+/* agreed-price inputs: persist + live total */
+function agrRefresh(nm){
+  let sum=0, any=false;
+  document.querySelectorAll(`input.agr[data-k^="agr:${nm}:"]`).forEach(i=>{
+    const v=parseFloat(String(i.value).replace(/[^0-9.]/g,''));
+    if(!isNaN(v)){ sum+=v; any=true; }
+  });
+  const t=document.querySelector(`.agrtot[data-nm="${nm}"]`);
+  if(t) t.textContent = any ? '$'+Math.round(sum).toLocaleString() : '—';
+}
+document.querySelectorAll('input.agr').forEach(inp=>{
+  const k=inp.dataset.k;
+  try{ const v=localStorage.getItem(k); if(v) inp.value=v; }catch(e){}
+  inp.addEventListener('input',()=>{
+    try{ localStorage.setItem(k,inp.value); }catch(e){}
+    agrRefresh(k.split(':')[1]);
+  });
+  inp.addEventListener('click',e=>e.stopPropagation());
+});
+Object.keys(PRICING).forEach(agrRefresh);
+
+/* ===== SHOWCASE view ===== */
+const SHOTS=[
+ {img:'img/elanzo-competition-plates.jpg',
+  ttl:'ELANZO — competition plate range (sandstone)',
+  txt:'The look we’re chasing for the group-fitness bumpers: custom sandstone stone-finish, engraved ELANZO wordmark + weight, IWF logo and three-bar E monogram, stainless steel hub (IWF 50.4 mm), 88–90 Shore A. Sizes 2.5–25 kg. ⚠ Cam has flagged sandstone is not available below ~5 kg — the 1.25 & 2.5 kg will need to be black or a near match.'}
+];
+const shEl=document.getElementById('showcase');
+if(shEl) shEl.innerHTML =
+ '<h2>Showcase</h2><p class="lead">Reference images — the look, finish and branding we’re chasing. Show these on the factory floor.</p>'+
+ '<div class="shots">'+SHOTS.map(x=>`<div class="shot"><img src="${x.img}" alt="${x.ttl}" loading="lazy"><div class="cap"><b>${x.ttl}</b>${x.txt}</div></div>`).join('')+'</div>';
 
 /* tab nav */
 document.querySelectorAll('.seg button').forEach(b=>{

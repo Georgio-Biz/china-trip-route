@@ -674,8 +674,8 @@ const DAYS = [
   plan:'Thursday: early flight Qingdao → Xiamen, Rayton for the day (ready to leave after 4pm), then back to Xiamen (~1h — no overnight near Rayton) and an evening HSR down to Guangzhou from Xiamen North. Overnight Guangzhou, set up for the factories Friday.',
   visit:['Rayton'],
   legs:[
-   {mode:'car',route:'Wyndham Qingdao (Chengyang) → Qingdao airport (TAO)',dur:'~40–50 min',note:'Didi/taxi ~40 km (Wyndham also runs an airport shuttle). ⚠ Domestic flight — at TAO by ~06:20 for the 07:50 (90 min before), so leave the hotel ~05:20. Early start.'},
-   {mode:'fly',route:'Qingdao (TAO) → Xiamen (XMN)',dur:'~2h35',note:'~5/day (Shandong Air, Xiamen Air, Beijing Capital). Earliest 07:50 → 10:35 — take it for a full day at Rayton.',opts:[{t:'07:50',d:'2h45 → 10:35',svc:'earliest'},{t:'to 20:05',d:'~2h35',svc:'~5/day'}]},
+   {mode:'car',route:'Wyndham Qingdao (Chengyang) → Qingdao airport (TAO)',dur:'~40–50 min',note:'✅ Use the Wyndham’s included airport shuttle — <b>book it 4 h ahead</b> at the front desk (or Didi/taxi ~40 km). At TAO by ~06:30 for the 08:00, so leave the hotel ~05:30. Early start.'},
+   {mode:'fly',route:'Qingdao (TAO) → Xiamen (XMN)',dur:'~2h35',note:'✓ Booked — Xiamen Airlines MF8526, 3 pax, AU$532.80 (booking 1167732017126287). Arrives Xiamen Gaoqi T3.',opts:[{t:'08:00',d:'2h35 → 10:35 (T3)',svc:'MF8526 ✓ booked'}]},
    {mode:'car',route:'Xiamen airport (XMN) → Rayton (Changtai, Zhangzhou)',dur:'~1 h',note:'By car ~1 h from the airport — pre-arrange so you go straight there. (Or metro/taxi to Xiamen North + ~30 min HSR to Zhangzhou.)'},
    {mode:'car',route:'Rayton → Xiamen North station',dur:'~1 h',note:'Straight back to Xiamen after the visit (no overnight near Rayton), then depart Guangzhou-bound from Xiamen North.'},
    {mode:'rail',route:'Xiamen North → Guangzhou South (evening HSR)',dur:'~3h11–4h',note:'Ready ~4pm at Rayton + ~1h back to Xiamen North → aim for a 17:44–19:54 departure. Fastest G3049 18:59 → 22:10 (3h11); last ~19:54. Alt: fly XMN → Guangzhou (CAN), last ~22:35, ~1h40.',opts:[{t:'17:18',d:'3h59 → 21:17',svc:'G3815'},{t:'17:44',d:'4h09 → 21:53',svc:'G1625'},{t:'18:59',d:'3h11 → 22:10',svc:'G3049 · fastest'},{t:'19:25',d:'3h22 → 22:47',svc:'G3051'},{t:'~19:54',d:'~3h+',svc:'last'}]}]},
@@ -826,10 +826,32 @@ document.getElementById('justin').innerHTML =
 const STAYS=[
  {name:'Diamond Bund Hotel', cn:'戴尔曼·外滩酒店', city:'Shanghai', who:'Danny + Konstantin',
   cin:'Thu 23 Jul · after 15:00', cout:'Sun 26 Jul · before 12:00', nights:'3 nights · 2 rooms (Special Queen)',
-  conf:'Y0C0D260713022', booking:'1167731100784793', guests:'Daniel Catanzaro, Konstantin Blank',
+  conf:'1167731100822134', booking:'1167731100784793', guests:'Daniel Catanzaro, Konstantin Blank',
   addr:'No. 53 Jiujiang Road, Huangpu District, Shanghai', addrcn:'上海黄浦区九江路53号',
-  tel:'+86 189 1750 6637', via:'Trip.com · prepaid online',
-  map:'https://www.google.com/maps/search/?api=1&query=No.%2053%20Jiujiang%20Road%2C%20Huangpu%20District%2C%20Shanghai'}
+  tel:'+86 189 1750 6637', via:'Trip.com · prepaid AU$1,274.58',
+  extra:'Deposit CNY 500 per room at check-in (cash/card/Alipay/WeChat; refunds 2–4 weeks).',
+  map:'https://www.google.com/maps/search/?api=1&query=No.%2053%20Jiujiang%20Road%2C%20Huangpu%20District%2C%20Shanghai'},
+ {name:'Ningjin Garden Hotel', cn:'青澜宁津花园酒店', city:'Ningjin (Dezhou)', who:'All three',
+  cin:'Sun 26 Jul · after 14:00', cout:'Tue 28 Jul · before 12:00', nights:'2 nights · 3 rooms (Cozy Queen)',
+  conf:'1167731171498269', booking:'1167731171498189', guests:'Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas',
+  addr:'North side of the road, 100 m east of Zhengyang Rd × Xiangjiang St, Ningjin, Shandong', addrcn:'山东宁津正阳路与香江大街交叉口东100米路北',
+  tel:'+86 534 899 8888', via:'Trip.com · PAY AT HOTEL — CNY 1,842',
+  extra:'⚠ Pay at the hotel, not prepaid. Free cancellation before check-in. Georgio arrives ~02:00 Mon — tell the hotel so they hold the room and expect a late arrival.',
+  map:'https://www.google.com/maps/search/?api=1&query=Ningjin%20Garden%20Hotel%20Dezhou%20Shandong'},
+ {name:'Wyndham Qingdao', cn:'青岛鑫江温德姆酒店', city:'Chengyang, Qingdao', who:'All three',
+  cin:'Tue 28 Jul · after 15:00', cout:'Thu 30 Jul · before 12:00', nights:'2 nights · 3 rooms',
+  conf:'1167731171512334', booking:'1167731171508789', guests:'Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas',
+  addr:'No. 220 Heilongjiang Middle Road, Chengyang District, Qingdao 266107', addrcn:'山东青岛城阳区黑龙江中路220号',
+  tel:'+86 532 8098 8888', via:'Trip.com · deposit CNY 500 at check-in · free cancel before 18:00 Tue 28',
+  extra:'✅ Package includes a HOTEL → QINGDAO AIRPORT SHUTTLE — <b>book it 4 h ahead</b> and use it for the 08:00 Thu flight. Also welcome refreshments daily + minibar on day 1.',
+  map:'https://www.google.com/maps/search/?api=1&query=Wyndham%20Qingdao%20Chengyang'},
+ {name:'Dong Fang Hotel', cn:'广州东方宾馆', city:'Yuexiu, Guangzhou', who:'All three (Georgio flies out 1 Aug)',
+  cin:'Thu 30 Jul', cout:'Sun 2 Aug', nights:'3 nights · 3 rooms',
+  conf:'—', booking:'1167731248558318', guests:'Georgio Batsinilas, Daniel Catanzaro, Konstantin Blank',
+  addr:'No. 120 Liuhua Road, Yuexiu District, Guangzhou', addrcn:'广州市越秀区流花路120号',
+  tel:'', via:'Trip.com · PAID AU$1,068.03',
+  extra:'Arriving ~22:10 Thu off the Xiamen train — flag the late check-in.',
+  map:'https://www.google.com/maps/search/?api=1&query=Dong%20Fang%20Hotel%20Guangzhou%20Liuhua%20Road'}
 ];
 const FLIGHTS=[
  {who:'Danny + Konstantin — Cathay Pacific', lines:[
@@ -839,37 +861,26 @@ const FLIGHTS=[
    '<b>Baggage:</b> 1 × 23 kg checked + 1 × 7 kg cabin, each passenger (Economy Light).',
    '<b>Seats:</b> Danny 59D · 45H · 44H  |  Konstantin 59E · 45J · 44J',
    '<b>Note:</b> the return departs <b>Hong Kong</b> (not the mainland) at 00:15 on the 5th — be in HK the night of Tue 4 Aug.'
+ ]},
+ {who:'All three — Qingdao → Xiamen (Xiamen Airlines)', lines:[
+   '<b>Booking:</b> 1167732017126287 · 3 pax (Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas) · paid AU$532.80',
+   '<b>Thu 30 Jul:</b> MF8526, Qingdao Jiaodong <b>08:00</b> → Xiamen Gaoqi <b>T3 10:35</b>. Economy.',
+   '<b>Getting there:</b> use the Wyndham’s airport shuttle (book 4 h ahead) — be at TAO by ~06:30, so leave the hotel ~05:30.'
+ ]},
+ {who:'Georgio — China Southern (open-jaw)', lines:[
+   '<b>In:</b> BNE 10:20 → Jinan (TNA) 23:50, Sun 26 Jul (1 stop via Guangzhou), then pre-booked car ~1h15 to Ningjin.',
+   '<b>Home:</b> Guangzhou (CAN) 21:05 Sat 1 Aug → Brisbane 08:25 (+1), direct.',
+   '<b>Fare:</b> Economy Standard ~A$1,294 return · bags 2×23 kg checked + 1×8 kg cabin.'
  ]}
-]; // add Georgio's flights + any others here as confirmed
-// Danny's hotel picks from Trip.com — to confirm
+]; // add any further tickets here as confirmed
+// Remaining hotel to confirm (everything else is now booked — see Accommodation above)
 const PICKS=[
- {name:'Ningjin Garden Hotel', area:'Central Ningjin (Dezhou)', dates:'26 → 28 Jul · 2 nights', price:'~A$374', who:'All three',
-  fit:'Danny’s pick. ~4★, spacious clean rooms, on-site parking, walkable to town — near the Ningjin factory park (Rosen + MBH).',
-  trip:'https://us.trip.com/hotels/ningjin-1-hotel-detail-99827379/ningjin-garden-hotel/',
-  map:'https://www.google.com/maps/search/?api=1&query=Ningjin%20Garden%20Hotel%20Dezhou'},
- {name:'Wyndham Qingdao', area:'Chengyang, Qingdao', dates:'28 → 30 Jul · 2 nights', price:'~A$797', who:'All three',
-  fit:'Danny’s pick — “central to all 3 factories.” 5★, 378 rooms, pool + gym, No.220 Heilongjiang Middle Rd, Chengyang (~40 km / shuttle to TAO airport + North station). ~25–30 min to Quick Body + Peach Builder.',
-  trip:'https://us.trip.com/hotels/qingdao-hotel-detail-425590/wyndham-qingdao/',
-  map:'https://www.google.com/maps/search/?api=1&query=Wyndham%20Qingdao%20Chengyang'},
- {name:'Dong Fang Hotel', area:'Yuexiu, Guangzhou', dates:'30 Jul → 2 Aug · 3 nights', price:'~A$1,068', who:'All three (Georgio flies out 1 Aug)',
-  fit:'Danny’s pick. 5★ landmark by Yuexiu Park, No.120 Liuhua Rd — under 30 min to Baiyun airport + Guangzhou/Guangzhou-East stations. This is the plan if you take the evening HSR (no Xiamen night).',
-  trip:'https://us.trip.com/hotels/guangzhou-hotel-detail-346960/dong-fang-hotel/',
-  map:'https://www.google.com/maps/search/?api=1&query=Dong%20Fang%20Hotel%20Guangzhou%20Liuhua%20Road'},
  {name:'Regal Hong Kong Hotel', area:'Causeway Bay, Hong Kong', dates:'2 → 5 Aug · 3 nights', price:'~A$871', who:'K & DC only',
-  fit:'Danny’s pick for the HK tail. 5★ in Causeway Bay (88 Yee Wo St) on the MTR — walk to shopping + the harbour. Boys only; Georgio’s home by then.',
+  fit:'Danny’s pick for the HK tail — the last one still to book. 5★ in Causeway Bay (88 Yee Wo St) on the MTR, walk to shopping + the harbour. Boys only; Georgio’s home by then.',
   trip:'https://www.trip.com/hotels/hong-kong-hotel-list/?searchword=Regal+Hong+Kong+Hotel',
   map:'https://www.google.com/maps/search/?api=1&query=Regal%20Hong%20Kong%20Hotel%20Causeway%20Bay'}
 ];
-const PICKS_ALT=[
- {name:'Zhangzhou Longjia Hotel', area:'Longhai, Zhangzhou', dates:'30 → 31 Jul · 1 night', price:'~A$308', who:'All three',
-  fit:'Closest to Rayton (Zhangzhou). Hot-spring resort, 260 rooms, ~2 km from Jiaomei station, ~38 km from Xiamen airport. Cheapest — but only if you overnight Xiamen instead of the evening HSR.',
-  trip:'https://us.trip.com/hotels/zhangzhou-hotel-detail-11302267/longjia-raytour-hotel/',
-  map:'https://www.google.com/maps/search/?api=1&query=Zhangzhou%20Longjia%20Hotel'},
- {name:'Conrad Xiamen', area:'West Xiamen island', dates:'30 → 31 Jul · 1 night', price:'~A$962', who:'All three',
-  fit:'Luxury 5★ on the west (harbour) side of Xiamen island — further from Rayton but a nicer stay. Only if you overnight Xiamen.',
-  trip:'https://www.trip.com/hotels/xiamen-hotel-list/?searchword=Conrad+Xiamen',
-  map:'https://www.google.com/maps/search/?api=1&query=Conrad%20Xiamen'}
-];
+const PICKS_ALT=[];
 const pickCard = p => `<div class="jcard"><h4>${p.name}</h4><ul>`+
   `<li><b>Where:</b> ${p.area}</li>`+
   `<li><b>Dates:</b> ${p.dates}</li>`+
@@ -889,17 +900,23 @@ document.getElementById('bookings').innerHTML =
      `<li><b>Confirmation #:</b> ${s.conf}</li>`+
      `<li><b>Booking #:</b> ${s.booking}</li>`+
      `<li><b>Address:</b> ${s.addr}${s.addrcn?` · ${s.addrcn}`:''}</li>`+
-     `<li><b>Hotel tel:</b> <a style="color:var(--blue)" href="tel:${s.tel.replace(/[^+0-9]/g,'')}">${s.tel}</a></li>`+
+     (s.tel?`<li><b>Hotel tel:</b> <a style="color:var(--blue)" href="tel:${s.tel.replace(/[^+0-9]/g,'')}">${s.tel}</a></li>`:'')+
      `<li><b>Booked via:</b> ${s.via}</li>`+
+     (s.extra?`<li>${s.extra}</li>`:'')+
      `<li><a style="color:var(--blue);font-weight:600" href="${s.map}" target="_blank" rel="noopener">Open in Maps ↗</a></li>`+
    `</ul></div>`).join('')+
  '</div>'+
- '<div class="h3">Hotels to confirm — Danny’s picks</div>'+
- '<p class="lead" style="margin:-4px 0 10px">Pulled from Trip.com. Tap “View on Trip.com” for the full listing + photos. Prices are Danny’s quotes; Shanghai (Diamond Bund) is already booked above.</p>'+
- '<div class="jgrid">'+PICKS.map(pickCard).join('')+'</div>'+
- '<div class="h3">Xiamen overnight — alternative (only if you skip the evening HSR)</div>'+
- '<p class="lead" style="margin:-4px 0 10px">The current plan takes the evening HSR straight to Guangzhou (no Xiamen night). These two are only if the crew decides to overnight Xiamen — Guangzhou then drops a night.</p>'+
- '<div class="jgrid">'+PICKS_ALT.map(pickCard).join('')+'</div>'+
+ (PICKS.length?'<div class="h3">Still to book</div>'+
+   '<p class="lead" style="margin:-4px 0 10px">Everything else is confirmed above. Tap “View on Trip.com” for the listing + photos.</p>'+
+   '<div class="jgrid">'+PICKS.map(pickCard).join('')+'</div>':'')+
+ (PICKS_ALT.length?'<div class="h3">Alternative</div><div class="jgrid">'+PICKS_ALT.map(pickCard).join('')+'</div>':'')+
+ '<div class="h3">Travel insurance</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Corporate Travel — AFA</h4><ul>'+
+     '<li><b>Policy no:</b> 6179506 · Annual Corporate Travel</li>'+
+     '<li><b>Period:</b> 22 Jul 2026 → 15 Jul 2027 (covers the whole trip)</li>'+
+     '<li><b>Broker:</b> Rivers Insurance Brokers — Wendy Banks / Paul Forbes, 07 3028 9494</li>'+
+     '<li>⚠ Premium payable within 14 days of 22 Jul to keep cover in force — confirm it’s been paid before departure.</li>'+
+   '</ul></div></div>'+
  '<div class="h3">Flights</div>'+
  (FLIGHTS.length? '<div class="jgrid">'+FLIGHTS.map(fl=>`<div class="jcard"><h4>${fl.who}</h4><ul>${fl.lines.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')+'</div>'
    : '<div class="cav">Flight tickets will appear here as they\'re confirmed. For now, current fares &amp; booking links are in the <b>Info</b> tab.</div>');

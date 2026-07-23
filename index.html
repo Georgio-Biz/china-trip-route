@@ -177,6 +177,43 @@
   .jtbl td{padding:10px;border-bottom:1px solid var(--hair2);vertical-align:top}
   .jtbl tr:last-child td{border-bottom:0}
   .jtbl td:first-child{font-weight:600}
+  .qwrap{margin:6px 0 2px}
+  .qbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 11px;position:sticky;top:0;background:var(--card);padding:4px 0;z-index:2}
+  .qbtn{font:inherit;font-size:11.5px;font-weight:600;padding:6px 11px;border:1px solid #0071e3;color:#0071e3;background:transparent;border-radius:8px;cursor:pointer;-webkit-appearance:none}
+  .qbtn:active{background:rgba(0,113,227,.09)}
+  .qbtn.qclr{border-color:var(--line2);color:var(--text3)}
+  .qsaved{font-size:11.5px;font-weight:600;color:#0a8a3c;opacity:0;transition:opacity .15s}
+  .qsaved.on{opacity:1}
+  .qgrp{border:1px solid var(--line);border-radius:11px;margin:0 0 9px;overflow:hidden;background:var(--card)}
+  .qgh{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;background:var(--bg2)}
+  .qgt{font-size:12.5px;font-weight:700;flex:1;min-width:0}
+  .qgs{font-size:11.5px;color:var(--text3);font-weight:600;white-space:nowrap}
+  .qgc{font-size:10px;color:var(--text3);transition:transform .18s}
+  .qgrp.open .qgc{transform:rotate(180deg)}
+  .qgb{display:none;padding:2px 10px 8px}
+  .qgrp.open .qgb{display:block}
+  .qrow{padding:10px 0;border-bottom:1px solid var(--line)}
+  .qrow:last-child{border-bottom:none}
+  .qname{display:flex;align-items:baseline;gap:8px;margin:0 0 7px}
+  .qname b{font-size:12.5px;font-weight:600;flex:1;min-width:0}
+  .qqty{font-size:11px;color:var(--text3);white-space:nowrap;font-weight:600}
+  .qcells{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:6px}
+  .qc{background:var(--bg2);border-radius:8px;padding:6px 8px;min-width:0}
+  .qc small{display:block;font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.03em;font-weight:600;margin-bottom:2px}
+  .qc span{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+  .qc .tg{color:#0071e3}
+  .qc.ag{background:rgba(0,113,227,.07);border:1px solid rgba(0,113,227,.22)}
+  .qc .atot.on{color:#0a8a3c}
+  input.agr{width:100%;padding:3px 0;font:inherit;font-size:13px;font-weight:700;border:none;background:transparent;color:var(--text);-webkit-appearance:none;font-variant-numeric:tabular-nums}
+  input.agr:focus{outline:none;color:#0071e3}
+  .qtot{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:7px;margin-top:11px;padding-top:11px;border-top:2px solid var(--line)}
+  .qtl{background:var(--bg2);border-radius:9px;padding:8px 10px}
+  .qtl.wide{grid-column:1/-1}
+  .qtl small{display:block;font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.03em;font-weight:600;margin-bottom:2px}
+  .qtl b{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .qtl b.tg{color:#0071e3}
+  .qtl b.ok{color:#0a8a3c}
+  .qhint{display:block;font-size:10.5px;color:var(--text3);font-weight:500;margin-top:3px;line-height:1.4;text-transform:none;letter-spacing:0}
   .ptwrap{margin:6px 0 4px}
   .ptnote{font-size:12px;color:var(--text3);margin:0 0 8px;line-height:1.5}
   .ptbl{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
@@ -533,37 +570,142 @@ const CHASE = {
  'Hongbinsheng (HBS)':{sum:'Benches — the FID fleet',items:[['Adjustable FID bench','HBS-2603','12','TBC']]},
  'Flooring — Yishui':{sum:'Flooring — alternative to Chuanyu',items:[['Gym flooring','—','fitout','quote (compare)']]},
 };
-// Quoted vs target vs agreed — editable, saves to the browser
-const PRICING = {
- 'Baopeng Fitness':{note:'Quoted by Cam 23 Jul (VANBO). Alibaba-benchmarked targets. Type your agreed price — it saves on this device.',
-  rows:[['Olympic barbells','14 bars · $71 / $68 ea',982,870],
-        ['Wall balls','12 balls · $13.80–16.50',180,150],
-        ['Dead balls','19 balls · ~$0.71/kg',212,201],
-        ['Kettlebells','30 units · 496 kg · $1.58–1.72/kg',889,783],
-        ['Sandstone bumpers','1,020 kg · $1.13/kg',1186,1075],
-        ['Storage racks','8 units · $210/$120/$79/$62',901,793],
-        ['CPU dumbbells','1,725 kg · $2.19 / $2.95 per kg',3945,3454],
-        ['Specialty bars','4 bars · EZ $22 · trap $60 · SSB $85',190,171],
-        ['Olympic steel plates','1,000 kg · $2.30/kg ⚠ over market',2300,1850],
-        ['Handle / tri-grip plates','1,000 kg · $2.24/kg',2240,2000]]}
-};
-const money = n => '$'+Number(n).toLocaleString();
-const priceTable = nm => { const p=PRICING[nm]; if(!p) return '';
-  const tq=p.rows.reduce((a,r)=>a+r[2],0), tt=p.rows.reduce((a,r)=>a+r[3],0);
-  const body=p.rows.map((r,i)=>{
-    const key='agr:'+nm+':'+i;
-    return `<tr><td class="pi"><b>${r[0]}</b><small>${r[1]}</small></td>`+
-      `<td class="pq">${money(r[2])}</td><td class="pt">${money(r[3])}</td>`+
-      `<td class="pd">${money(r[2]-r[3])}</td>`+
-      `<td class="pa"><input class="agr" data-k="${key}" inputmode="decimal" placeholder="—"></td></tr>`;
-  }).join('');
-  return `<div class="ptwrap"><div class="ptnote">${p.note}</div>`+
-    `<div class="shbar"><button class="shbtn" data-share="${nm}">Copy shareable link with these prices</button><span class="shmsg" data-msg="${nm}"></span></div>`+
-    `<table class="ptbl"><thead><tr><th>Category</th><th>Quoted</th><th>Target</th><th>Save</th><th>Agreed</th></tr></thead>`+
-    `<tbody>${body}</tbody>`+
-    `<tfoot><tr><td class="pi"><b>Total</b></td><td class="pq">${money(tq)}</td><td class="pt">${money(tt)}</td>`+
-    `<td class="pd">${money(tq-tt)}</td><td class="pa"><b class="agrtot" data-nm="${nm}">—</b></td></tr></tfoot></table></div>`;
-};
+// ===== QUOTE: per-piece quoted / target / agreed, saved locally =====
+const QUOTE = {'Baopeng Fitness':{cur:'USD',groups:[{"g":"Olympic barbells","u":"each","rows":[["Olympic barbell 20 kg (men's)",10,71.0,63.0],["Olympic barbell 15 kg (women's)",4,68.0,60.0]]},{"g":"Wall balls","u":"each","rows":[["Wall ball 4 kg",4,13.8,11.0],["Wall ball 6 kg",4,14.8,12.5],["Wall ball 9 kg",4,16.5,14.0]]},{"g":"Dead balls","u":"each","rows":[["Dead ball 6 kg",2,4.25,4.05],["Dead ball 8 kg",4,4.69,4.45],["Dead ball 12 kg",4,6.1,5.8],["Dead ball 16 kg",2,9.38,8.9],["Dead ball 20 kg",2,14.85,14.1],["Dead ball 25 kg",2,18.75,17.8],["Dead ball 30 kg",2,22.65,21.5],["Dead ball 40 kg",1,28.9,27.45]]},{"g":"Kettlebells (competition steel)","u":"each","rows":[["Kettlebell 6 kg",4,20.0,17.6],["Kettlebell 8 kg",4,20.6,18.15],["Kettlebell 12 kg",4,21.5,18.9],["Kettlebell 16 kg",6,27.5,24.2],["Kettlebell 20 kg",4,33.0,29.05],["Kettlebell 24 kg",4,39.0,34.3],["Kettlebell 28 kg",2,43.5,38.3],["Kettlebell 32 kg",2,50.5,44.45]]},{"g":"Sandstone Olympic bumpers","u":"pair","rows":[["Sandstone bumper 20 kg (pair)",12,45.2,40.8],["Sandstone bumper 10 kg (pair)",16,22.6,20.4],["Sandstone bumper 5 kg (pair)",16,11.3,10.2],["Bumper 2.5 kg (pair) — black, no sandstone",8,7.88,7.1],["Bumper 1.25 kg (pair) — black, no sandstone",8,4.76,4.3]]},{"g":"Storage racks","u":"each","rows":[["Double-stack dumbbell rack",2,210.0,184.8],["Dumbbell tree rack (1–10 kg)",2,62.0,54.55],["Small barbell rack (10 bars)",1,120.0,105.6],["Olympic weight tree",3,79.0,69.5]]},{"g":"CPU dumbbells 1–10 kg · stone","u":"pair","rows":[["CPU dumbbell 1 kg (pair)",2,5.9,5.4],["CPU dumbbell 2 kg (pair)",2,11.8,10.8],["CPU dumbbell 3 kg (pair)",2,17.7,16.2],["CPU dumbbell 4 kg (pair)",2,23.6,21.6],["CPU dumbbell 5 kg (pair)",2,29.5,27.0],["CPU dumbbell 6 kg (pair)",2,35.4,32.4],["CPU dumbbell 7 kg (pair)",2,41.3,37.8],["CPU dumbbell 8 kg (pair)",2,47.2,43.2],["CPU dumbbell 9 kg (pair)",2,53.1,48.6],["CPU dumbbell 10 kg (pair)",2,59.0,54.0]]},{"g":"CPU dumbbells 12.5–60 kg · stone","u":"pair","rows":[["CPU dumbbell 12.5 kg (pair)",2,54.75,47.5],["CPU dumbbell 15 kg (pair)",2,65.7,57.0],["CPU dumbbell 17.5 kg (pair)",1,76.65,66.5],["CPU dumbbell 20 kg (pair)",1,87.6,76.0],["CPU dumbbell 22.5 kg (pair)",1,98.55,85.5],["CPU dumbbell 25 kg (pair)",1,109.5,95.0],["CPU dumbbell 27.5 kg (pair)",1,120.45,104.5],["CPU dumbbell 30 kg (pair)",1,131.4,114.0],["CPU dumbbell 32.5 kg (pair)",1,142.35,123.5],["CPU dumbbell 35 kg (pair)",1,153.3,133.0],["CPU dumbbell 37.5 kg (pair)",1,164.25,142.5],["CPU dumbbell 40 kg (pair)",1,175.2,152.0],["CPU dumbbell 42.5 kg (pair)",1,186.15,161.5],["CPU dumbbell 45 kg (pair)",1,197.1,171.0],["CPU dumbbell 47.5 kg (pair)",1,208.05,180.5],["CPU dumbbell 50 kg (pair)",1,219.0,190.0],["CPU dumbbell 52.5 kg (pair)",1,229.95,199.5],["CPU dumbbell 55 kg (pair)",1,240.9,209.0],["CPU dumbbell 57.5 kg (pair)",1,251.85,218.5],["CPU dumbbell 60 kg (pair)",1,262.8,228.0]]},{"g":"Specialty bars (loadable)","u":"each","rows":[["EZ curl bar — Olympic loadable",2,22.3,20.05],["Trap / hex deadlift bar (28 mm, 1.8 m)",1,60.0,54.0],["Safety squat bar",1,85.0,76.5]]},{"g":"Olympic steel plates · 1000 kg","u":"pair","rows":[["Olympic plate 20 kg (pair)",16,92.0,74.0],["Olympic plate 10 kg (pair)",8,46.0,37.0],["Olympic plate 5 kg (pair)",10,23.0,18.5],["Olympic plate 2.5 kg (pair)",12,11.5,9.25],["Olympic plate 1.25 kg (pair)",12,5.75,4.62],["Olympic plate 0.5 kg (pair)",10,2.3,1.85]]},{"g":"Handle / tri-grip plates · 1000 kg","u":"pair","rows":[["Handle/tri-grip plate 20 kg (pair)",16,89.6,80.0],["Handle/tri-grip plate 10 kg (pair)",8,44.8,40.0],["Handle/tri-grip plate 5 kg (pair)",10,22.4,20.0],["Handle/tri-grip plate 2.5 kg (pair)",12,11.2,10.0],["Handle/tri-grip plate 1.25 kg (pair)",12,5.6,5.0],["Handle/tri-grip plate 0.5 kg (pair)",10,2.24,2.0]]},{"g":"Fixed-weight bars — NOT YET QUOTED","u":"each","rows":[["EZ curl bar (fixed) 15 kg",1,null,null],["EZ curl bar (fixed) 20 kg",1,null,null],["EZ curl bar (fixed) 25 kg",1,null,null],["EZ curl bar (fixed) 30 kg",1,null,null],["EZ curl bar (fixed) 35 kg",1,null,null],["Straight bar (fixed) 20 kg",1,null,null],["Straight bar (fixed) 25 kg",1,null,null],["Straight bar (fixed) 30 kg",1,null,null],["Straight bar (fixed) 35 kg",1,null,null],["Straight bar (fixed) 40 kg",1,null,null]]},{"g":"Functional — NOT YET QUOTED","u":"each","rows":[["Torsonator / landmine attachment",8,null,null],["Gymnastic rings — adjustable",8,null,null]]}]}};
+
+const AK  = (nm,item)=>'fitaz.agr.v2|'+nm+'|'+item;
+const f2  = n => n==null?'—':'$'+Number(n).toFixed(2);
+const f0  = n => n==null?'—':'$'+Math.round(n).toLocaleString();
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function agrGet(nm,item){ try{ return localStorage.getItem(AK(nm,item))||''; }catch(e){ return ''; } }
+function agrSet(nm,item,v){ try{ v?localStorage.setItem(AK(nm,item),v):localStorage.removeItem(AK(nm,item)); }catch(e){} }
+
+function quoteBlock(nm){
+  const Q=QUOTE[nm]; if(!Q) return '';
+  let ri=0, h=`<div class="qwrap" data-sup="${esc(nm)}">`;
+  h+=`<div class="qbar"><button type="button" class="qbtn" data-act="csv" data-sup="${esc(nm)}">Export CSV</button>`+
+     `<button type="button" class="qbtn" data-act="link" data-sup="${esc(nm)}">Copy share link</button>`+
+     `<button type="button" class="qbtn qclr" data-act="clear" data-sup="${esc(nm)}">Clear</button>`+
+     `<span class="qsaved" data-saved="${esc(nm)}"></span></div>`;
+  Q.groups.forEach((g,gi)=>{
+    h+=`<div class="qgrp open"><div class="qgh" data-gi="${gi}"><span class="qgt">${esc(g.g)}</span><span class="qgs" data-gsub="${gi}">—</span><span class="qgc">▾</span></div><div class="qgb">`;
+    g.rows.forEach(r=>{
+      const item=r[0], qty=r[1], quo=r[2], tar=r[3];
+      h+=`<div class="qrow"><div class="qname"><b>${esc(item)}</b><span class="qqty">× ${qty} ${esc(g.u)}</span></div>`+
+        `<div class="qcells">`+
+        `<div class="qc"><small>Quoted / ${esc(g.u)}</small><span>${f2(quo)}</span></div>`+
+        `<div class="qc"><small>Target / ${esc(g.u)}</small><span class="tg">${f2(tar)}</span></div>`+
+        `<div class="qc"><small>Quoted total</small><span>${quo!=null?f0(quo*qty):'—'}</span></div>`+
+        `<div class="qc ag"><small>Agreed / ${esc(g.u)}</small>`+
+          `<input class="agr" inputmode="decimal" placeholder="0.00" data-ri="${ri}" data-nm="${esc(nm)}" data-item="${esc(item)}" data-qty="${qty}" data-gi="${gi}" value="${esc(agrGet(nm,item))}"></div>`+
+        `<div class="qc"><small>Agreed total</small><span class="atot" data-atot="${ri}">—</span></div>`+
+        `</div></div>`;
+      ri++;
+    });
+    h+=`</div></div>`;
+  });
+  h+=`<div class="qtot" data-tot="${esc(nm)}"></div></div>`;
+  return h;
+}
+
+function quoteRecalc(nm){
+  const Q=QUOTE[nm], wrap=document.querySelector(`.qwrap[data-sup="${nm}"]`); if(!Q||!wrap) return;
+  let TQ=0,TT=0,TA=0,TQp=0,filled=0,total=0;
+  Q.groups.forEach((g,gi)=>{
+    let gq=0,ga=0;
+    g.rows.forEach(r=>{
+      const qty=r[1],quo=r[2],tar=r[3];
+      if(quo!=null){gq+=quo*qty;TQ+=quo*qty;}
+      if(tar!=null){TT+=tar*qty;}
+    });
+    wrap.querySelectorAll(`input.agr[data-gi="${gi}"]`).forEach(inp=>{
+      const v=parseFloat(String(inp.value).replace(/[^0-9.]/g,''));
+      const qty=parseFloat(inp.dataset.qty)||0;
+      const ridx=parseInt(inp.dataset.ri,10);
+      const cell=wrap.querySelector(`.atot[data-atot="${inp.dataset.ri}"]`);
+      if(!isNaN(v)&&v>0){
+        const t=v*qty; ga+=t; TA+=t; filled++;
+        const row=g.rows.find(x=>x[0]===inp.dataset.item);
+        if(row&&row[2]!=null) TQp+=row[2]*qty;
+        if(cell){cell.textContent=f0(t);cell.classList.add('on');}
+      }
+      else { if(cell){cell.textContent='—';cell.classList.remove('on');} }
+    });
+    total+=g.rows.length;
+    const sub=wrap.querySelector(`.qgs[data-gsub="${gi}"]`);
+    if(sub) sub.textContent = ga>0 ? f0(ga)+' agreed' : f0(gq);
+  });
+  const t=wrap.querySelector(`.qtot[data-tot="${nm}"]`);
+  if(t) t.innerHTML =
+    `<div class="qtl"><small>Quoted total</small><b>${f0(TQ)}</b></div>`+
+    `<div class="qtl"><small>Target total</small><b class="tg">${f0(TT)}</b></div>`+
+    `<div class="qtl"><small>Agreed total</small><b class="${TA>0?'ok':''}">${TA>0?f0(TA):'—'}</b></div>`+
+    `<div class="qtl"><small>vs quoted (priced lines)</small><b class="${TA>0&&TA<TQp?'ok':''}">${TA>0?(TA<=TQp?'−$':'+$')+Math.round(Math.abs(TQp-TA)).toLocaleString():'—'}</b></div>`+
+    `<div class="qtl wide"><small>Lines priced</small><b>${filled} of ${total}</b>${filled<total?`<span class="qhint">Agreed total only covers the ${filled} line${filled===1?'':'s'} you've filled in — not the whole order.</span>`:''}</div>`;
+}
+
+function quoteFlash(nm,msg){
+  const el=document.querySelector(`.qsaved[data-saved="${nm}"]`); if(!el) return;
+  el.textContent=msg||'Saved'; el.classList.add('on');
+  clearTimeout(el._t); el._t=setTimeout(()=>{el.classList.remove('on');el.textContent='';},1600);
+}
+
+function quoteWire(){
+  document.querySelectorAll('input.agr').forEach(inp=>{
+    const save=()=>{ agrSet(inp.dataset.nm,inp.dataset.item,inp.value.trim()); quoteRecalc(inp.dataset.nm); quoteFlash(inp.dataset.nm,'Saved'); };
+    ['input','change','blur'].forEach(ev=>inp.addEventListener(ev,save));
+    inp.addEventListener('click',e=>e.stopPropagation());
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); inp.blur(); } });
+  });
+  document.querySelectorAll('.qgh').forEach(hd=>hd.addEventListener('click',e=>{ e.stopPropagation(); hd.parentElement.classList.toggle('open'); }));
+  document.querySelectorAll('.qbtn').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const nm=b.dataset.sup, act=b.dataset.act, Q=QUOTE[nm];
+    if(act==='clear'){
+      if(!confirm('Clear all agreed prices for '+nm+'?')) return;
+      Q.groups.forEach(g=>g.rows.forEach(r=>agrSet(nm,r[0],'')));
+      document.querySelectorAll(`input.agr[data-nm="${nm}"]`).forEach(i=>i.value='');
+      quoteRecalc(nm); quoteFlash(nm,'Cleared'); return;
+    }
+    if(act==='link'){
+      const d={}; Q.groups.forEach(g=>g.rows.forEach(r=>{const v=agrGet(nm,r[0]); if(v) d[r[0]]=v;}));
+      const enc=btoa(unescape(encodeURIComponent(JSON.stringify(d)))).replace(/\+/g,'-').replace(/\//g,'_');
+      const url=location.origin+location.pathname+'?agreed='+enc;
+      if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(()=>quoteFlash(nm,'Link copied')).catch(()=>prompt('Copy:',url));
+      else prompt('Copy:',url);
+      return;
+    }
+    if(act==='csv'){
+      const rows=[['Group','Item','Qty','Unit','Quoted per '+'piece','Target per piece','Quoted total','Agreed per piece','Agreed total']];
+      Q.groups.forEach(g=>g.rows.forEach(r=>{
+        const v=parseFloat(agrGet(nm,r[0]))||'';
+        rows.push([g.g,r[0],r[1],g.u,r[2]??'',r[3]??'',r[2]!=null?(r[2]*r[1]).toFixed(2):'',v===''?'':v,v===''?'':(v*r[1]).toFixed(2)]);
+      }));
+      const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+      a.download=nm.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'-agreed-prices.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      quoteFlash(nm,'CSV exported');
+    }
+  }));
+  // restore from a shared link
+  try{
+    const p=new URLSearchParams(location.search).get('agreed');
+    if(p){
+      const d=JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))));
+      Object.keys(QUOTE).forEach(nm=>{
+        Object.entries(d).forEach(([item,v])=>{
+          agrSet(nm,item,v);
+          const i=document.querySelector(`input.agr[data-nm="${nm}"][data-item="${CSS.escape?CSS.escape(item):item}"]`);
+          if(i) i.value=v;
+        });
+      });
+      document.querySelectorAll('input.agr').forEach(i=>{ const v=agrGet(i.dataset.nm,i.dataset.item); if(v) i.value=v; });
+    }
+  }catch(e){ console.warn('agreed restore failed',e); }
+  Object.keys(QUOTE).forEach(quoteRecalc);
+}
 const chaseTable = nm => { const c=CHASE[nm]; if(!c) return '';
   return `<div class="chsum">${c.sum}</div><table class="chtbl"><thead><tr><th>Item</th><th>Model</th><th>Qty</th><th>Price</th></tr></thead><tbody>`+
    c.items.map(x=>`<tr><td>${x[0]}</td><td class="cm">${x[1]}</td><td class="cq">${x[2]}</td><td class="cp">${x[3]}</td></tr>`).join('')+`</tbody></table>`; };
@@ -936,7 +1078,7 @@ document.getElementById('supp').innerHTML =
        (INTEL[s.nm]?`<div class="daytip" style="margin:8px 0">${INTEL[s.nm]}</div>`:'')+
        (SHOTS.filter(x=>x.sup===s.nm).length?`<div class="sub-h">What we want it to look like</div><div class="shots">`+
           SHOTS.filter(x=>x.sup===s.nm).map(x=>`<div class="shot"><img src="${x.img}" alt="${x.ttl}" loading="lazy"><div class="cap"><b>${x.ttl}</b>${x.txt}</div></div>`).join('')+`</div>`:'')+
-       `<div class="sub-h">Items we’re after</div>${PRICING[s.nm]?priceTable(s.nm):chaseTable(s.nm)}`+
+       `<div class="sub-h">Items we’re after</div>${QUOTE[s.nm]?quoteBlock(s.nm):chaseTable(s.nm)}`+
        (cm?`<div class="sub-h">Commercials</div><div class="kv"><b>Their quote:</b> ${cm.q}</div><div class="kv"><b>Our target:</b> ${cm.t}</div><div class="kv"><b>Their MOQ:</b> ${cm.m} · <b>Our qty:</b> ${cm.om}</div>`:'')+
      `</div></div>`;
  }).join('');
@@ -1081,53 +1223,7 @@ document.getElementById('info').innerHTML =
  '</tbody></table>'+
  '<div class="cav"><ul style="padding-left:18px;margin:0"><li><b>Show your driver:</b> taxi / Didi drivers often don’t read English — have each supplier text you their address in Chinese and show it on your phone. (Peach Builder: 青岛驰健英赛特 五谷河一路 赵家岭村106号.)</li><li><b>Luggage:</b> travel carry-on + daypack for the rail-heavy circuit; the boys can forward a bag to Hong Kong (SF Express) for the holiday tail. Domestic cabin limit is 8 kg on your MF8526 tickets.</li></ul></div>';
 
-/* agreed-price inputs: persist + live total */
-function agrRefresh(nm){
-  let sum=0, any=false;
-  document.querySelectorAll(`input.agr[data-k^="agr:${nm}:"]`).forEach(i=>{
-    const v=parseFloat(String(i.value).replace(/[^0-9.]/g,''));
-    if(!isNaN(v)){ sum+=v; any=true; }
-  });
-  const t=document.querySelector(`.agrtot[data-nm="${nm}"]`);
-  if(t) t.textContent = any ? '$'+Math.round(sum).toLocaleString() : '—';
-}
-document.querySelectorAll('input.agr').forEach(inp=>{
-  const k=inp.dataset.k;
-  try{ const v=localStorage.getItem(k); if(v) inp.value=v; }catch(e){}
-  inp.addEventListener('input',()=>{
-    try{ localStorage.setItem(k,inp.value); }catch(e){}
-    agrRefresh(k.split(':')[1]);
-  });
-  inp.addEventListener('click',e=>e.stopPropagation());
-});
-Object.keys(PRICING).forEach(agrRefresh);
-
-/* restore prices passed in the URL (so the crew can share a filled-in link) */
-(function(){
-  try{
-    const q=new URLSearchParams(location.search).get('p'); if(!q) return;
-    const data=JSON.parse(decodeURIComponent(escape(atob(q.replace(/-/g,'+').replace(/_/g,'/')))));
-    Object.entries(data).forEach(([k,v])=>{
-      const i=document.querySelector(`input.agr[data-k="${k}"]`);
-      if(i){ i.value=v; try{ localStorage.setItem(k,v); }catch(e){} }
-    });
-    Object.keys(PRICING).forEach(agrRefresh);
-  }catch(e){ console.warn('price restore failed',e); }
-})();
-
-document.querySelectorAll('.shbtn').forEach(b=>{
-  b.addEventListener('click',ev=>{
-    ev.stopPropagation();
-    const nm=b.dataset.share, data={};
-    document.querySelectorAll(`input.agr[data-k^="agr:${nm}:"]`).forEach(i=>{ if(i.value.trim()) data[i.dataset.k]=i.value.trim(); });
-    const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
-    const url=location.origin+location.pathname+'?p='+enc;
-    const msg=document.querySelector(`.shmsg[data-msg="${nm}"]`);
-    const ok=()=>{ if(msg){ msg.textContent='Link copied — paste it to the crew'; setTimeout(()=>msg.textContent='',4000);} };
-    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok).catch(()=>prompt('Copy this link:',url)); }
-    else { prompt('Copy this link:',url); }
-  });
-});
+quoteWire();
 
 /* ===== SHOWCASE view ===== */
 

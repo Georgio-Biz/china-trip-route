@@ -27,6 +27,10 @@
   .h-sub{font-size:12.5px;color:var(--text2);margin-top:2px;letter-spacing:-.005em}
 
   nav{display:flex;justify-content:center;padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--hair2)}
+  nav{position:relative}
+  .seg{-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .seg::-webkit-scrollbar{display:none}
+  .seg button{scroll-snap-align:start}
   .seg{display:inline-flex;flex-wrap:wrap;justify-content:center;background:var(--hair2);border-radius:10px;padding:3px;gap:2px}
   .tphase{display:flex;gap:14px;margin:0 0 12px;align-items:flex-start}
   .ttag{flex:0 0 auto;min-width:82px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.05em;color:#fff;padding:6px 8px;border-radius:8px;margin-top:2px}
@@ -897,6 +901,14 @@ document.getElementById('itin').innerHTML =
   });
 })();
 
+const SHOTS=[
+ {img:'img/elanzo-competition-plates.jpg', sup:'Baopeng Fitness',
+  ttl:'ELANZO — competition plate range (sandstone)',
+  txt:'The look for the group-fitness bumpers: custom sandstone stone finish, engraved ELANZO wordmark + weight, IWF logo and three-bar E monogram, stainless steel hub (IWF 50.4 mm), 88–90 Shore A. Sizes 2.5–25 kg. ⚠ Cam has flagged sandstone is <b>not available below ~5 kg</b> — the 1.25 &amp; 2.5 kg will need to be black or a near match.'},
+ {img:'img/elanzo-dumbbell-rack.jpg', sup:'Baopeng Fitness',
+  ttl:'ELANZO — dumbbell rack system (sandstone)',
+  txt:'Round CPU dumbbells in the same sandstone stone coating with engraved ELANZO wordmark + weight, on a 2-tier stainless-finish Q235 steel rack (ELANZO engraved on the end frame). Render shows 16 pieces / 8 pairs, 12.5–50 kg. ✅ Cam already quotes CPU in “stone colour” ($2.19/kg heavy, $2.95/kg light) so this finish is achievable. ⚠ Our spec is wider than the render — 12.5–60 kg plus a 1–10 kg set — so we need <b>2 double-stack racks + 2 tree racks</b>, not the single 16-piece unit shown.'}
+];
 /* ===== SUPPLIERS (expandable, click-through) ===== */
 document.getElementById('supp').innerHTML =
  '<h2>Suppliers</h2><p class="lead">Only the factories we’re visiting — in visit order. Tap a card for the full picture: trading name, contact, meeting time, address, catalogue, distances, the items we’re after and the commercials.</p>'+
@@ -919,6 +931,8 @@ document.getElementById('supp').innerHTML =
        (ARRIVE[s.nm]?`<div class="kv"><b>Getting there:</b> ${ARRIVE[s.nm]}</div>`:'')+
        (NEXTSTOP[s.nm]?`<div class="kv"><b>To the next stop:</b> ${NEXTSTOP[s.nm]}</div>`:'')+
        (INTEL[s.nm]?`<div class="daytip" style="margin:8px 0">${INTEL[s.nm]}</div>`:'')+
+       (SHOTS.filter(x=>x.sup===s.nm).length?`<div class="sub-h">What we want it to look like</div><div class="shots">`+
+          SHOTS.filter(x=>x.sup===s.nm).map(x=>`<div class="shot"><img src="${x.img}" alt="${x.ttl}" loading="lazy"><div class="cap"><b>${x.ttl}</b>${x.txt}</div></div>`).join('')+`</div>`:'')+
        `<div class="sub-h">Items we’re after</div>${PRICING[s.nm]?priceTable(s.nm):chaseTable(s.nm)}`+
        (cm?`<div class="sub-h">Commercials</div><div class="kv"><b>Their quote:</b> ${cm.q}</div><div class="kv"><b>Our target:</b> ${cm.t}</div><div class="kv"><b>Their MOQ:</b> ${cm.m} · <b>Our qty:</b> ${cm.om}</div>`:'')+
      `</div></div>`;
@@ -1113,11 +1127,7 @@ document.querySelectorAll('.shbtn').forEach(b=>{
 });
 
 /* ===== SHOWCASE view ===== */
-const SHOTS=[
- {img:'img/elanzo-competition-plates.jpg',
-  ttl:'ELANZO — competition plate range (sandstone)',
-  txt:'The look we’re chasing for the group-fitness bumpers: custom sandstone stone-finish, engraved ELANZO wordmark + weight, IWF logo and three-bar E monogram, stainless steel hub (IWF 50.4 mm), 88–90 Shore A. Sizes 2.5–25 kg. ⚠ Cam has flagged sandstone is not available below ~5 kg — the 1.25 & 2.5 kg will need to be black or a near match.'}
-];
+
 const shEl=document.getElementById('showcase');
 if(shEl) shEl.innerHTML =
  '<h2>Showcase</h2><p class="lead">Reference images — the look, finish and branding we’re chasing. Show these on the factory floor.</p>'+

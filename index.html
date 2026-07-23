@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>China Sourcing Trip</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -184,6 +187,10 @@
   .ptbl td.pd{color:#c77700;font-size:11.5px}
   .ptbl td.pa{width:78px}
   .ptbl tfoot td{border-bottom:none;border-top:2px solid var(--line);font-weight:700;padding-top:9px}
+  .shbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 9px}
+  .shbtn{font:inherit;font-size:11.5px;font-weight:600;padding:6px 11px;border:1px solid #0071e3;color:#0071e3;background:transparent;border-radius:8px;cursor:pointer}
+  .shbtn:active{background:rgba(0,113,227,.08)}
+  .shmsg{font-size:11.5px;color:#0a8a3c;font-weight:600}
   input.agr{width:72px;padding:5px 6px;font:inherit;font-size:12px;text-align:right;border:1px dashed var(--line2);border-radius:7px;background:var(--card);color:var(--text);-webkit-appearance:none}
   input.agr:focus{outline:none;border:1px solid #0071e3;background:#fff}
   .agrtot{color:#0a8a3c}
@@ -547,6 +554,7 @@ const priceTable = nm => { const p=PRICING[nm]; if(!p) return '';
       `<td class="pa"><input class="agr" data-k="${key}" inputmode="decimal" placeholder="—"></td></tr>`;
   }).join('');
   return `<div class="ptwrap"><div class="ptnote">${p.note}</div>`+
+    `<div class="shbar"><button class="shbtn" data-share="${nm}">Copy shareable link with these prices</button><span class="shmsg" data-msg="${nm}"></span></div>`+
     `<table class="ptbl"><thead><tr><th>Category</th><th>Quoted</th><th>Target</th><th>Save</th><th>Agreed</th></tr></thead>`+
     `<tbody>${body}</tbody>`+
     `<tfoot><tr><td class="pi"><b>Total</b></td><td class="pq">${money(tq)}</td><td class="pt">${money(tt)}</td>`+
@@ -1076,6 +1084,33 @@ document.querySelectorAll('input.agr').forEach(inp=>{
   inp.addEventListener('click',e=>e.stopPropagation());
 });
 Object.keys(PRICING).forEach(agrRefresh);
+
+/* restore prices passed in the URL (so the crew can share a filled-in link) */
+(function(){
+  try{
+    const q=new URLSearchParams(location.search).get('p'); if(!q) return;
+    const data=JSON.parse(decodeURIComponent(escape(atob(q.replace(/-/g,'+').replace(/_/g,'/')))));
+    Object.entries(data).forEach(([k,v])=>{
+      const i=document.querySelector(`input.agr[data-k="${k}"]`);
+      if(i){ i.value=v; try{ localStorage.setItem(k,v); }catch(e){} }
+    });
+    Object.keys(PRICING).forEach(agrRefresh);
+  }catch(e){ console.warn('price restore failed',e); }
+})();
+
+document.querySelectorAll('.shbtn').forEach(b=>{
+  b.addEventListener('click',ev=>{
+    ev.stopPropagation();
+    const nm=b.dataset.share, data={};
+    document.querySelectorAll(`input.agr[data-k^="agr:${nm}:"]`).forEach(i=>{ if(i.value.trim()) data[i.dataset.k]=i.value.trim(); });
+    const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
+    const url=location.origin+location.pathname+'?p='+enc;
+    const msg=document.querySelector(`.shmsg[data-msg="${nm}"]`);
+    const ok=()=>{ if(msg){ msg.textContent='Link copied — paste it to the crew'; setTimeout(()=>msg.textContent='',4000);} };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok).catch(()=>prompt('Copy this link:',url)); }
+    else { prompt('Copy this link:',url); }
+  });
+});
 
 /* ===== SHOWCASE view ===== */
 const SHOTS=[

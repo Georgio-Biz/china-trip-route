@@ -559,6 +559,38 @@ AIRPORTS.forEach(a=>{
   allPts.push(a.ll);
 });
 
+/* ===== HOTELS — bed icon ===== */
+const bedSVG = c=>`<svg viewBox="0 0 24 24" width="21" height="21" fill="${c}" style="filter:drop-shadow(0 0 2px #fff) drop-shadow(0 1px 1px #fff)"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>`;
+const HOTELS = [
+ {nm:'Diamond Bund Hotel', cn:'戴尔曼·外滩酒店', city:'Huangpu, Shanghai', ll:[31.2372,121.4835],
+  dates:'Thu 23 → Sun 26 Jul · 3 nights', who:'Danny + Konstantin', booked:true,
+  note:'2 rooms · prepaid A$1,274.58 · No. 53 Jiujiang Rd · CNY 500/room deposit at check-in'},
+ {nm:'Ningjin Garden Hotel', cn:'青澜宁津花园酒店', city:'Ningjin (Dezhou)', ll:[37.6530,116.7950],
+  dates:'Sun 26 → Tue 28 Jul · 2 nights', who:'All three', booked:true,
+  note:'3 rooms · ⚠ PAY AT HOTEL CNY 1,842 · tel +86 534 899 8888 · Georgio arrives ~02:00 Mon, warn them'},
+ {nm:'Wyndham Qingdao', cn:'青岛鑫江温德姆酒店', city:'Chengyang, Qingdao', ll:[36.3055,120.3935],
+  dates:'Tue 28 → Thu 30 Jul · 2 nights', who:'All three', booked:true,
+  note:'3 rooms · ✅ airport shuttle included (book 4 h ahead) · CNY 500 deposit · No.220 Heilongjiang Middle Rd'},
+ {nm:'Dong Fang Hotel', cn:'广州东方宾馆', city:'Yuexiu, Guangzhou', ll:[23.1560,113.2560],
+  dates:'Thu 30 Jul → Sun 2 Aug · 3 nights', who:'All three (Georgio out 1 Aug)', booked:true,
+  note:'3 rooms · paid A$1,068 · No.120 Liuhua Rd · late check-in ~22:10 Thu off the Xiamen train'},
+ {nm:'Regal Hong Kong Hotel', cn:'', city:'Causeway Bay, Hong Kong', ll:[22.2800,114.1855],
+  dates:'Sun 2 → Wed 5 Aug · 3 nights', who:'Danny + Konstantin', booked:false,
+  note:'~A$871 · 88 Yee Wo St, on the MTR · STILL TO BOOK'},
+];
+HOTELS.forEach(h=>{
+  const col = h.booked ? '#0E8388' : '#98A2B3';
+  const m = L.marker(h.ll,{icon:L.divIcon({className:'',html:bedSVG(col),iconSize:[21,21],iconAnchor:[10,10]})}).addTo(map);
+  const html = `<div class="pp-nm">🛏 ${h.nm}${h.cn?` <span style="font-weight:400;color:var(--text2)">${h.cn}</span>`:''}</div>`+
+    `<div class="pp-row"><b>Status:</b> ${h.booked?'✓ Booked':'⚠ Still to book'}</div>`+
+    `<div class="pp-row"><b>Dates:</b> ${h.dates}</div>`+
+    `<div class="pp-row"><b>Who:</b> ${h.who}</div>`+
+    `<div class="pp-row"><b>Where:</b> ${h.city}</div>`+
+    `<div class="pp-row">${h.note}</div>`;
+  m.bindTooltip(html,{direction:'top',offset:[0,-8],className:'rich-tip',sticky:false});
+  m.bindPopup(html,{maxWidth:280});
+});
+
 function detailHTML(s){
   const col = REGIONS[s.region].color;
   const tag = `<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span>`;
@@ -612,7 +644,9 @@ document.getElementById('legend').innerHTML =
   Object.values(REGIONS).map(r=>`<div class="lg"><span class="dot" style="background:${r.color}"></span>${r.name}</div>`).join('')+
   '<div class="lg"><span class="swatch" style="border-top-color:#ff9500"></span>Ground (rail / drive)</div>'+
   '<div class="lg"><span class="swatch" style="border-top-color:#0071e3;border-top-style:dashed"></span>Flight</div>'+
-  '<div class="lg">✈ &nbsp;Airport</div>';
+  '<div class="lg">✈ &nbsp;Airport</div>'+
+  '<div class="lg"><span class="dot" style="background:#0E8388;border-radius:3px"></span>🛏 Hotel (booked)</div>'+
+  '<div class="lg"><span class="dot" style="background:#98A2B3;border-radius:3px"></span>🛏 Hotel (to book)</div>';
 } catch(e){ console.warn('Map init failed:', e); }
 
 /* ===== ITINERARY (merged: plan + travel + team, click-through) ===== */

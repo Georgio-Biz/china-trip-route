@@ -223,7 +223,6 @@
   <button data-view="itinerary">Itinerary</button>
   <button data-view="calendar">Calendar</button>
   <button data-view="bookings">Bookings</button>
-  <button data-view="justin">Justin</button>
   <button data-view="suppliers">Suppliers</button>
   <button data-view="info">Info</button>
 </div></nav>
@@ -241,7 +240,6 @@
   <section id="view-itinerary" class="view"><div class="wrap" id="itin"></div></section>
   <section id="view-calendar" class="view"><div class="wrap" id="cal"></div></section>
   <section id="view-bookings" class="view"><div class="wrap" id="bookings"></div></section>
-  <section id="view-justin" class="view"><div class="wrap" id="justin"></div></section>
   <section id="view-suppliers" class="view"><div class="wrap" id="supp"></div></section>
   <section id="view-info" class="view"><div class="wrap" id="info"></div></section>
 </div>
@@ -250,7 +248,6 @@
 <script>
 /* ---------- DATA ---------- */
 const REGIONS = {
-  hebei   :{name:'Hebei 河北',    color:'#C0392B', adcode:130000, center:[114.8,38.6]},
   shandong:{name:'Shandong 山东', color:'#2E6FD6', adcode:370000, center:[118.0,36.4]},
   jiangsu :{name:'Jiangsu 江苏',  color:'#8A4FBE', adcode:320000, center:[119.8,33.0]},
   fujian  :{name:'Fujian 福建',   color:'#CC7A1F', adcode:350000, center:[118.0,26.1]},
@@ -258,36 +255,28 @@ const REGIONS = {
 };
 
 const SUPPLIERS = [
-  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:24, slot:'24 Jul · Danny + K',
+  {nm:'Baopeng Fitness', city:'Nantong (Rudong)', region:'jiangsu', ll:[32.320,121.610], day:24, slot:'Fri 24 Jul · Danny + K',
    cat:'Dumbbells · barbells · smaller bars', buy:'Dumbbells, Olympic barbells, shorter / specialty bars', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
-  {nm:'Nantong Record — Primiz / Proesce', city:'Nantong', region:'jiangsu', ll:[31.985,120.865], day:24, slot:'24 Jul · Danny + K',
-   cat:'Benches · racks · free weights · accessories', buy:'Primiz: benches, power racks, Smith / competition racks, plates, DBs, KBs, bars. Proesce: balls, balance, resistance, agility, recovery, rubber flooring.', ap:'NTG Nantong · rail via Shanghai (~1 h)'},
-  {nm:'Quick Body', city:'Qingdao', region:'shandong', ll:[36.310,120.400], day:29, slot:'29 Jul · AM',
-   cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Relax Fitness', city:'Rizhao', region:'shandong', ll:[35.445,119.510], day:28, slot:'28 Jul · Rizhao',
-   cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC)', ap:'RIZ Rizhao Shanzihe (~25 km) / TAO Qingdao (~130 km)'},
-  {nm:'Hongbinsheng (HBS)', city:'Qingdao', region:'shandong', ll:[36.070,120.375], day:0, slot:'Optional · Qingdao 25 Jul',
-   cat:'FID bench', buy:'HBS-2603 FID Bench ×12', ap:'TAO Qingdao (~35 km)'},
-  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:29, slot:'29 Jul · PM',
-   cat:'V-squat · belt squat · hip ext · deadlift', buy:'PB311 V-Squat, PB312 Belt Squat, PB410 Hip Ext, PB411 Deadlift (via Insight)', ap:'TAO Qingdao (~15 km)'},
-  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:27, slot:'27 Jul · AM',
+  {nm:'Rosen Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.650,116.780], day:27, slot:'Mon 27 Jul · 9:00 AM',
    cat:'Plate loaded · cardio · glute', buy:'3D Glute Drive (RS-1013), Orbital Row (RS-3011)', ap:'TNA Jinan (~90 km)'},
-  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:27, slot:'27 Jul · AM',
+  {nm:'MBH Fitness', city:'Ningjin, Dezhou', region:'shandong', ll:[37.668,116.805], day:27, slot:'Mon 27 Jul · 1:00 PM',
    cat:'Pin + plate loaded', buy:'HM plate machines + consumables consolidation RFQ', ap:'TNA Jinan (~90 km)'},
-  {nm:'Flooring — Yishui', city:'Yishui, Linyi', region:'shandong', ll:[35.830,118.520], day:0, slot:'Optional · flooring vs Chuanyu',
-   cat:'Flooring (alternative)', buy:'Gym flooring — compare with Dongguan Chuanyu', ap:'LYI Linyi Qiyang (~70 km)'},
-  {nm:'Rayton', city:'Zhangzhou (Changtai)', region:'fujian', ll:[24.570,117.850], day:30, slot:'30 Jul · AM',
-   cat:'Nexa rack', buy:'Nexa rack manufacture (China-made alternative)', ap:'XMN Xiamen (~50 km)'},
-  {nm:'Conlin Fitness', city:'Huadu, Guangzhou', region:'guangdong', ll:[23.404,113.220], day:31, slot:'31 Jul · AM',
-   cat:'Treadmill', buy:'GT X Luxury Commercial Treadmill ×3 (price TBC)', ap:'CAN Guangzhou (~28 km)'},
-  {nm:'OMA Fitness', city:'Foshan (Shunde)', region:'guangdong', ll:[22.860,113.260], day:31, slot:'31 Jul · PM',
+  {nm:'Flooring — Yishui', city:'Yishui, Linyi', region:'shandong', ll:[35.830,118.520], day:28, slot:'Tue 28 Jul · ~12:30 PM (en route)',
+   cat:'Gym flooring', buy:'Rubber gym flooring — sqm quote vs Chuanyu (Dongguan)', ap:'LYI Linyi Qiyang (~70 km)'},
+  {nm:'Relax Fitness', city:'Rizhao', region:'shandong', ll:[35.445,119.510], day:28, slot:'Tue 28 Jul · ~3:30 PM',
+   cat:'Stair climber', buy:'PP-007 Stair Climber ×2 (price TBC)', ap:'RIZ Rizhao Shanzihe (~25 km)'},
+  {nm:'Peach Builder', city:'Jimo, Qingdao', region:'shandong', ll:[36.400,120.450], day:29, slot:'Wed 29 Jul · 9:00 AM',
+   cat:'V-squat · belt squat · hip ext · deadlift', buy:'PB311 V-Squat, PB312 Belt Squat, PB410 Hip Ext, PB411 Deadlift (via Insight)', ap:'TAO Qingdao (~15 km)'},
+  {nm:'Quick Body', city:'Chengyang, Qingdao', region:'shandong', ll:[36.310,120.400], day:29, slot:'Wed 29 Jul · 1:00 PM',
+   cat:'Pin + plate loaded', buy:'KS pin-loaded, 8-station bundle, KP plate, frame colour', ap:'TAO Qingdao (~35 km)'},
+  {nm:'Rayton', city:'Zhangzhou (Changtai)', region:'fujian', ll:[24.570,117.850], day:30, slot:'Thu 30 Jul · ~12:00–4:00 PM',
+   cat:'Nexa rack', buy:'Custom 4-rack rig — China-made Nexa alternative', ap:'XMN Xiamen (~50 km)'},
+  {nm:'OMA Fitness', city:'Foshan (Shunde)', region:'guangdong', ll:[22.860,113.260], day:31, slot:'Fri 31 Jul · 9:30 AM',
    cat:'Slatted treadmill', buy:'OMA-6367TA Slatted Treadmill ×3 (locked)', ap:'CAN Guangzhou (~45 km)'},
-  {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:1, mon:'AUG', slot:'1 Aug · AM',
-   cat:'Flooring', buy:'Gym flooring (or drop if sourcing in Shandong)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
-  {nm:'SWIMUXI 水木熙 (flooring)', city:'Shijiazhuang, Hebei (likely)', region:'hebei', ll:[38.045,114.508], day:0, slot:'Optional · likely factory (confirm)',
-   cat:'Rubber-PVC commercial flooring', buy:'Homogeneous rubber-PVC sheet + tile (medical R3 · education M5 · culture P7/P9)', ap:'SJW Shijiazhuang · ~1 h HSR from Dezhou East'},
-  {nm:'Guangdong Berson (flooring)', city:'Jiangmen (Xinhui)', region:'guangdong', ll:[22.205,113.165], day:0, slot:'Optional · flooring option',
-   cat:'Flooring — new materials', buy:'Gym flooring — compare with Chuanyu (Dongguan) + Yishui (Shandong)', ap:'CAN Guangzhou (~110 km) / ZUH Zhuhai (~65 km)'},
+  {nm:'Conlin Fitness', city:'Huadu, Guangzhou', region:'guangdong', ll:[23.404,113.220], day:31, slot:'Fri 31 Jul · 2:00 PM',
+   cat:'Treadmill', buy:'GT X Luxury Commercial Treadmill ×3 (price TBC)', ap:'CAN Guangzhou (~28 km)'},
+  {nm:'Dongguan Chuanyu', city:'Dongguan (Chashan)', region:'guangdong', ll:[23.070,113.950], day:1, mon:'AUG', slot:'Sat 1 Aug · 9:00 AM',
+   cat:'Flooring', buy:'Gym flooring — primary quote (compare vs Yishui)', ap:'CAN Guangzhou (~70 km) / SZX Shenzhen'},
 ];
 
 const OFFMAP = [];
@@ -295,48 +284,38 @@ const OFFMAP = [];
 // Nearest high-speed rail station per factory
 const HSR = {
   'Baopeng Fitness':'Nantong West / Rugao South (Rudong stn is not HSR)',
-  'Nantong Record — Primiz / Proesce':'Nantong West / Nantong (Huahui Zhigu Park, city side)',
   'Quick Body':'Hongdao / Qingdao Airport HSR',
-  'SWIMUXI 水木熙 (flooring)':'Shijiazhuang (on the Shijiazhuang–Jinan HSR, same line as Dezhou East, ~1 h apart)',
   'Relax Fitness':'Rizhao West (Rilan HSR) / Rizhao station',
-  'Hongbinsheng (HBS)':'Qingdao North',
   'Peach Builder':'Qingdao Airport HSR',
   'Rosen Fitness':'Dezhou East (Beijing–Shanghai HSR)',
   'MBH Fitness':'Dezhou East (Beijing–Shanghai HSR)',
-  'Flooring — Yishui':'Yishui station (Rizhao–Qufu HSR)',
+  'Flooring — Yishui':'No HSR at Yishui — alight LINYI NORTH (Rilan line), then ~1h15 car north',
   'Rayton':'Xiamen North (or Zhangzhou)',
   'Conlin Fitness':'Guangzhou South',
   'OMA Fitness':'Guangzhou South (Shunde = intercity)',
   'Dongguan Chuanyu':'Dongguan Station (borders Chashan)',
-  'Guangdong Berson (flooring)':'Jiangmen / Yinzhouhu (Shenzhen–Zhanjiang HSR)',
 };
 
 // Approx airport → factory drive time
 const DRIVE = {
   'Baopeng Fitness':'Shanghai→Nantong rail ~1 h, then ~30 min local',
-  'Nantong Record — Primiz / Proesce':'Shanghai→Nantong rail ~1 h, then ~20 min to the park',
   'Quick Body':'~40 min from TAO',
-  'SWIMUXI 水木熙 (flooring)':'~1 h HSR Dezhou East → Shijiazhuang — you’re in Ningjin/Dezhou Mon–Tue, so a side-trip is feasible',
   'Relax Fitness':'~25 min from RIZ Rizhao airport · ~2 h S of Qingdao',
-  'Hongbinsheng (HBS)':'~50 min from TAO',
   'Peach Builder':'~30 min from TAO',
   'Rosen Fitness':'~1 h 30 from TNA Jinan',
   'MBH Fitness':'~1 h 30 from TNA Jinan',
-  'Flooring — Yishui':'~1 h from LYI Linyi',
+  'Flooring — Yishui':'~1h15 car from Linyi North HSR · factory is in Huangshanpu Town',
   'Rayton':'~1 h from XMN Xiamen',
   'Conlin Fitness':'~40 min from CAN',
   'OMA Fitness':'~1 h from CAN',
   'Dongguan Chuanyu':'~1 h 15 from CAN',
-  'Guangdong Berson (flooring)':'~1 h 40 from CAN · factory is ~1 h S of Jiangmen city (Shadui)',
 };
 
 // Contact person per factory
 const CONTACT = {
   'Baopeng Fitness':'Kang Kang (康康)',
-  'Nantong Record — Primiz / Proesce':'sales@record-fitness.com · +86 513 8951 9500',
   'Quick Body':'Crystal / Josie',
   'Relax Fitness':'TBC',
-  'Hongbinsheng (HBS)':'TBC',
   'Peach Builder':'via Insight',
   'Rosen Fitness':'TBC',
   'MBH Fitness':'Josie',
@@ -345,17 +324,108 @@ const CONTACT = {
   'Conlin Fitness':'Daily Youth Sports',
   'OMA Fitness':'TBC',
   'Dongguan Chuanyu':'TBC',
-  'Guangdong Berson (flooring)':'Amanda · +86 182 0750 0693 · WeChat: Berson18207500693',
-  'SWIMUXI 水木熙 (flooring)':'WeChat TBC — ask them for the factory address (工厂地址)',
 };
 
 // Street address per factory (shown in the map popup)
 const ADDR = {
-  'SWIMUXI 水木熙 (flooring)':'⚠ Factory address NOT printed in the brochure — footprint pins Beijing · Shijiazhuang · Chongqing · Shanghai · Guangdong. Likely production base = Shijiazhuang, Hebei (China’s rubber-PVC flooring hub). Confirm the exact address with the supplier before planning a visit.',
-  'Conlin Fitness':'Daily Youth Sports — No.2 Baixing Rd, Xinhua Industrial Park, Huadu District, Guangzhou 510800 (north, near Baiyun airport).',
-  'Relax Fitness':'Shandong Relax Sports Technology Co., Ltd. — north of Shantou Rd, south of Macao Rd, east of Zhanjiang Rd, Rizhao Economic Development Zone, Rizhao, Shandong.',
-  'Guangdong Berson (flooring)':'Factory: Shuiliuwang, Dulian Village, Shadui Town, Xinhui District, Jiangmen, Guangdong 529147. Office (if factory undeliverable): 6th Fl, Weifeng Commercial Plaza, Pengjiang District, Jiangmen.',
+  'Baopeng Fitness':'Rudong County, Nantong, Jiangsu (street address TBC — Kang Kang will pin it on WeChat).',
+  'Rosen Fitness':'Ningjin fitness-equipment park, Ningjin County, Dezhou, Shandong (same park as MBH).',
+  'MBH Fitness':'Ningjin Economic Development Zone, Ningjin County, Dezhou, Shandong.',
+  'Flooring — Yishui':'Dijiaozhuang Village, Huangshanpu Town, Yishui County, Linyi, Shandong.',
+  'Relax Fitness':'North of Shantou Rd, south of Macao Rd, east of Zhanjiang Rd, Rizhao Economic Development Zone, Rizhao, Shandong.',
+  'Peach Builder':'106 Zhaojialing Village, Tongji Street, Jimo District, Qingdao · 青岛驰健英赛特 五谷河一路 赵家岭村106号',
+  'Quick Body':'Chengyang District, Qingdao, Shandong (street TBC — quote sheet on file).',
+  'Rayton':'Changtai District, Zhangzhou, Fujian (street TBC — Jane will pin it).',
+  'OMA Fitness':'Shunde District, Foshan, Guangdong (street TBC).',
+  'Conlin Fitness':'Daily Youth Sports — No.2 Baixing Rd, Xinhua Industrial Park, Huadu District, Guangzhou 510800.',
+  'Dongguan Chuanyu':'Chashan Town, Dongguan, Guangdong (street TBC).',
 };
+
+// Full registered / trading name per factory
+const TRADE = {
+  'Baopeng Fitness':'Baopeng Fitness (Rudong, Nantong) — registered name TBC',
+  'Rosen Fitness':'Rosen Fitness · hongshuofit.com — Ningjin, Dezhou',
+  'MBH Fitness':'Shandong MBH Fitness Co., Ltd. · mbhfit.com',
+  'Flooring — Yishui':'Yishui flooring factory — company name TBC',
+  'Relax Fitness':'Shandong Relax Sports Technology Co., Ltd.',
+  'Peach Builder':'青岛驰健英赛特 (Qingdao Chijian Insight) — via Insight',
+  'Quick Body':'Quick Body · quikbody.cn — Chengyang, Qingdao',
+  'Rayton':'Rayton — Changtai, Zhangzhou (registered name TBC)',
+  'OMA Fitness':'OMA Fitness · oma-fitness.com — Shunde, Foshan',
+  'Conlin Fitness':'Daily Youth Sports Product Co., Ltd. — Conlin Fitness (est. 1998)',
+  'Dongguan Chuanyu':'Dongguan Chuanyu flooring — registered name TBC',
+};
+// Meeting time
+const MEET = {
+  'Baopeng Fitness':'Fri 24 Jul · time TBC (Danny + K) — Kang Kang 康康',
+  'Rosen Fitness':'Mon 27 Jul · 9:00 AM',
+  'MBH Fitness':'Mon 27 Jul · 1:00 PM (after lunch)',
+  'Flooring — Yishui':'Tue 28 Jul · ~12:30 PM (en route Ningjin → Rizhao)',
+  'Relax Fitness':'Tue 28 Jul · ~3:30 PM',
+  'Peach Builder':'Wed 29 Jul · 9:00 AM',
+  'Quick Body':'Wed 29 Jul · 1:00 PM',
+  'Rayton':'Thu 30 Jul · ~12:00–4:00 PM',
+  'OMA Fitness':'Fri 31 Jul · 9:30 AM',
+  'Conlin Fitness':'Fri 31 Jul · 2:00 PM',
+  'Dongguan Chuanyu':'Sat 1 Aug · 9:00 AM',
+};
+// How the crew reaches this factory + duration
+const ARRIVE = {
+  'Baopeng Fitness':'HSR Shanghai Hongqiao → Nantong West ~1h15, then ~1 h car east to Rudong',
+  'Rosen Fitness':'Staying in Ningjin — ~10 min from the Ningjin Garden Hotel',
+  'MBH Fitness':'Same park as Rosen — ~5 min hop after lunch',
+  'Flooring — Yishui':'HSR Dezhou East → Jinan West (~35 min) → Linyi North (~1h45), then ~1h15 car north to Huangshanpu',
+  'Relax Fitness':'~1h30–1h45 car east from the Yishui factory, straight to the Rizhao EDZ',
+  'Peach Builder':'~30 min car from the Wyndham (Chengyang) to Jimo',
+  'Quick Body':'~25–30 min car back from Peach Builder to Chengyang',
+  'Rayton':'Fly MF8526 Qingdao 08:00 → Xiamen 10:35 (booked), then ~1 h car to Changtai',
+  'OMA Fitness':'~45 min car from the Dong Fang hotel to Shunde (leave ~8:30)',
+  'Conlin Fitness':'~1h15 car from OMA north to Huadu',
+  'Dongguan Chuanyu':'~1h15 car from the Dong Fang hotel to Chashan (leave ~7:40)',
+};
+// Distance to the NEXT stop (supplier / hotel / station)
+const NEXTSTOP = {
+  'Baopeng Fitness':'Back to Shanghai: ~1 h car to Nantong West + ~1h15 HSR',
+  'Rosen Fitness':'Next: MBH — same industrial park, ~5 min',
+  'MBH Fitness':'Next: Ningjin Garden Hotel ~10 min · Tue: Dezhou East stn ~50 min',
+  'Flooring — Yishui':'Next: Relax (Rizhao) — ~1h30–1h45 car',
+  'Relax Fitness':'Next: Rizhao stn ~25 min → HSR to Qingdao ~1–1.5 h → Wyndham ~30 min',
+  'Peach Builder':'Next: Quick Body — ~25–30 min car',
+  'Quick Body':'Next: Wyndham hotel ~10 min',
+  'Rayton':'Next: Xiamen North stn ~1 h car → HSR Guangzhou South 3h11 (G3049)',
+  'OMA Fitness':'Next: Conlin (Huadu) — ~1h15 car',
+  'Conlin Fitness':'Next: Dong Fang hotel ~40 min · CAN airport ~20 min',
+  'Dongguan Chuanyu':'Next: Dong Fang ~1h15 · or Humen stn → HK West Kowloon ~40 min',
+};
+// Useful intel — kept short
+const INTEL = {
+  'Baopeng Fitness':'Free-weights specialist out in Rudong. Kang Kang is the relationship; catalogue + registered name still to land.',
+  'Rosen Fitness':'Sits in the Ningjin cluster — the county is China’s fitness-equipment capital (locally claimed ~70% of national commercial output). The 3D Glute Drive + Orbital Row are the draws.',
+  'MBH Fitness':'One of Ningjin’s anchor factories — full commercial range, 341-SKU catalogue on file, exports globally. Josie is across the live counter-quote.',
+  'Flooring — Yishui':'New lead in the Linyi flooring belt (Linyi = China’s wholesale/logistics capital, which keeps factory-gate pricing sharp). Walk the line, get sqm pricing.',
+  'Relax Fitness':'Cardio/climb specialist in the Rizhao Economic Development Zone. Small ask (2 units) — the visit doubles as a quality check.',
+  'Peach Builder':'Glute/booty specialty machines; the four PB units are already spec’d via Insight. Village factory — show the driver the Chinese address.',
+  'Quick Body':'Pin- + plate-loaded specialist with the itemised USD quote on file. Frame colour (RAL 8017 Deep Espresso) is still open — settle it on the factory floor.',
+  'Rayton':'Rack/rig fabricator lined up for the custom 4-rack Nexa-style rig (the Iron Edge alternative). Bring the 3D render + steel spec. Jane hosts.',
+  'OMA Fitness':'Slat/curved treadmill specialist in Shunde’s appliance belt. The ×3 units are locked — this visit is QC + delivery schedule.',
+  'Conlin Fitness':'Large-scale treadmill maker in Huadu, est. 1998, R&D + production on site. GT X price still open — a live negotiation.',
+  'Dongguan Chuanyu':'Primary flooring quote, Chashan town. Compare on the day against Yishui (seen Tue) on sqm price, thickness + lead time.',
+};
+// Commercials — their quote vs our target
+const COMM = {
+  'Baopeng Fitness':{q:'TBC — quote on the day',t:'Sharp per-kg pricing on DBs/bars',m:'TBC',om:'Full free-weights list (see items)'},
+  'Rosen Fitness':{q:'RS-1013 $1,180 · RS-3011 $1,514 (on file)',t:'Confirm spec + trim freight in the consolidation',m:'TBC',om:'2 units'},
+  'MBH Fitness':{q:'US$36k counter-quote on file (incl. ZH-021 rack sub)',t:'Rebut the sub + consolidate consumables — ~US$30k',m:'Negotiable at container volume',om:'HM line + consumables'},
+  'Flooring — Yishui':{q:'TBC — sqm rate',t:'Beat Chuanyu on landed $/sqm',m:'TBC',om:'~600–800 sqm (site TBC)'},
+  'Relax Fitness':{q:'PP-007 — TBC',t:'TBC',m:'Confirm 2 units OK',om:'2 × PP-007'},
+  'Peach Builder':{q:'PB311/312/410/411 via Insight on file',t:'Hold Insight pricing; push freight into consolidation',m:'1/unit',om:'4 units'},
+  'Quick Body':{q:'Itemised USD on file (~$617–742/pin unit · 8-station ≈$3,431)',t:'10–15% off itemised + RAL 8017 colour at no charge',m:'Container-friendly',om:'Full KS/KP list'},
+  'Rayton':{q:'TBC — rig quote pending drawings',t:'Well under Iron Edge landed cost',m:'1 rig',om:'1 × 4-rack rig'},
+  'OMA Fitness':{q:'OMA-6367TA ×3 — locked',t:'Confirm freight + spares kit thrown in',m:'3 OK',om:'3 units'},
+  'Conlin Fitness':{q:'GT X ×3 — TBC',t:'TBC — benchmark vs OMA on the day',m:'3',om:'3 units'},
+  'Dongguan Chuanyu':{q:'TBC — sqm rate',t:'Beat Yishui or win on spec/lead time',m:'By container / sqm',om:'~600–800 sqm (site TBC)'},
+};
+
 
 // Catalogue / quote reference per factory
 const CAT = {
@@ -363,17 +433,13 @@ const CAT = {
   'MBH Fitness':{url:'https://mbhfit.com',label:'mbhfit.com ↗ · MBH catalogue + counter-quote on file'},
   'Rosen Fitness':{url:'https://hongshuofit.com',label:'hongshuofit.com ↗'},
   'Relax Fitness':{url:'https://relaxfitness.com',label:'relaxfitness.com ↗'},
-  'Hongbinsheng (HBS)':{url:'https://hongbinsheng.com',label:'hongbinsheng.com ↗'},
   'OMA Fitness':{url:'https://oma-fitness.com',label:'oma-fitness.com ↗'},
   'Conlin Fitness':{url:'https://conlinfitness.com',label:'conlinfitness.com ↗'},
   'Peach Builder':{url:'',label:'via Insight (PB311/312/410/411 on file)'},
   'Baopeng Fitness':{url:'',label:'catalogue TBC'},
-  'Nantong Record — Primiz / Proesce':{url:'https://www.primiz-fitness.com',label:'primiz-fitness.com ↗ (strength) · proescefitness.com (accessories) · 2026 catalogues on file'},
   'Rayton':{url:'',label:'catalogue TBC'},
   'Dongguan Chuanyu':{url:'',label:'catalogue TBC'},
   'Flooring — Yishui':{url:'',label:'catalogue TBC (new lead)'},
-  'Guangdong Berson (flooring)':{url:'',label:'catalogue TBC · WeChat Berson18207500693 (Amanda)'},
-  'SWIMUXI 水木熙 (flooring)':{url:'',label:'SWIMUXI product manual on file · ask for factory address'},
 };
 const catRow = nm => { const c=CAT[nm]; if(!c) return '';
   return `<div class="pp-row"><b>Catalogue:</b> ${c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue)">${c.label}</a>`:c.label}</div>`; };
@@ -385,10 +451,8 @@ const whoRow = nm => WHO[nm]?`<div class="pp-row"><b>Who visits:</b> ${WHO[nm]}<
 // Gear we're looking at per factory
 const GEAR = {
   'Baopeng Fitness':['Dumbbell sets (fixed + adjustable)','Olympic barbells (20 kg + 15 kg)','Shorter / specialty bars'],
-  'Nantong Record — Primiz / Proesce':['PRIMIZ strength: adjustable + flat benches (PZ102xx), power racks, Smith / bench-press + competition combo racks (PZ103xx), tower chest press','PRIMIZ free weights: bumper + weight plates, dumbbells, kettlebells, Olympic + specialty bars, powerlifting platform','PROESCE accessories: medicine / wall balls, plyo boxes, battle ropes, resistance bands, agility (ladders, hurdles, cones), recovery (foam rollers, mats)','PROESCE flooring: rubber ground mat + sport turf','Note: one factory, two brands (Nantong Record) — good for a consolidated container'],
   'Quick Body':['Pin-loaded KS series: Chest Press (KS1006), Shoulder Press (KS1011), Row (KS1040), Pec Fly (KS1056), Leg Ext (KS1065), Leg Curls (KS1068), Prone Curl (KS1070), Ab/Adductor (KSD1053)','Plate-loaded KP: Standing Chest Press (KP1003), Pec Fly (KP1056), Leg Press (KP1062), Pendulum Squat (KP1060)','8-station multi-jungle (KS13030 frame + stations)','Racks + benches: DB rack ×2 (KF1660), barbell rack (KF1664), flat bench (OFB02), preacher (XHA-040)','Seated Calf Raise (KF1636) — price TBC','Frame colour: RAL 8017 Deep Espresso (negotiating)'],
   'Relax Fitness':['PP-007 Commercial Stair Climber ×2 — price TBC'],
-  'Hongbinsheng (HBS)':['HBS-2603 adjustable FID bench ×12'],
   'Peach Builder':['PB311 V-Squat (hack squat)','PB312 Belt Squat','PB410 Multi Hip Extension','PB411 Multi Deadlift'],
   'Rosen Fitness':['RS-1013 3D Glute Drive (Smith hip thrust)','RS-3011 Orbital Row'],
   'MBH Fitness':['HM plate machines: Decline Chest (HM-08), Shoulder Press (HM-17), High Row (HM-16), Flat Bench (HM-18), Seated Row (HM-14), Side Arm Lift (HM-06)','Consumables consolidation: bars, plates, dumbbells, kettlebells, wall balls (341-SKU catalogue)','Rebut the $36k counter-quote: ZH-021 rack substitution + missing consumables'],
@@ -397,17 +461,11 @@ const GEAR = {
   'OMA Fitness':['OMA-6367TA slatted / curved treadmill ×3 (locked)'],
   'Dongguan Chuanyu':['Gym flooring (rubber tiles / rolls)'],
   'Flooring — Yishui':['Gym flooring — alternative to Chuanyu, compare on price + quality'],
-  'Guangdong Berson (flooring)':['Gym flooring — rubber tiles / rolls / new materials','Third flooring quote — compare against Chuanyu (Dongguan) + Yishui (Shandong)','Contact Amanda for samples + catalogue via WeChat'],
-  'SWIMUXI 水木熙 (flooring)':['Homogeneous rubber-PVC sheet + tile flooring (2.0–6.0 mm; 2 m rolls + 100×100 tiles)','Series: R3 medical, M5 education, P7/P9 culture — B1 fire rating, anti-static, acoustic, custom colours','Premium look — a step up from basic gym rubber; confirm it suits a gym floor (impact/weights) vs commercial/medical use','⚠ Confirm the actual factory location — likely Shijiazhuang (Hebei), possibly Guangdong'],
 };
 
 // What we're chasing — itemised catalogue per supplier (from the confirmed equipment list)
 const CHASE = {
  'Baopeng Fitness':{sum:'Free weights — the consumables build',items:[['Dumbbell set (PU / rubber hex)','TBC','set','TBC'],['Olympic barbell 20 kg','TBC','×','TBC'],['Olympic barbell 15 kg (women’s)','TBC','×','TBC'],['Shorter / specialty bars','TBC','×','TBC']]},
- 'Nantong Record — Primiz / Proesce':{sum:'One factory, two brands — Primiz strength + Proesce accessories. Scope on the visit, price a consolidated container.',items:[
-   ['Adjustable bench','PZ 10203 / 10214','TBC','TBC'],['Flat / foldable bench','PZ 10201 / 10202','TBC','TBC'],['Power rack / Smith','PZ 103xx','TBC','TBC'],['Competition combo rack','PZ 10304','TBC','TBC'],['Tower chest press','PZ 10309','TBC','TBC'],
-   ['Bumper + weight plates','Primiz','TBC','TBC'],['Dumbbells / kettlebells','Primiz','TBC','TBC'],['Olympic + specialty bars','Primiz','TBC','TBC'],
-   ['Medicine / wall balls','Proesce','TBC','TBC'],['Resistance bands / agility','Proesce','TBC','TBC'],['Recovery — rollers / mats','Proesce','TBC','TBC'],['Rubber flooring + turf','Proesce','TBC','TBC']]},
  'Quick Body':{sum:'Pin + plate machines, the 8-station jungle, racks + benches, and the frame colour',items:[
    ['Seated Chest Press','KS1006','1','$713'],['Shoulder Press','KS1011','1','$656'],['Machine Row','KS1040','1','$661'],['Pec Fly / Rear Delt','KS1056','1','$665'],['Leg Extension','KS1065','1','$617'],['Seated Leg Ext/Curl','KS1068','1','$742'],['Prone Leg Curl','KS1070','1','$623'],['Abductor / Adductor','KSD1053','1','$644'],
    ['8-station jungle — frame','KS13030','1','bundle'],['— Seated Row station','KS13007','2','≈$3,431'],['— Lat Pulldown station','KS13002','2','total'],['— Assisted Chin/Dip','KS13004','1',''],['— Leg Press station','KS13008','1',''],
@@ -415,7 +473,6 @@ const CHASE = {
    ['Double DB Rack','KF1660','2','$207 ea'],['DB Tree Rack','KF1662','1','$121'],['Barbell Rack','KF1664','1','$227'],['Flat Olympic Bench','OFB02','1','$214'],['Preacher Bench','XHA-040','1','$278'],['Seated Calf Raise','KF1636','1','TBC'],
    ['Frame colour','RAL 8017','—','negotiating']]},
  'Relax Fitness':{sum:'Cardio — stair climbers',items:[['Commercial Stair Climber','PP-007 / 007T','2','TBC']]},
- 'Hongbinsheng (HBS)':{sum:'Benches (optional stop)',items:[['Adjustable FID Bench','HBS-2603','12','$150 ea']]},
  'Peach Builder':{sum:'Booty / lower-body plate machines (via Insight)',items:[['V-Squat (hack squat)','PB311','1','$695'],['Belt Squat','PB312','1','$371'],['Multi Hip Extension','PB410','1','$507'],['Multi Deadlift','PB411','1','$519']]},
  'Rosen Fitness':{sum:'Glute + feature plate-loaded pieces',items:[['3D Glute Drive (Smith hip thrust)','RS-1013','1','$1,180'],['Orbital Row','RS-3011','1','$1,514']]},
  'MBH Fitness':{sum:'HM plate machines + the consumables consolidation (rebut the counter-quote)',items:[['Decline Chest Press','HM-08','1','$439'],['Shoulder Press','HM-17','1','$439'],['High Row Pull Down','HM-16','1','$439'],['Flat Bench Press','HM-18','1','$439'],['Seated Row','HM-14','1','$439'],['Side Arm Lift / Lateral Raise','HM-06','1','$439'],['Consumables: bars, plates, DBs, KBs, wall balls','341-SKU cat.','bulk','RFQ']]},
@@ -440,69 +497,28 @@ const AIRPORTS = [
   {code:'HKG', nm:'Hong Kong Int’l', ll:[22.308,113.918], serves:'Exit — fly home to Brisbane (Cathay). The boys’ Hong Kong holiday base.'},
 ];
 
-// Map route legs in trip order
+// Map route legs in trip order (the real, booked route)
 const LEGS = [
-  {from:[31.143,121.805], to:[32.320,121.610], mode:'ground', label:'Shanghai PVG → Nantong (HSR ~1–1.5 h)'},
-  {from:[32.320,121.610], to:[36.310,120.400], mode:'ground', label:'Nantong → Qingdao (direct HSR ~3.5–4 h)'},
-  {from:[36.310,120.400], to:[37.668,116.805], mode:'ground', label:'Qingdao → Dezhou (HSR ~2–3 h)'},
-  {from:[36.857,117.216], to:[24.544,118.127], mode:'flight', label:'Jinan TNA → Xiamen XMN (the big jump south)'},
-  {from:[24.544,118.127], to:[24.570,117.850], mode:'ground', label:'Xiamen → Zhangzhou (1.5 h)'},
-  {from:[24.544,118.127], to:[23.392,113.299], mode:'flight', label:'Xiamen XMN → Guangzhou CAN (~1.5 h, or 3–5 h rail)'},
-  {from:[23.130,113.260], to:[22.860,113.260], mode:'ground', label:'Guangzhou → Foshan (45 min)'},
-  {from:[23.130,113.260], to:[23.070,113.950], mode:'ground', label:'Guangzhou → Dongguan (1 h)'},
-  {from:[23.070,113.950], to:[22.304,114.168], mode:'ground', label:'Dongguan (Humen) → Hong Kong West Kowloon (~40 min)'},
+  {from:[31.143,121.805], to:[31.237,121.484], mode:'ground', label:'PVG → the Bund (Diamond Bund hotel, ~1 h)'},
+  {from:[31.237,121.484], to:[32.320,121.610], mode:'ground', label:'Day trip: Shanghai ↔ Baopeng, Rudong (HSR + car, ~2h15 each way)'},
+  {from:[31.237,121.484], to:[37.650,116.780], mode:'ground', label:'Sun 26: Shanghai Hongqiao → Dezhou East (HSR ~4h15) + car to Ningjin'},
+  {from:[36.857,117.216], to:[37.650,116.780], mode:'ground', label:'Georgio Sun night: Jinan TNA → Ningjin (car ~1h15, lands 23:50)'},
+  {from:[37.650,116.780], to:[35.830,118.520], mode:'ground', label:'Tue 28: Dezhou East → Jinan West → Linyi North (HSR) + car to Yishui'},
+  {from:[35.830,118.520], to:[35.445,119.510], mode:'ground', label:'Tue 28: Yishui → Relax, Rizhao (car ~1h30–1h45)'},
+  {from:[35.445,119.510], to:[36.305,120.393], mode:'ground', label:'Tue 28 eve: Rizhao → Qingdao (HSR ~1–1.5 h) → Wyndham'},
+  {from:[36.366,120.086], to:[24.544,118.127], mode:'flight', label:'Thu 30: MF8526 Qingdao TAO 08:00 → Xiamen 10:35 ✓ booked'},
+  {from:[24.544,118.127], to:[24.570,117.850], mode:'ground', label:'Thu 30: Xiamen T3 → Rayton, Changtai (~1 h car)'},
+  {from:[24.570,117.850], to:[23.130,113.260], mode:'ground', label:'Thu 30 eve: Xiamen North → Guangzhou South (HSR ~3h11, G3049)'},
+  {from:[23.130,113.260], to:[22.860,113.260], mode:'ground', label:'Fri 31: Dong Fang → OMA, Shunde (~45 min)'},
+  {from:[22.860,113.260], to:[23.404,113.220], mode:'ground', label:'Fri 31: OMA → Conlin, Huadu (~1h15)'},
+  {from:[23.130,113.260], to:[23.070,113.950], mode:'ground', label:'Sat 1 Aug: Dong Fang → Chuanyu, Dongguan (~1h15)'},
+  {from:[23.130,113.260], to:[22.304,114.168], mode:'ground', label:'Sun 2 Aug: boys — Guangzhou South → HK West Kowloon (HSR ~1 h)'},
 ];
 
-const ITINERARY = [
-  {day:1, date:'Jul 24', region:'jiangsu', rg:'Arrive · Brisbane → Shanghai',
-   legs:[{slot:'Daytime', who:'Fly Brisbane → Shanghai (PVG)', buy:'China Eastern, direct daily (~10h30)'},
-         {slot:'On arrival', who:'HSR to Nantong', buy:'~1–1.5 h from Shanghai Hongqiao. Overnight Nantong.'}],
-   note:'Justin: Brisbane→Shanghai runs direct daily, so no date squeeze. Cathay via Hong Kong only if fares are a lot cheaper (adds a stop + a border).'},
-  {day:2, date:'Jul 25', region:'jiangsu', rg:'Jiangsu · Nantong',
-   legs:[{slot:'AM Rudong', who:'Baopeng (Kang Kang)', buy:'Dumbbells, Olympic barbells, shorter / specialty bars'},
-         {slot:'PM', who:'Travel', buy:'Direct HSR Nantong → Qingdao (~3.5–5 h)'}],
-   note:'Justin: take the direct train (~7/day, fastest ~3.5 h into Qingdao West) over a connecting flight from Nantong’s small airport. Half-day either way.'},
-  {day:3, date:'Jul 26', region:'shandong', rg:'Shandong · Qingdao',
-   legs:[{slot:'AM', who:'Quick Body (Crystal / Josie)', buy:'Pin-loaded, 8-station bundle, plate, frame colour'},
-         {slot:'PM', who:'HBS · Peach Builder', buy:'FID benches · booty machines (near Jimo/TAO). Relax is in Rizhao, ~2 h S — separate.'}],
-   note:'Four suppliers in Qingdao — plan a full day. Evening high-speed train Qingdao → Dezhou (~2–3 h).'},
-  {day:4, date:'Jul 27', region:'shandong', rg:'Shandong · Ningjin',
-   legs:[{slot:'AM 08:30', who:'Rosen Fitness', buy:'Glute drive, orbital row, plate-loaded'},
-         {slot:'PM 14:00', who:'MBH Fitness', buy:'HM machines + consumables, counter-quote rebuttal'}],
-   note:'Same Ningjin park. Optional: the new Yishui flooring supplier is in south Shandong (Linyi) — a detour if you want to compare it with Chuanyu. Drive to Jinan, fly Jinan TNA → Xiamen XMN in the evening.'},
-  {day:5, date:'Jul 28', region:'fujian', rg:'Fujian · Zhangzhou',
-   legs:[{slot:'AM Zhangzhou', who:'Rayton (Jane)', buy:'Nexa rack manufacture'},
-         {slot:'PM', who:'Travel', buy:'Xiamen → Guangzhou: fly ~1.5 h, or HSR 3–5 h'}],
-   note:'1.5 h Xiamen → Zhangzhou. Justin: pick flight vs rail to Guangzhou by your meeting times on the day.'},
-  {day:6, date:'Jul 29', region:'guangdong', rg:'Guangdong',
-   legs:[{slot:'AM Guangzhou', who:'Conlin', buy:'Treadmill (price TBC)'},
-         {slot:'PM Foshan', who:'OMA', buy:'Slatted treadmill (locked)'}],
-   note:'Same driver both stops (Foshan ~45 min from Guangzhou).'},
-  {day:7, date:'Jul 30', region:'guangdong', rg:'Guangdong · depart',
-   legs:[{slot:'AM Dongguan', who:'Chuanyu', buy:'Flooring — or drop if sourcing flooring in Shandong'},
-         {slot:'PM', who:'Fly home', buy:'Guangzhou CAN → Brisbane direct, or train ~1 h to Hong Kong + Cathay'}],
-   note:'Ends in Guangzhou for the direct flight home. Leaving Brisbane on the 23rd instead of the 24th adds a spare day.'},
-];
 
-const TRAVEL = {
-  total:'≈ 31–33 h', entry:'Brisbane → Shanghai (direct)', exit:'Guangzhou → Brisbane (direct)',
-  legs:[
-    {seg:'Brisbane → Shanghai (PVG)', mode:'flight', dur:'~10h 30m', tn:'China Eastern, direct daily (per Justin).'},
-    {seg:'Shanghai → Nantong', mode:'ground', dur:'~1–1.5 h', tn:'High-speed rail from Shanghai Hongqiao.', work:'Nantong / Rudong — Baopeng'},
-    {seg:'Nantong → Qingdao', mode:'ground', dur:'~3.5–5 h', tn:'Direct HSR (~7/day, fastest ~3.5 h to Qingdao West). Justin: take the train, skip Nantong’s small airport.', work:'Qingdao — Quick Body, Relax, HBS, Peach Builder'},
-    {seg:'Qingdao → Dezhou', mode:'ground', dur:'~2–3 h', tn:'High-speed rail, both in Shandong.', work:'Dezhou / Ningjin — Rosen, MBH'},
-    {seg:'Jinan TNA → Xiamen (XMN)', mode:'flight', dur:'~2h 20m', tn:'Fly out of Jinan (near Dezhou) for the big jump south.', work:'Zhangzhou — Rayton'},
-    {seg:'Xiamen XMN → Guangzhou (CAN)', mode:'flight', dur:'~1.5 h (or 3–5 h rail)', tn:'Either works — pick by meeting times.', work:'Guangzhou, Foshan, Dongguan'},
-    {seg:'Guangzhou CAN → Brisbane', mode:'flight', dur:'~9h 30m', tn:'China Southern, direct daily.'},
-  ],
-  caveats:[
-    '<b>Direct both ways.</b> Justin confirms Brisbane→Shanghai (China Eastern) and Guangzhou→Brisbane (China Southern) both run direct daily, so no backtracking and no date squeeze. Cathay via Hong Kong only if fares are a lot cheaper (adds a stop + a border).',
-    '<b>Rail in the north.</b> Nantong→Qingdao→Dezhou are all high-speed rail — simpler than flying, no small-airport connections. Only the Dezhou→Xiamen jump is a flight (out of Jinan).',
-    '<b>Visa-free.</b> Australians get 30 days visa-free entry to mainland China (through end-2026).',
-    '<b>Lock appointments first.</b> Set the factory dates, then build transport around them. See the Justin tab for payments, eSIM/VPN and booking tips.',
-    '<b>Flooring.</b> The new Yishui supplier (Linyi, Shandong) is an alternative to Chuanyu (Dongguan). Pick one or compare both.',
-  ]
-};
+
+
+
 
 /* ---------- MAP (guarded: content tabs still work if the map libs are blocked, e.g. behind China's firewall without a VPN) ---------- */
 let map;
@@ -594,16 +610,15 @@ HOTELS.forEach(h=>{
 function detailHTML(s){
   const col = REGIONS[s.region].color;
   const tag = `<span class="pp-tag" style="background:${col}">${REGIONS[s.region].name}</span>`;
-  return `${tag}<div class="pp-nm">${s.nm}</div><div class="pp-city">${s.city} · ${s.slot}</div>`+
+  return `${tag}<div class="pp-nm">${s.nm}</div><div class="pp-city">${TRADE[s.nm]||s.city}</div>`+
+    (MEET[s.nm]?`<div class="pp-row"><b>Meeting:</b> ${MEET[s.nm]}</div>`:'')+
     (CONTACT[s.nm]?`<div class="pp-row"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
     `<div class="pp-row"><b>Makes:</b> ${s.cat}</div>`+
-    `<div class="pp-row"><b>Buying:</b> ${s.buy}</div>`+
     (ADDR[s.nm]?`<div class="pp-row"><b>Address:</b> ${ADDR[s.nm]}</div>`:'')+
-    whoRow(s.nm)+
+    (ARRIVE[s.nm]?`<div class="pp-row"><b>Getting there:</b> ${ARRIVE[s.nm]}</div>`:'')+
+    (NEXTSTOP[s.nm]?`<div class="pp-row"><b>Then:</b> ${NEXTSTOP[s.nm]}</div>`:'')+
     catRow(s.nm)+
-    `<div class="pp-row"><b>Nearest airport:</b> ${s.ap}</div>`+
-    (DRIVE[s.nm]?`<div class="pp-row"><b>Airport → site:</b> ${DRIVE[s.nm]}</div>`:'')+
-    (HSR[s.nm]?`<div class="pp-row"><b>Nearest HSR:</b> ${HSR[s.nm]}</div>`:'');
+    `<div class="pp-row"><b>Nearest airport:</b> ${s.ap}${HSR[s.nm]?` · <b>HSR:</b> ${HSR[s.nm]}`:''}</div>`;
 }
 SUPPLIERS.forEach(s=>{
   const col = REGIONS[s.region].color;
@@ -654,11 +669,10 @@ const iconFor = m => m==='fly'?'✈':(m==='car'?'🚗':'🚄');
 const facBlock = nm => {
   const s = SUPPLIERS.find(x=>x.nm===nm); if(!s) return '';
   const col = REGIONS[s.region].color;
-  const c = CAT[nm];
-  const web = c && c.url ? ` <span class="fcontact">· ${c.url.replace('https://','')}</span>` : '';
-  return `<div class="facblk"><div class="facblk-hd"><span class="fdot" style="background:${col}"></span><b>${nm}</b>${CONTACT[nm]&&CONTACT[nm]!=='TBC'?`<span class="fcontact"> · ${CONTACT[nm]}</span>`:''}${web}</div>`+
-    chaseTable(nm)+
-    `</div>`;
+  return `<div class="facblk"><div class="facblk-hd"><span class="fdot" style="background:${col}"></span><b>${nm}</b>`+
+    (MEET[nm]?`<span class="fcontact"> · ${MEET[nm]}</span>`:'')+
+    (CONTACT[nm]&&CONTACT[nm]!=='TBC'?`<span class="fcontact"> · ${CONTACT[nm]}</span>`:'')+
+    `</div></div>`;
 };
 const legBlock = l => {
   const opts = (l.opts||[]).map(o=>`<tr><td class="lt">${o.t}</td><td class="ld">${o.d}</td><td class="lsvc">${o.svc||''}</td></tr>`).join('');
@@ -670,84 +684,92 @@ const legBlock = l => {
 };
 const DAYS = [
  {dnum:'23',mon:'Jul',region:'jiangsu',title:'Danny + Konstantine arrive · relax at the Bund',sub:'Australia → Shanghai · together',move:'~13 h',
-  plan:'Danny + Konstantine fly in together on the Cathay flight (dep Thu, arr 11:05am), then relax around the Bund in Shanghai.',
+  plan:'Danny + Konstantine fly in together on the Cathay flight (arr 11:05am), then relax around the Bund in Shanghai.',
   legs:[
-   {mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'✓ Booked — Cathay ref DSZPDZ. CX156 BNE 00:05 → HKG 06:50, connect 1h20, CX316 HKG 08:10 → Shanghai PVG (T2) 11:05. (Full detail in the Bookings tab.)'},
-   {mode:'car',route:'Shanghai Pudong (PVG) → Diamond Bund hotel',dur:'~1 h',note:'Didi/taxi ~50 km (≈¥180), or the Maglev + Metro Line 2 to the Bund. Land 11:05 → hotel early afternoon (check-in from 15:00; they’ll hold bags if early).'}]},
- {dnum:'24',mon:'Jul',region:'jiangsu',title:'Nantong — two factories',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
-  plan:'Both Nantong factories in one day trip from Shanghai. Take an early Hongqiao → Nantong West train (~1h15). Do Nantong Record (Primiz / Proesce) first — it is right in the city (~20 min from the station), a one-stop for benches, racks, plates, dumbbells, accessories and flooring. Then ~1 h east to Baopeng (Rudong) for the free-weight consumables. Back to Shanghai in the evening — you sightsee tomorrow.',
-  visit:['Nantong Record — Primiz / Proesce','Baopeng Fitness'],
+   {mode:'fly',route:'Brisbane → Shanghai (PVG), via Hong Kong',dur:'~13 h',note:'✓ Booked — Cathay ref DSZPDZ. CX156 BNE 00:05 → HKG 06:50, connect 1h20, CX316 HKG 08:10 → Shanghai PVG (T2) 11:05. (Full detail in Bookings.)'},
+   {mode:'car',route:'Shanghai Pudong (PVG) → Diamond Bund hotel',dur:'~1 h',note:'Didi/taxi ~50 km (≈¥180), or Maglev + Metro Line 2. Land 11:05 → hotel early afternoon (check-in 15:00; they hold bags if early).'}]},
+ {dnum:'24',mon:'Jul',region:'jiangsu',title:'Nantong — Baopeng',sub:'Danny + K · day trip from Shanghai',move:'~4–5 h',
+  plan:'Day trip to Baopeng (Rudong) for the free-weights line. Early train Hongqiao → Nantong West (~1h15), then ~1 h car east to Rudong. Back to Shanghai in the evening — you sightsee tomorrow.',
+  visit:['Baopeng Fitness'],
   legs:[
-   {mode:'car',route:'Diamond Bund hotel → Shanghai Hongqiao station',dur:'~35–50 min',note:'Didi/taxi ~18 km (or Metro Line 2, direct). Be at Hongqiao ~40 min before your train — ticket scan, security + platform gate. Leave the hotel by ~06:00 for the 07:14.'},
-   {mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Nantong Record in the city first, then ~1 h car east to Baopeng (Rudong), back to Shanghai after.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
+   {mode:'car',route:'Diamond Bund hotel → Shanghai Hongqiao station',dur:'~35–50 min',note:'Didi/taxi ~18 km (or Metro Line 2 direct). At Hongqiao ~40 min before the train — leave the hotel by ~06:00 for the 07:14.'},
+   {mode:'rail',route:'Shanghai Hongqiao ↔ Nantong West',dur:'~1h07–1h21 each way',note:'~52/day. Then ~1 h car east to Baopeng (Rudong); back to Shanghai after.',opts:[{t:'07:14',d:'1h15',svc:'G3144'},{t:'07:46',d:'1h11',svc:'G3288'}]}]},
  {dnum:'25',mon:'Jul',region:'jiangsu',title:'Shanghai — sightseeing',sub:'Danny + K',
   plan:'Danny + Konstantine sightsee in Shanghai — the Bund, Yu Garden, the French Concession, the Pudong skyline.'},
- {dnum:'26',mon:'Jul',region:'shandong',title:'Everyone converges in Ningjin',sub:'Sunday evening · Dezhou (Ningjin)',move:'~4 h / ~14 h',
-  plan:'Danny + K travel up from Shanghai to Ningjin (Dezhou) on Sunday. Georgio’s flight (China Southern, via Guangzhou) lands Jinan ~23:50 Sun and he pushes straight on to Ningjin by a pre-arranged car (~1h15, in ~02:00). ⚠ Book that transfer ahead (via the Ningjin Garden Hotel or a reserved Didi) — a regular taxi for a ~100 km run at midnight is unreliable. He sleeps in and rests Monday, joining the factory visits Tuesday.',
+ {dnum:'26',mon:'Jul',region:'shandong',title:'Everyone converges in Ningjin',sub:'Sunday · Danny + K by rail · Georgio flies in late',move:'~5.5 h / ~15.5 h',
+  plan:'Danny + K train up from Shanghai to Ningjin. Georgio’s flights land Jinan 23:50 and he pushes straight on by pre-arranged car, reaching the Ningjin Garden Hotel ~02:00. All three wake up in Ningjin for Monday’s meetings.',
   legs:[
-   {mode:'rail',route:'Danny + K: Shanghai → Dezhou East → Ningjin',dur:'~5.5–6 h door-to-door',note:'All Shanghai Hongqiao → Dezhou East G-trains below (Beijing–Shanghai line). Getting there: Diamond Bund → Hongqiao by Didi/taxi ~35–50 min (Metro Line 2 direct), at the station ~40 min before the train. At Dezhou East, a pre-arranged car does the ~45 min to Ningjin (no HSR at Ningjin, and Didi is thin there — book the car via the hotel). Checkout is noon, so the 12:20+ departures suit; book early, Sunday afternoon sells out. Alt: fly Shanghai → Jinan (TNA) ~1h50 + ~1h15 drive.',opts:[{t:'06:32',d:'4h44 → 11:16',svc:'G548'},{t:'07:32',d:'5h28 → 13:00',svc:'G1212'},{t:'12:20',d:'4h46 → 17:06',svc:'G738'},{t:'13:26',d:'4h17 → 17:43',svc:'G748 · fastest'},{t:'13:33',d:'4h44 → 18:17',svc:'G750'},{t:'14:18',d:'4h29 → 18:47',svc:'G752'},{t:'15:21',d:'4h27 → 19:48',svc:'G798'},{t:'16:04',d:'4h35 → 20:39',svc:'G802'},{t:'17:25',d:'4h35 → 22:00',svc:'G808'},{t:'17:46',d:'4h25 → 22:11',svc:'G810'}]},
-   {mode:'fly',route:'Georgio: Brisbane → Jinan (TNA), via Guangzhou',dur:'~15h30',note:'China Southern (Economy Standard, ~A$1,294 return): BNE 10:20 → Jinan 23:50, Sun 26 (1 stop via Guangzhou). Bags 2×23 kg checked + 1×8 kg cabin. Immigration cleared at Guangzhou, so Jinan is a quick domestic arrival.'},
-   {mode:'car',route:'Jinan airport (TNA) → Ningjin (push on Sun night)',dur:'~1h15',note:'⚠ Pre-book a private car/driver to meet him at arrivals (via the Ningjin Garden Hotel or a reserved Didi) — hailing a taxi at ~00:30 for a ~100 km run is unreliable. Arrives Ningjin ~02:00; sleeps in, rests Monday.'}]},
- {dnum:'27',mon:'Jul',region:'shandong',title:'Rosen + MBH',sub:'Danny + K · Rosen (AM) · MBH (after lunch) — Georgio rests at the hotel',
-  plan:'Monday: Danny + K do Rosen in the morning and MBH after lunch (same Ningjin park). Georgio reaches Ningjin around midday and heads straight to the hotel to rest after the long haul — he joins the factory visits from Tuesday. Evening in Ningjin/Dezhou.',
-  visit:['Rosen Fitness','MBH Fitness'],
-  tip:'If you want Georgio at MBH, slide MBH to Tue 28 AM before the train south to Rizhao (pending HSR times).'},
- {dnum:'28',mon:'Jul',region:'shandong',title:'Relax (Rizhao), then Qingdao',sub:'All three · Ningjin → Rizhao → Qingdao',move:'~5–6 h',
-  plan:'Tuesday: leave Ningjin by high-speed rail down to Rizhao to see Relax (the stair climbers), then carry on to Qingdao and stay the night — set up for Quick Body + Insight on Wednesday.',
-  visit:['Relax Fitness'],
+   {mode:'rail',route:'Danny + K: Shanghai → Dezhou East → Ningjin',dur:'~5.5–6 h door-to-door',note:'Diamond Bund → Hongqiao by Didi ~35–50 min (checkout noon), at the station 40 min early, then a Beijing–Shanghai line G-train below. At Dezhou East a pre-arranged car does the ~45 min to Ningjin (book via the hotel — Didi is thin out there). The 12:20–15:21 departures fit best; book early, Sunday sells out.',opts:[{t:'12:20',d:'4h46 → 17:06',svc:'G738'},{t:'13:26',d:'4h17 → 17:43',svc:'G748 · fastest'},{t:'13:33',d:'4h44 → 18:17',svc:'G750'},{t:'14:18',d:'4h29 → 18:47',svc:'G752'},{t:'15:21',d:'4h27 → 19:48',svc:'G798'},{t:'16:04',d:'4h35 → 20:39',svc:'G802'},{t:'17:25',d:'4h35 → 22:00',svc:'G808'},{t:'17:46',d:'4h25 → 22:11',svc:'G810'}]},
+   {mode:'fly',route:'Georgio: Brisbane → Jinan (TNA), via Guangzhou',dur:'~15.5 h',note:'✓ Ticketed — PNR PJWEFZ. CZ382 BNE 10:20 → Guangzhou (T2) 17:50, transfer 3h15 (bags checked through, immigration at Guangzhou), CZ3663 CAN 21:05 → Jinan 23:50. Be at BNE by ~07:20 (3 h early).'},
+   {mode:'car',route:'Jinan airport (TNA) → Ningjin Garden Hotel',dur:'~1h15',note:'⚠ Pre-book the car to meet the 23:50 arrival (arrange via the Ningjin Garden Hotel + give them flight CZ3663) — hailing a midnight taxi for ~100 km is unreliable. In ~02:00; hotel is warned of the late check-in.'}]},
+ {dnum:'27',mon:'Jul',region:'shandong',title:'Rosen 9:00 AM · MBH 1:00 PM',sub:'Ningjin · both in the same park',move:'local',
+  plan:'Monday in Ningjin: Rosen at 9:00 AM, lunch, then MBH at 1:00 PM — the two factories share the same industrial park (~5 min apart), ~10 min from the hotel. Georgio landed ~02:00, so he rests as needed and joins when he’s up. Evening in Ningjin.',
+  visit:['Rosen Fitness','MBH Fitness']},
+ {dnum:'28',mon:'Jul',region:'shandong',title:'Yishui flooring · Relax (Rizhao) · on to Qingdao',sub:'All three · the big Shandong traverse',move:'~8 h',
+  plan:'Tuesday is the heaviest day — south by rail with the Yishui flooring stop worked in on the way to Relax, ending in Qingdao. Sample times: leave the hotel 06:30 → Dezhou East → Jinan West → Linyi North (~10:45) → car to Yishui (~12:00, visit + quick lunch) → car to Relax, Rizhao (~3:30 PM) → Rizhao station → evening train to Qingdao → Wyndham ~9 PM. Book ONE driver for the Linyi North → Yishui → Rizhao run (~3 h wheels, ≈¥600–800) — arrange the day before.',
+  visit:['Flooring — Yishui','Relax Fitness'],
   legs:[
-   {mode:'car',route:'Ningjin hotel → Dezhou East station',dur:'~45–55 min',note:'~40 km — arrange the car the night before (Didi is scarce in Ningjin early). At Dezhou East ~30–40 min before the train.'},
-   {mode:'rail',route:'Ningjin / Dezhou → Rizhao (Relax)',dur:'~2.5–3 h',note:'Dezhou East → Jinan West (~35 min), change to a direct Jinan West → Rizhao West train (~1h56–2h). ⚠ The last direct Jinan→Rizhao is ~14:35 — get an early start (or do MBH first thing). Relax is ~25 min from Rizhao West.'},
-   {mode:'rail',route:'Rizhao → Qingdao',dur:'~30 min–1.5 h',note:'Very frequent (~100/day, 07:23–21:21; fastest ~29 min into Qingdao WEST). For the QB/Peach hotel in north Qingdao, aim for a train to Qingdao North/Hongdao if available — else Qingdao West + ~1 h across the bay.'}],
-  tip:'Stay near the airport (TAO) / Chengyang or Jimo — that puts you ~25–30 min from both Quick Body and Peach Builder for Wednesday.'},
- {dnum:'29',mon:'Jul',region:'shandong',title:'Quick Body + Insight',sub:'All three · Qingdao · Quick Body (AM) · Peach Builder / Insight (PM)',move:'~30 min local',
-  plan:'Wednesday in Qingdao: Quick Body in the morning and over lunch, then Peach Builder (via Insight) in the afternoon. Both sit near Qingdao airport.',
-  visit:['Quick Body','Peach Builder'],
-  legs:[{mode:'car',route:'Quick Body (Chengyang) → Peach Builder (Jimo)',dur:'~25–30 min',note:'~11 km straight line, ~15–20 km by road across north Qingdao. Both near Qingdao airport (TAO).'}]},
- {dnum:'30',mon:'Jul',region:'fujian',title:'Xiamen · Rayton · evening HSR to Guangzhou',sub:'All three · Qingdao → Xiamen → Guangzhou',move:'~7–8 h',
-  plan:'Thursday: early flight Qingdao → Xiamen, Rayton for the day (ready to leave after 4pm), then back to Xiamen (~1h — no overnight near Rayton) and an evening HSR down to Guangzhou from Xiamen North. Overnight Guangzhou, set up for the factories Friday.',
+   {mode:'car',route:'Ningjin hotel → Dezhou East station',dur:'~45–55 min',note:'Leave 06:30 — car booked the night before. At Dezhou East 30 min early.'},
+   {mode:'rail',route:'Dezhou East → Jinan West',dur:'~35–40 min',note:'Very frequent on the Beijing–Shanghai line — target a ~07:45–08:15 departure.'},
+   {mode:'rail',route:'Jinan West → Linyi North (Rilan line)',dur:'~1h45–2h',note:'Rizhao-bound trains via Qufu East stop at Linyi North — aim to land ~10:30–11:00. ⚠ Verify the exact morning service on Trip.com; there is no HSR at Yishui itself.'},
+   {mode:'car',route:'Linyi North → Yishui factory (Huangshanpu)',dur:'~1h15',note:'~80 km north into the Yimeng hills. Visit ~12:30–1:30 with a quick lunch.'},
+   {mode:'car',route:'Yishui → Relax (Rizhao EDZ)',dur:'~1h30–1h45',note:'~100 km east, same driver. Relax ~3:30–5:00 PM.'},
+   {mode:'rail',route:'Rizhao → Qingdao',dur:'~1–1.5 h',note:'~25 min to Rizhao station, then frequent evening trains (to ~21:21). Aim for a Qingdao North arrival if available, then ~30 min car to the Wyndham (Chengyang). In ~9 PM.'}],
+  tip:'If the day blows out, the release valve is Yishui — skip the stop and get their sqm quote by WeChat; you still compare it against Chuanyu on Saturday.'},
+ {dnum:'29',mon:'Jul',region:'shandong',title:'Insight 9:00 AM · Quick Body 1:00 PM',sub:'All three · Qingdao north side',move:'~30 min local',
+  plan:'Wednesday in Qingdao: Peach Builder (via Insight) at 9:00 AM in Jimo — ~30 min from the Wyndham, leave 8:20. Lunch, then Quick Body at 1:00 PM back in Chengyang (~25–30 min). Back at the hotel by ~10 min after wrapping. Early night — 5:30 AM start tomorrow.',
+  visit:['Peach Builder','Quick Body'],
+  legs:[
+   {mode:'car',route:'Wyndham → Peach Builder (Jimo)',dur:'~30 min',note:'Leave ~8:20 for the 9:00 AM. Show the driver: 青岛驰健英赛特 五谷河一路 赵家岭村106号.'},
+   {mode:'car',route:'Peach Builder → Quick Body (Chengyang)',dur:'~25–30 min',note:'~15–20 km back across north Qingdao for the 1:00 PM. Quick Body → hotel is ~10 min after.'}]},
+ {dnum:'30',mon:'Jul',region:'fujian',title:'Fly to Xiamen · Rayton · evening HSR to Guangzhou',sub:'All three · Qingdao → Xiamen → Guangzhou',move:'~8 h',
+  plan:'Thursday: the booked 08:00 flight south, straight to Rayton (~12:00–4:00 PM), then back to Xiamen North and the evening HSR to Guangzhou. Late check-in at the Dong Fang (~10:30 PM).',
   visit:['Rayton'],
   legs:[
-   {mode:'car',route:'Wyndham Qingdao (Chengyang) → Qingdao airport (TAO)',dur:'~40–50 min',note:'✅ Use the Wyndham’s included airport shuttle — <b>book it 4 h ahead</b> at the front desk (or Didi/taxi ~40 km). At TAO by ~06:30 for the 08:00, so leave the hotel ~05:30. Early start.'},
-   {mode:'fly',route:'Qingdao (TAO) → Xiamen (XMN)',dur:'~2h35',note:'✓ Booked — Xiamen Airlines MF8526, 3 pax, AU$532.80 (booking 1167732017126287). Arrives Xiamen Gaoqi T3.',opts:[{t:'08:00',d:'2h35 → 10:35 (T3)',svc:'MF8526 ✓ booked'}]},
-   {mode:'car',route:'Xiamen airport (XMN) → Rayton (Changtai, Zhangzhou)',dur:'~1 h',note:'By car ~1 h from the airport — pre-arrange so you go straight there. (Or metro/taxi to Xiamen North + ~30 min HSR to Zhangzhou.)'},
-   {mode:'car',route:'Rayton → Xiamen North station',dur:'~1 h',note:'Straight back to Xiamen after the visit (no overnight near Rayton), then depart Guangzhou-bound from Xiamen North.'},
-   {mode:'rail',route:'Xiamen North → Guangzhou South (evening HSR)',dur:'~3h11–4h',note:'Ready ~4pm at Rayton + ~1h back to Xiamen North → aim for a 17:44–19:54 departure. Fastest G3049 18:59 → 22:10 (3h11); last ~19:54. Alt: fly XMN → Guangzhou (CAN), last ~22:35, ~1h40.',opts:[{t:'17:18',d:'3h59 → 21:17',svc:'G3815'},{t:'17:44',d:'4h09 → 21:53',svc:'G1625'},{t:'18:59',d:'3h11 → 22:10',svc:'G3049 · fastest'},{t:'19:25',d:'3h22 → 22:47',svc:'G3051'},{t:'~19:54',d:'~3h+',svc:'last'}]}]},
- {dnum:'31',mon:'Jul',region:'guangdong',title:'Guangzhou — Conlin + OMA (+ MileStrong?)',sub:'All three · Friday',move:'~1–2 h local',
-  plan:'Already in Guangzhou. Picked up from the hotel in the morning for the first factory — Conlin in the city and OMA in Foshan (Shunde). MileStrong possible Friday afternoon if it sits close enough — location to confirm.',
-  visit:['Conlin Fitness','OMA Fitness'],
-  legs:[{mode:'car',route:'Guangzhou → Foshan (Shunde)',dur:'~45 min',note:'Same driver both stops.'}],
-  tip:'MileStrong: send the profile so I can pin it and check the Friday-arvo add-on is realistic.'},
- {dnum:'01',mon:'Aug',region:'guangdong',title:'Proposed: Chuanyu (Dongguan) · Georgio can head home',sub:'All three / split · Saturday (yours to finalise)',move:'~1.5 h',
-  plan:'PROPOSED: Chuanyu flooring at Dongguan. Georgio flies home from Guangzhou this evening — Skyscanner option: China Southern CAN 21:05 → Brisbane 08:25 (+1), non-stop. Boys carry on toward Hong Kong.',
+   {mode:'car',route:'Wyndham Qingdao → Qingdao airport (TAO)',dur:'~40–50 min',note:'✅ Use the Wyndham’s included airport shuttle — book it 4 h ahead (i.e. the night before). Leave 05:30, at TAO 06:20 for the 08:00 (90 min early).'},
+   {mode:'fly',route:'Qingdao (TAO) → Xiamen Gaoqi (XMN, T3)',dur:'2h35',note:'✓ Booked — Xiamen Airlines MF8526, 3 pax, A$532.80 (~¥2,505), booking 1167732017126287.',opts:[{t:'08:00',d:'2h35 → 10:35 (T3)',svc:'MF8526 ✓ booked'}]},
+   {mode:'car',route:'Xiamen airport (T3) → Rayton (Changtai, Zhangzhou)',dur:'~1 h',note:'Pre-arrange the car so you drive straight out of T3 — on site ~12:00. Rayton through to ~4:00 PM.'},
+   {mode:'car',route:'Rayton → Xiamen North station',dur:'~1 h',note:'Leave Rayton 4:00–4:30 PM → Xiamen North ~5:15–5:30, comfortably ahead of the evening trains.'},
+   {mode:'rail',route:'Xiamen North → Guangzhou South',dur:'~3h11–4h',note:'Best fit after a 4 PM finish is the 17:44 or the fast 18:59. Arrive Guangzhou South, then ~30–40 min car to the Dong Fang (Yuexiu). Alt: fly XMN → CAN, last ~22:35 (~1h40).',opts:[{t:'17:18',d:'3h59 → 21:17',svc:'G3815 (tight)'},{t:'17:44',d:'4h09 → 21:53',svc:'G1625'},{t:'18:59',d:'3h11 → 22:10',svc:'G3049 · fastest'},{t:'19:25',d:'3h22 → 22:47',svc:'G3051'},{t:'~19:54',d:'~3h+',svc:'last'}]}]},
+ {dnum:'31',mon:'Jul',region:'guangdong',title:'OMA 9:30 AM · Conlin 2:00 PM',sub:'All three · Foshan + Guangzhou',move:'~2.5 h in cars',
+  plan:'Friday: picked up from the Dong Fang at 8:30 for OMA in Shunde (9:30 AM), lunch, then ~1h15 north to Conlin in Huadu (2:00 PM). Back to the hotel ~5:30 PM — Conlin is only ~20 min from the airport but Georgio flies tomorrow, not tonight.',
+  visit:['OMA Fitness','Conlin Fitness'],
+  legs:[
+   {mode:'car',route:'Dong Fang hotel → OMA (Shunde)',dur:'~45 min',note:'Leave 8:30 for the 9:30 AM. Same driver all day is easiest.'},
+   {mode:'car',route:'OMA → Conlin (Huadu)',dur:'~1h15',note:'South-west to north across the metro area — leave OMA by ~12:30 with lunch on the way for the 2:00 PM.'},
+   {mode:'car',route:'Conlin → Dong Fang hotel',dur:'~40 min',note:'Wrap ~4:30–5:00 PM, back for the evening.'}]},
+ {dnum:'01',mon:'Aug',region:'guangdong',title:'Chuanyu (Dongguan) 9:00 AM · Georgio flies home',sub:'Saturday · last factory + the split',move:'~3 h cars · Georgio ~9.5 h flight',
+  plan:'Saturday: leave the Dong Fang 7:40 for Chuanyu in Chashan, Dongguan (9:00 AM) — the flooring head-to-head against Tuesday’s Yishui numbers. Back to Guangzhou early afternoon. Georgio leaves for the airport 5:30 PM for the 9:05 PM flight home; the boys have the evening in Guangzhou.',
   visit:['Dongguan Chuanyu'],
   legs:[
-   {mode:'car',route:'Dong Fang hotel (Yuexiu) → Guangzhou Baiyun airport (CAN)',dur:'~45–60 min',note:'Didi/taxi ~35 km, or Metro Line 3 to the airport. International flight — be at CAN by ~18:30 (≈2.5 h before 21:05), so leave Dong Fang ~17:30.'},
-   {mode:'fly',route:'Georgio: Guangzhou (CAN) → Brisbane',dur:'~9h20',note:'Skyscanner option: China Southern, CAN 21:05 (Sat 1 Aug) → BNE 08:25 (Sun 2 Aug), non-stop overnight.'}]},
- {dnum:'02',mon:'Aug',region:'guangdong',title:'Proposed: Boys cross to Hong Kong',sub:'Danny + K · Sunday (yours to finalise)',move:'~1 h',
-  plan:'PROPOSED: Danny + Konstantin cross to Hong Kong (HSR Dongguan/Guangzhou → West Kowloon, ~40 min) to start the HK tail. Adjust Fri–Sun however suits — this is a placeholder.',
-  legs:[{mode:'rail',route:'Dongguan (Humen) → Hong Kong West Kowloon',dur:'~40 min',note:'Cross-border immigration inside West Kowloon; passport, board 30–45 min early.',opts:[{t:'12:05',d:'39 min',svc:'G6529'},{t:'17:46',d:'42 min',svc:'G6513'}]}]},
+   {mode:'car',route:'Dong Fang hotel → Chuanyu (Chashan, Dongguan)',dur:'~1h15',note:'Leave 7:40 for the 9:00 AM. Return ~1h15 after the visit.'},
+   {mode:'car',route:'Georgio: Dong Fang → Guangzhou Baiyun (CAN, T2)',dur:'~45–60 min',note:'International — at CAN by 6:30 PM (2.5 h early), so leave the hotel 5:30 PM. Didi/taxi ~35 km or Metro Line 3.'},
+   {mode:'fly',route:'Georgio: Guangzhou (CAN T2) → Brisbane',dur:'~9h20',note:'✓ Ticketed — CZ381, 21:05 Sat → BNE 08:25 Sun (+1), non-stop. PNR PJWEFZ.'}]},
+ {dnum:'02',mon:'Aug',region:'guangdong',title:'Boys cross to Hong Kong',sub:'Danny + K · Sunday · start of the HK tail',move:'~1.5 h',
+  plan:'Danny + Konstantin check out of the Dong Fang and take the HSR from Guangzhou South to Hong Kong West Kowloon, then MTR/taxi to Causeway Bay. Regal Hong Kong 2–5 Aug (still to book).',
+  legs:[
+   {mode:'car',route:'Dong Fang → Guangzhou South station',dur:'~30–40 min',note:'At the station 45 min early — cross-border train, passport needed.'},
+   {mode:'rail',route:'Guangzhou South → Hong Kong West Kowloon',dur:'~48 min–1h20',note:'Frequent all day; immigration inside West Kowloon. Then ~15 min taxi/MTR to Causeway Bay.'}]},
  {dnum:'03',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
   plan:'Full day in Hong Kong.'},
- {dnum:'04',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day',
-  plan:'Last full day in Hong Kong.'},
+ {dnum:'04',mon:'Aug',region:'guangdong',title:'Danny + Konstantine — Hong Kong',sub:'Boys’ holiday day · airport tonight',
+  plan:'Last full day. The flight is 00:15 tonight — leave Causeway Bay ~9:15 PM (Airport Express ~24 min from Hong Kong station, or ~40 min taxi), at HKG by 10 PM.'},
  {dnum:'05',mon:'Aug',region:'guangdong',title:'Danny + Konstantine fly home',sub:'Hong Kong → Brisbane',move:'~8h35',
-  plan:'Danny + Konstantine fly Hong Kong → Brisbane (Cathay, direct) — the return leg of their ticket. HK from ~2 Aug, ~3 nights. Flight departs 00:15, so be in HK the night of Tue 4 Aug.',
+  plan:'Danny + Konstantine fly Hong Kong → Brisbane on the booked Cathay return.',
   legs:[
-   {mode:'car',route:'Regal Hong Kong (Causeway Bay) → HK airport (HKG)',dur:'~40–45 min',note:'Airport Express (fastest, ~24 min from Hong Kong station) or taxi ~40 min. Flight is 00:15 — be at HKG by ~22:00, so leave Causeway Bay ~21:15 on Tue 4 Aug.'},
-   {mode:'fly',route:'Danny + Konstantine: Hong Kong (HKG) → Brisbane',dur:'~8h35',note:'✓ Booked — Cathay CX165 HKG 00:15 → BNE 10:50, non-stop. Ref DSZPDZ.'}]},
+   {mode:'fly',route:'Hong Kong (HKG) → Brisbane',dur:'8h35',note:'✓ Booked — Cathay CX165 HKG 00:15 → BNE 10:50, non-stop. Ref DSZPDZ.'}]},
 ];
 // Typical late-July / early-Aug temperatures per day (climate averages, high / low °C)
 const TEMP={
  Jul23:'Shanghai ~34° / 27°', Jul24:'Nantong ~33° · Shanghai ~34°', Jul25:'Shanghai ~34° / 27°', Jul26:'Ningjin / Dezhou ~32° / 24°', Jul27:'Ningjin ~32° / 24°',
- Jul28:'Rizhao ~29° → Qingdao ~28°', Jul29:'Qingdao ~28° / 24°', Jul30:'Xiamen ~33° / 27°', Jul31:'Guangzhou ~34° / 27°',
+ Jul28:'Yishui ~31° · Rizhao ~29° → Qingdao ~28°', Jul29:'Qingdao ~28° / 24°', Jul30:'Xiamen ~33° / 27°', Jul31:'Guangzhou ~34° / 27°',
  Aug01:'Dongguan ~34° · Guangzhou ~34°', Aug02:'Guangzhou → Hong Kong ~31°', Aug03:'Hong Kong ~31° / 27°', Aug04:'Hong Kong ~31° / 27°', Aug05:'Hong Kong ~31° / 27°',
 };
 const DOWK=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONK={Jul:6,Aug:7};
 const dowOf=(mon,dnum)=>DOWK[new Date(2026,MONK[mon],parseInt(dnum,10)).getDay()];
 document.getElementById('itin').innerHTML =
- '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in together (23rd), do the two Nantong factories (24th), sightsee Shanghai (25th), then everyone meets in Ningjin (26th) — Georgio flies in — and the crew works the factory sweep together: MBH + Rosen (27th), Relax in Rizhao then Qingdao (28th), Quick Body + Insight (29th), Xiamen + Rayton (30th), with the Guangdong leg Fri–Sun open to finalise. Tap any day to expand: who you see, the itemised gear, travel options with real sample times, and the typical temperature. Late July is peak summer — hot and very humid everywhere, mid-30s in the south, with afternoon thunderstorms possible (and a small typhoon chance in Fujian/Guangdong/HK). Pack light and breathable. Temps + rail/flight times are indicative — confirm nearer the date.</p>'+
+ '<h2>Itinerary</h2><p class="lead">The full run, 23 Jul – 5 Aug. Danny + Konstantine fly in Thursday, do Baopeng (Nantong) Friday, sightsee Saturday, and everyone converges on Ningjin Sunday — Georgio lands Jinan 23:50 and drives up. Then the sweep: Rosen 9 AM + MBH 1 PM (Mon), Yishui flooring + Relax with the evening run to Qingdao (Tue), Insight 9 AM + Quick Body 1 PM (Wed), the 08:00 flight to Xiamen for Rayton then evening HSR to Guangzhou (Thu), OMA 9:30 + Conlin 2 PM (Fri), Chuanyu Saturday morning before Georgio flies home that night. Boys cross to Hong Kong Sunday. Tap any day for who you see, the transport with real times, and how early to leave. Gear lists live in the Suppliers tab.</p>'+
  '<div class="daytip" style="margin:2px 0 14px">🚕 <b>Getting to airports &amp; stations:</b> use <b>Didi</b> (China’s Uber — set it up before you fly) or a taxi; have the hotel write the destination in Chinese for the driver. Arrive-before rule of thumb: <b>HSR 30–45 min</b> (ticket scan + security + platform gate), <b>domestic flights 90 min</b>, <b>international 2.5–3 h</b>. Metro is cheapest in Shanghai / Qingdao / Guangzhou but slower with luggage. Each day’s “Getting there” below shows the specific hop and how early to leave.</div>'+
  DAYS.map(d=>{
    const col = REGIONS[d.region] ? REGIONS[d.region].color : '#86868b';
@@ -799,62 +821,33 @@ document.getElementById('itin').innerHTML =
 
 /* ===== SUPPLIERS (expandable, click-through) ===== */
 document.getElementById('supp').innerHTML =
- '<h2>Suppliers</h2><p class="lead">Every shortlisted factory. Tap to expand for the itemised list of what we’re chasing, the contact, and the details.</p>'+
+ '<h2>Suppliers</h2><p class="lead">Only the factories we’re visiting — in visit order. Tap a card for the full picture: trading name, contact, meeting time, address, catalogue, distances, the items we’re after and the commercials.</p>'+
  SUPPLIERS.map(s=>{
-   const col=REGIONS[s.region].color; const v=s.day>0;
+   const col=REGIONS[s.region].color;
    const c=CAT[s.nm];
-   const web = c&&c.url ? `<div class="kv"><b>Website:</b> ${c.url.replace('https://','')}${/on file/.test(c.label)?' · quote / catalogue on file':''}</div>`:'';
+   const catBtn = c ? (c.url?`<a href="${c.url}" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Open catalogue ↗</a>${/on file/.test(c.label)?' · quote / catalogue on file':''}`:c.label) : 'TBC';
+   const cm = COMM[s.nm];
    return `<div class="acc"><div class="acc-hd">`+
-     `<div class="daybadge" style="background:${v?col:'#c7c7cc'}"><small>${v?(s.mon||'JUL'):''}</small>${v?s.day:'·'}</div>`+
-     `<div style="min-width:0"><div class="acc-nm">${s.nm}</div><div class="acc-sub">${s.city} · ${s.cat}</div></div>`+
+     `<div class="daybadge" style="background:${col}"><small>${s.mon||'JUL'}</small>${s.day}</div>`+
+     `<div style="min-width:0"><div class="acc-nm">${s.nm}</div><div class="acc-sub">${s.city} · ${s.slot}</div></div>`+
      `<div class="chev">▶</div></div>`+
      `<div class="acc-bd">`+
-       (CONTACT[s.nm]&&CONTACT[s.nm]!=='TBC'?`<div class="kv"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
-       `<div class="sub-h">What we’re chasing</div>${chaseTable(s.nm)}`+
-       web+
-       `<div class="kv"><b>Nearest airport:</b> ${s.ap}${DRIVE[s.nm]?' · '+DRIVE[s.nm]:''}</div>`+
-       `<div class="kv"><b>Nearest HSR:</b> ${HSR[s.nm]||'—'}</div>`+
+       `<div class="kv"><b>Trading name:</b> ${TRADE[s.nm]||'TBC'}</div>`+
+       (MEET[s.nm]?`<div class="kv"><b>Meeting:</b> ${MEET[s.nm]}</div>`:'')+
+       (CONTACT[s.nm]?`<div class="kv"><b>Contact:</b> ${CONTACT[s.nm]}</div>`:'')+
+       (ADDR[s.nm]?`<div class="kv"><b>Factory address:</b> ${ADDR[s.nm]}</div>`:'')+
+       `<div class="kv"><b>Catalogue:</b> ${catBtn}</div>`+
+       `<div class="kv"><b>Nearest HSR:</b> ${HSR[s.nm]||'—'} · <b>Airport:</b> ${s.ap}</div>`+
+       (ARRIVE[s.nm]?`<div class="kv"><b>Getting there:</b> ${ARRIVE[s.nm]}</div>`:'')+
+       (NEXTSTOP[s.nm]?`<div class="kv"><b>To the next stop:</b> ${NEXTSTOP[s.nm]}</div>`:'')+
+       (INTEL[s.nm]?`<div class="daytip" style="margin:8px 0">${INTEL[s.nm]}</div>`:'')+
+       `<div class="sub-h">Items we’re after</div>${chaseTable(s.nm)}`+
+       (cm?`<div class="sub-h">Commercials</div><div class="kv"><b>Their quote:</b> ${cm.q}</div><div class="kv"><b>Our target:</b> ${cm.t}</div><div class="kv"><b>Their MOQ:</b> ${cm.m} · <b>Our qty:</b> ${cm.om}</div>`:'')+
      `</div></div>`;
  }).join('');
 
 /* accordion click-to-expand (itinerary days + supplier cards) */
 document.querySelectorAll('.acc-hd').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
-
-/* JUSTIN view */
-const JUSTIN={
- legs:[
-  {seg:'Shanghai → Nantong',mode:'rail',dur:'~1–1.5 h',tn:'High-speed rail, frequent from Shanghai Hongqiao. Easier than an airport transfer.'},
-  {seg:'Nantong → Qingdao',mode:'rail',dur:'~3.5–5 h',tn:'Direct HSR, ~7/day, fastest ~3.5 h into Qingdao West. Take the train over connecting flights from Nantong’s small airport.'},
-  {seg:'Qingdao → Dezhou',mode:'rail',dur:'~2–3 h',tn:'Comfortable and reliable — both in Shandong. More efficient than flying that distance.'},
-  {seg:'Dezhou → Xiamen',mode:'fly',dur:'flight',tn:'The big jump south. Fly out of Jinan (close to Dezhou) rather than lose most of a day on trains.'},
-  {seg:'Xiamen → Guangzhou',mode:'fly',dur:'~1.5 h air / 3–5 h rail',tn:'Either works. Flight ~1.5 h airborne; HSR ~3–5 h. Pick whichever fits your meeting times.'},
- ],
- airlines:[['China Southern','Best for Guangzhou-based travel'],['China Eastern','Strong Shanghai network'],['Air China','Reliable major carrier'],['Xiamen Air','Excellent around Fujian and Xiamen'],['Shenzhen Airlines','Reasonable secondary option']],
- budget:[['High-speed rail sectors','AUD 20–80 per leg'],['Domestic flights','AUD 150–400 per leg'],['Airport hotels','AUD 80–200 per night'],['Taxis & Didi','Generally cheap vs Australia']],
-};
-document.getElementById('justin').innerHTML =
- '<h2>Justin’s plan</h2><p class="lead">Route sanity-checked by Justin (pilot) and a contact working in China. His take on flights, connections and on-the-ground prep.</p>'+
- '<div class="h3">International flights (as booked)</div><div class="intlgrid">'+
-   '<div class="jcard"><h4>✈ Into China</h4>Brisbane → Shanghai (PVG)<div class="big">Cathay Pacific · via Hong Kong</div></div>'+
-   '<div class="jcard"><h4>✈ Home</h4>Hong Kong → Brisbane<div class="big">Cathay Pacific · direct</div></div>'+
- '</div>'+
- '<div class="rec">Booked as Cathay via Hong Kong (in to Shanghai, home from HK) — it suits the boys’ Hong Kong holiday at the end. Justin’s original call was direct China Eastern in / China Southern home; that’s the play only if the Cathay fare isn’t much cheaper and you don’t want the HK stop.</div>'+
- '<div class="h3">Recommended sequence</div><div class="seqrow">'+
-   ['Shanghai / Nantong','Qingdao','Dezhou','Xiamen / Zhangzhou','Guangzhou','Home'].map((s,i,a)=>`<span class="s">${s}</span>${i<a.length-1?'<span class="a">→</span>':''}`).join('')+
- '</div>'+
- '<div class="h3">Connections — rail vs flying</div><div class="tl">'+
-   JUSTIN.legs.map(l=>{const fl=l.mode==='fly';return `<div class="tleg"><div class="ic"><div class="badge ${fl?'fl':'gr'}">${fl?'✈':'🚄'}</div><div class="line"></div></div><div class="bd"><div class="seg">${l.seg}<span class="dur">${l.dur}</span></div><div class="tn">${l.tn}</div></div></div>`;}).join('')+
- '</div>'+
- '<div class="h3">Domestic airlines</div><table class="jtbl"><thead><tr><th>Airline</th><th>Notes</th></tr></thead><tbody>'+
-   JUSTIN.airlines.map(a=>`<tr><td>${a[0]}</td><td class="muted" style="color:var(--text2)">${a[1]}</td></tr>`).join('')+'</tbody></table>'+
- '<div class="h3">Before you go</div><div class="jgrid">'+
-   '<div class="jcard"><h4>Payments</h4><ul><li>Install Alipay + WeChat</li><li>Link an Australian card to both</li><li>Mobile payment is easiest day-to-day; having both means no merchant catches you out</li></ul></div>'+
-   '<div class="jcard"><h4>Data &amp; connectivity</h4><ul><li>Roaming or eSIM before departure</li><li>Check email, Teams, WhatsApp + business systems work before flying</li><li>Test before you leave, not on landing</li><li>VPN — NordVPN or ExpressVPN</li></ul></div>'+
-   '<div class="jcard"><h4>Booking</h4><ul><li>Use Trip.com for rail — easy for foreigners, handles HSR, domestic flights + hotels in one place</li></ul></div>'+
- '</div>'+
- '<div class="h3">Budget guide (indicative)</div><table class="jtbl"><thead><tr><th>Item</th><th>Expected cost</th></tr></thead><tbody>'+
-   JUSTIN.budget.map(b=>`<tr><td>${b[0]}</td><td>${b[1]}</td></tr>`).join('')+'</tbody></table>'+
- '<div class="cav"><ul style="padding-left:18px;margin:0"><li>Achievable but busy — Shanghai, Shandong, Fujian and Guangdong in six days. <b>Lock the factory appointments first, then build transport around them</b> rather than chasing the cheapest fares.</li><li>Justin is happy to sanity-check the bookings once dates are set against each factory.</li></ul></div>';
 
 /* ===== BOOKINGS view ===== */
 const STAYS=[
@@ -862,28 +855,28 @@ const STAYS=[
   cin:'Thu 23 Jul · after 15:00', cout:'Sun 26 Jul · before 12:00', nights:'3 nights · 2 rooms (Special Queen)',
   conf:'1167731100822134', booking:'1167731100784793', guests:'Daniel Catanzaro, Konstantin Blank',
   addr:'No. 53 Jiujiang Road, Huangpu District, Shanghai', addrcn:'上海黄浦区九江路53号',
-  tel:'+86 189 1750 6637', via:'Trip.com · prepaid AU$1,274.58',
+  tel:'+86 189 1750 6637', via:'Trip.com · ✓ PAID — A$1,274.58 (~¥5,990) · plus ¥500/room (~A$106) deposit at check-in',
   extra:'Deposit CNY 500 per room at check-in (cash/card/Alipay/WeChat; refunds 2–4 weeks).',
   map:'https://www.google.com/maps/search/?api=1&query=No.%2053%20Jiujiang%20Road%2C%20Huangpu%20District%2C%20Shanghai'},
  {name:'Ningjin Garden Hotel', cn:'青澜宁津花园酒店', city:'Ningjin (Dezhou)', who:'All three',
   cin:'Sun 26 Jul · after 14:00', cout:'Tue 28 Jul · before 12:00', nights:'2 nights · 3 rooms (Cozy Queen)',
   conf:'1167731171498269', booking:'1167731171498189', guests:'Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas',
   addr:'North side of the road, 100 m east of Zhengyang Rd × Xiangjiang St, Ningjin, Shandong', addrcn:'山东宁津正阳路与香江大街交叉口东100米路北',
-  tel:'+86 534 899 8888', via:'Trip.com · PAY AT HOTEL — CNY 1,842',
+  tel:'+86 534 899 8888', via:'Trip.com · ⚠ PAY AT HOTEL — A$392 (~¥1,842), nothing prepaid',
   extra:'⚠ Pay at the hotel, not prepaid. Free cancellation before check-in. Georgio arrives ~02:00 Mon — tell the hotel so they hold the room and expect a late arrival.',
   map:'https://www.google.com/maps/search/?api=1&query=Ningjin%20Garden%20Hotel%20Dezhou%20Shandong'},
  {name:'Wyndham Qingdao', cn:'青岛鑫江温德姆酒店', city:'Chengyang, Qingdao', who:'All three',
   cin:'Tue 28 Jul · after 15:00', cout:'Thu 30 Jul · before 12:00', nights:'2 nights · 3 rooms',
   conf:'1167731171512334', booking:'1167731171508789', guests:'Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas',
   addr:'No. 220 Heilongjiang Middle Road, Chengyang District, Qingdao 266107', addrcn:'山东青岛城阳区黑龙江中路220号',
-  tel:'+86 532 8098 8888', via:'Trip.com · deposit CNY 500 at check-in · free cancel before 18:00 Tue 28',
+  tel:'+86 532 8098 8888', via:'Trip.com · A$797 (~¥3,745) prepaid · ¥500 (~A$106) deposit at check-in · free cancel before 6 PM Tue 28',
   extra:'✅ Package includes a HOTEL → QINGDAO AIRPORT SHUTTLE — <b>book it 4 h ahead</b> and use it for the 08:00 Thu flight. Also welcome refreshments daily + minibar on day 1.',
   map:'https://www.google.com/maps/search/?api=1&query=Wyndham%20Qingdao%20Chengyang'},
  {name:'Dong Fang Hotel', cn:'广州东方宾馆', city:'Yuexiu, Guangzhou', who:'All three (Georgio flies out 1 Aug)',
   cin:'Thu 30 Jul', cout:'Sun 2 Aug', nights:'3 nights · 3 rooms',
   conf:'—', booking:'1167731248558318', guests:'Georgio Batsinilas, Daniel Catanzaro, Konstantin Blank',
   addr:'No. 120 Liuhua Road, Yuexiu District, Guangzhou', addrcn:'广州市越秀区流花路120号',
-  tel:'', via:'Trip.com · PAID AU$1,068.03',
+  tel:'', via:'Trip.com · ✓ PAID — A$1,068.03 (~¥5,020) on 20 Jul',
   extra:'Arriving ~22:10 Thu off the Xiamen train — flag the late check-in.',
   map:'https://www.google.com/maps/search/?api=1&query=Dong%20Fang%20Hotel%20Guangzhou%20Liuhua%20Road'}
 ];
@@ -894,22 +887,25 @@ const FLIGHTS=[
    '<b>Home · Wed 5 Aug</b> — CX165 Hong Kong <b>00:15</b> → Brisbane 10:50 (A350-900), non-stop, 8h35. Economy.',
    '<b>Baggage:</b> 1 × 23 kg checked + 1 × 7 kg cabin, each passenger (Economy Light).',
    '<b>Seats:</b> Danny 59D · 45H · 44H  |  Konstantin 59E · 45J · 44J',
+   '<b>Fare:</b> ✓ PAID — A$3,271.56 (~¥15,380) all-in for 2 pax, incl. seat selection.',
    '<b>Note:</b> the return departs <b>Hong Kong</b> (not the mainland) at 00:15 on the 5th — be in HK the night of Tue 4 Aug.'
  ]},
  {who:'All three — Qingdao → Xiamen (Xiamen Airlines)', lines:[
-   '<b>Booking:</b> 1167732017126287 · 3 pax (Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas) · paid AU$532.80',
+   '<b>Booking:</b> 1167732017126287 · 3 pax (Daniel Catanzaro, Konstantin Blank, Georgio Batsinilas) · ✓ PAID — A$532.80 (~¥2,505)',
    '<b>Thu 30 Jul:</b> MF8526, Qingdao Jiaodong <b>08:00</b> → Xiamen Gaoqi <b>T3 10:35</b>. Economy.',
    '<b>Getting there:</b> use the Wyndham’s airport shuttle (book 4 h ahead) — be at TAO by ~06:30, so leave the hotel ~05:30.'
  ]},
- {who:'Georgio — China Southern (open-jaw)', lines:[
-   '<b>In:</b> BNE 10:20 → Jinan (TNA) 23:50, Sun 26 Jul (1 stop via Guangzhou), then pre-booked car ~1h15 to Ningjin.',
-   '<b>Home:</b> Guangzhou (CAN) 21:05 Sat 1 Aug → Brisbane 08:25 (+1), direct.',
-   '<b>Fare:</b> Economy Standard ~A$1,294 return · bags 2×23 kg checked + 1×8 kg cabin.'
+ {who:'Georgio — China Southern (open-jaw) · ✓ TICKETED', lines:[
+   '<b>Booking:</b> Trip.com 1167732093706211 · PNR <b>PJWEFZ</b> · ✓ PAID — ~A$1,294 (~¥6,080)',
+   '<b>In · Sun 26 Jul:</b> CZ382 BNE <b>10:20</b> → Guangzhou (CAN T2) 17:50 · transfer 3h15, bags checked through · CZ3663 CAN <b>21:05</b> → Jinan (TNA) <b>23:50</b>. Then pre-booked car ~1h15 to Ningjin (~02:00).',
+   '<b>Home · Sat 1 Aug:</b> CZ381 Guangzhou (CAN T2) <b>21:05</b> → Brisbane <b>08:25</b> (+1), non-stop.',
+   '<b>Baggage:</b> 2 × 23 kg checked + 1 × 8 kg cabin + personal item.',
+   '<b>Notes:</b> at BNE 3 h early (~07:20). Tickets must be flown in sequence.'
  ]}
 ]; // add any further tickets here as confirmed
 // Remaining hotel to confirm (everything else is now booked — see Accommodation above)
 const PICKS=[
- {name:'Regal Hong Kong Hotel', area:'Causeway Bay, Hong Kong', dates:'2 → 5 Aug · 3 nights', price:'~A$871', who:'K & DC only',
+ {name:'Regal Hong Kong Hotel', area:'Causeway Bay, Hong Kong', dates:'2 → 5 Aug · 3 nights', price:'~A$871 (~HK$4,430)', who:'K & DC only',
   fit:'Danny’s pick for the HK tail — the last one still to book. 5★ in Causeway Bay (88 Yee Wo St) on the MTR, walk to shopping + the harbour. Boys only; Georgio’s home by then.',
   trip:'https://www.trip.com/hotels/hong-kong-hotel-list/?searchword=Regal+Hong+Kong+Hotel',
   map:'https://www.google.com/maps/search/?api=1&query=Regal%20Hong%20Kong%20Hotel%20Causeway%20Bay'}
@@ -957,19 +953,7 @@ document.getElementById('bookings').innerHTML =
 
 /* ===== INFO / ESSENTIALS view ===== */
 document.getElementById('info').innerHTML =
- '<h2>Info &amp; essentials</h2><p class="lead">The on-the-ground basics — save these before you fly. Works offline / without a VPN.</p>'+
- '<div class="h3">Flights — book now (dates are bookable)</div><div class="jgrid">'+
-   '<div class="jcard"><h4>Danny + Konstantine — ✓ BOOKED</h4><ul>'+
-     '<li><b>Cathay Pacific · ref DSZPDZ</b> — full detail in the <b>Bookings</b> tab.</li>'+
-     '<li><b>Out · Thu 23 Jul:</b> CX156 BNE 00:05 → HKG 06:50, then CX316 HKG 08:10 → Shanghai PVG 11:05.</li>'+
-     '<li><b>Home · Wed 5 Aug:</b> CX165 HKG 00:15 → BNE 10:50 (non-stop).</li>'+
-     '<li>Baggage 1 × 23 kg checked + 1 × 7 kg cabin each. Return departs Hong Kong.</li></ul></div>'+
-   '<div class="jcard"><h4>Georgio — China Southern (open-jaw)</h4><ul>'+
-     '<li><b>In:</b> BNE <b>10:20</b> → Jinan (TNA) <b>23:50</b>, Sun 26 Jul (1 stop via Guangzhou). Overnight Jinan, ~1h15 drive to Ningjin Monday.</li>'+
-     '<li><b>Home:</b> Guangzhou (CAN) <b>21:05</b> Sat 1 Aug → BNE <b>08:25</b> (+1), direct.</li>'+
-     '<li>Economy Standard · <b>~A$1,294</b> return · bags 2×23 kg checked + 1×8 kg cabin.</li>'+
-     '<li>Fare tip: Economy Flex (~lower change/cancel fees) was the same baggage — worth it only if his dates might move.</li></ul></div>'+
- '</div>'+
+ '<h2>Info &amp; essentials</h2><p class="lead">The on-the-ground basics plus a city guide for everywhere the trip touches. Save this before you fly — it works offline / without a VPN.</p>'+
  '<div class="h3">Emergency</div><div class="jgrid">'+
    '<div class="jcard"><h4>Mainland China</h4><ul><li>Police <b>110</b></li><li>Ambulance <b>120</b></li><li>Fire <b>119</b></li></ul></div>'+
    '<div class="jcard"><h4>Hong Kong</h4><ul><li>All emergencies <b>999</b></li></ul></div>'+
@@ -985,10 +969,22 @@ document.getElementById('info').innerHTML =
    '<div class="jcard"><h4>Getting around</h4><ul><li>Didi (rides; also inside Alipay/WeChat)</li><li>Amap or Baidu Maps (Google Maps is poor in China)</li><li>Translator: Google Translate offline pack, or Pleco</li></ul></div>'+
    '<div class="jcard"><h4>Documents</h4><ul><li>Australians: 30-day visa-free mainland (to end-2026); HK separate 90-day</li><li>Passport valid 6+ months</li><li>Save photos of passport + tickets offline</li></ul></div>'+
  '</div>'+
+ '<div class="h3">City guide — everywhere the trip touches</div><div class="jgrid">'+
+   '<div class="jcard"><h4>Shanghai 上海 · 23–26 Jul</h4><ul><li>China’s biggest city — ~25 million people</li><li>World’s busiest container port every year since 2010</li><li>The name means “upon the sea”</li><li>The Bund’s 1920s bank facades stare across at Pudong — a skyline built almost entirely since 1990</li><li>Shanghai Tower: 632 m, with lifts hitting ~74 km/h</li><li>The airport Maglev tops 431 km/h — world’s fastest commercial train</li><li>World’s longest metro network (~830 km)</li><li>Plane-tree streets of the old French Concession (1849–1943)</li><li>The Communist Party held its first congress here in 1921 (Xintiandi)</li><li>Order xiaolongbao — soup dumplings are the local flex</li></ul></div>'+
+   '<div class="jcard"><h4>Nantong 南通 · 24 Jul</h4><ul><li>“North gate of the Yangtze” — where the river meets the Yellow Sea</li><li>~7.7 million people, directly across the river from Shanghai</li><li>Industrialist Zhang Jian made it “China’s first modern city” — he founded China’s first museum here (1905)</li><li>Home-textile capital: a huge share of China’s bedding/fabric trades through its markets</li><li>Famous longevity belt — Rugao county has an unusual number of centenarians</li><li>The 11 km Shanghai–Nantong Yangtze bridge (2020) cut the trip to about an hour</li><li>Baopeng’s free-weights factory sits out east in Rudong county</li><li>Traditional blue calico (dyed cloth) craft town</li><li>Port moves 300+ million tonnes a year</li><li>River crab + Haimen goat are the local dishes</li></ul></div>'+
+   '<div class="jcard"><h4>Dezhou &amp; Ningjin 德州·宁津 · 26–28 Jul</h4><ul><li>~5.6 million people on the North China Plain</li><li><b>Ningjin county is China’s fitness-equipment capital</b> — locals claim ~70% of the country’s commercial gym gear starts here (hence Rosen + MBH)</li><li>Dezhou braised chicken (扒鸡) is nationally famous — grab it vacuum-packed at the station</li><li>“Solar Valley” — hosted the 2010 International Solar City Congress; solar water heaters everywhere</li><li>Grew rich on the Grand Canal grain trade for six centuries</li><li>Sits on the Beijing–Shanghai artery — 1 h to Jinan, ~4 h to Shanghai by HSR</li><li>A Sulu (Philippines) sultan died visiting in 1417 — his tomb is still here</li><li>Ningjin also builds classical furniture and piano parts</li><li>Flat wheat-and-corn country; 40°C summer days happen</li><li>Dezhou watermelons are the summer staple</li></ul></div>'+
+   '<div class="jcard"><h4>Linyi &amp; Yishui 临沂·沂水 · 28 Jul</h4><ul><li>Linyi prefecture: ~11 million people — one of Shandong’s biggest</li><li>“Logistics capital of China” — its wholesale markets rank among the world’s largest</li><li>Yishui county: ~1 million people across 2,414 km² of the Yimeng Mountains</li><li>The Yishui Underground Grand Canyon is a 6.1 km cave with China’s best underground river ride</li><li>Both names come from the Yi River</li><li>The Yimeng hills were a famous revolutionary base area in the 1940s</li><li>Cheap land + Linyi logistics = a big flooring / rubber-products belt</li><li>Wang Xizhi, China’s greatest calligrapher (4th century), was born in Linyi</li><li>Nearby Changlin produced China’s biggest gem diamond find (158 carats)</li><li>Yishui GDP ≈ ¥62 bn (2024) — manufacturing + agri processing</li></ul></div>'+
+   '<div class="jcard"><h4>Rizhao 日照 · 28 Jul</h4><ul><li>The name means “first to be lit by sunshine”</li><li>~3 million people, coastal prefecture south of Qingdao</li><li>Rizhao Port is a top-10 Chinese bulk port (iron ore + soybeans)</li><li>China’s northernmost commercial green-tea country</li><li>64 km of golden beaches — a domestic summer escape</li><li>Big sailing + watersports base (hosted National Games sailing)</li><li>Relax Sports sits in the Economic Development Zone</li><li>Steel and pulp mills anchor the industrial economy</li><li>Liangchengzhen nearby: a 4,000-year-old Longshan black-pottery site</li><li>The beachfront seafood BBQ (烧烤) scene is the evening move</li></ul></div>'+
+   '<div class="jcard"><h4>Qingdao 青岛 · 28–30 Jul</h4><ul><li>~10 million people — Shandong’s showcase coastal city</li><li>Tsingtao Brewery, founded 1903 under German rule, is China’s export beer</li><li>The old German quarter (1898–1914): red roofs, St Michael’s Cathedral</li><li>Locals genuinely buy draft beer in plastic bags from street kegs</li><li>2008 Olympic sailing city — huge marina at Fushan Bay</li><li>Haier and Hisense are both headquartered here</li><li>The 26 km Jiaozhou Bay bridge is among the world’s longest sea crossings</li><li>Top-5 world container port</li><li>Your factories (Quick Body, Peach Builder) sit in the Chengyang/Jimo manufacturing belt up north</li><li>May Fourth Square’s red spiral marks the 1919 movement sparked partly over Qingdao’s fate</li></ul></div>'+
+   '<div class="jcard"><h4>Xiamen &amp; Zhangzhou 厦门·漳州 · 30 Jul</h4><ul><li>Xiamen (“Amoy”): ~5.3 million — one of China’s original four Special Economic Zones (1980)</li><li>Gulangyu Island: UNESCO-listed, car-free, nicknamed Piano Island</li><li>Taiwan’s Kinmen island sits ~10 km offshore</li><li>Heart of Hokkien culture — ancestral home of much of Southeast Asia’s Chinese diaspora</li><li>Xiamen University is rated China’s most beautiful campus</li><li>Oolong tea country — Tieguanyin grows next door in Anxi</li><li>Zhangzhou (~5 million) is the food + flower belt; Changtai district does metal fabrication — that’s Rayton</li><li>The Island Ring Road is one of China’s prettiest coastal drives</li><li>Local dare: 土笋冻 — sea-worm jelly. Braver than it sounds</li><li>Hosted the 2017 BRICS summit</li></ul></div>'+
+   '<div class="jcard"><h4>Guangzhou 广州 · 30 Jul–2 Aug</h4><ul><li>~19 million people — core of the world’s largest urban region (the Greater Bay Area, ~86 m)</li><li>2,200+ years old — “Canton”, the start of the Maritime Silk Road</li><li>Hosts the Canton Fair, China’s biggest trade show, since 1957</li><li>Ground zero of Cantonese food — dim sum / yum cha started here</li><li>Canton Tower: 604 m with a ferris wheel on the roof</li><li>Baiyun is regularly among the world’s busiest airports</li><li>From 1757–1842 this was the ONLY Chinese port open to the West</li><li>Huadu district (Conlin) = machinery belt; Shunde next door (OMA) is China’s appliance capital</li><li>A Pearl River night cruise is the best cheap evening out</li><li>August = daily thunderstorm burst; carry a brolly</li></ul></div>'+
+   '<div class="jcard"><h4>Dongguan 东莞 · 1 Aug</h4><ul><li>~10.5 million people wedged between Guangzhou and Shenzhen</li><li>The original “world’s factory” — at its peak it made roughly 1 in 5 smartphones on earth</li><li>32 manufacturing towns, each with a specialty — Chashan (Chuanyu) is one</li><li>Huawei’s European-style Songshan Lake campus is here</li><li>Humen 1839: Lin Zexu destroyed British opium here — the spark for the Opium War</li><li>Humen station puts Hong Kong ~40 min away by HSR</li><li>China’s basketball town — the CBA’s most successful club</li><li>Once ~75% of residents were migrants from other provinces</li><li>Now pivoting into robotics and EV parts</li><li>Order the roast goose</li></ul></div>'+
+   '<div class="jcard"><h4>Hong Kong 香港 · 2–5 Aug</h4><ul><li>7.5 million people; separate currency, law + immigration as an SAR</li><li>More skyscrapers than any city on earth</li><li>The Peak Tram has been climbing Victoria Peak since 1888</li><li>The MTR runs ~99.9% on time — and turns a profit</li><li>Octopus (1997) was the world’s first big contactless transit card</li><li>Star Ferry has crossed the harbour since 1888 — still a few HK dollars</li><li>HKD has been pegged to the USD since 1983</li><li>The airport sits on a flattened island (Chek Lap Kok, 1998)</li><li>Big Buddha at Ngong Ping: 34 m of bronze, cable car up</li><li>Eat: dim sum, roast goose, pineapple buns, egg tarts</li></ul></div>'+
+ '</div>'+
  '<div class="h3">Handy Mandarin</div><table class="jtbl"><thead><tr><th>English</th><th>中文 · pinyin</th></tr></thead><tbody>'+
-   [['Hello','你好 · Nǐ hǎo'],['Thank you','谢谢 · Xièxie'],['How much?','多少钱 · Duōshǎo qián'],['Airport','机场 · Jīchǎng'],['Train station','火车站 · Huǒchēzhàn'],['Toilet','厕所 · Cèsuǒ'],['This one','这个 · Zhège'],['No spicy','不辣 · Bù là']].map(r=>`<tr><td>${r[0]}</td><td style="color:var(--text2)">${r[1]}</td></tr>`).join('')+
+   [['Hello','你好 · Nǐ hǎo'],['How are you?','你好吗 · Nǐ hǎo ma'],['Good morning','早上好 · Zǎoshang hǎo'],['Goodbye','再见 · Zàijiàn'],['Thank you','谢谢 · Xièxie'],['You’re welcome','不客气 · Bú kèqi'],['No problem','没问题 · Méi wèntí'],['Nice to meet you','很高兴认识你 · Hěn gāoxìng rènshi nǐ'],['How much?','多少钱 · Duōshǎo qián'],['Too expensive!','太贵了 · Tài guì le'],['A bit cheaper?','便宜一点 · Piányi yìdiǎn'],['This one','这个 · Zhège'],['Delicious','好吃 · Hǎochī'],['Cheers!','干杯 · Gānbēi'],['Water','水 · Shuǐ'],['Beer','啤酒 · Píjiǔ'],['No spicy','不辣 · Bú là'],['Where is the toilet?','洗手间在哪里 · Xǐshǒujiān zài nǎlǐ'],['Airport','机场 · Jīchǎng'],['Train station','火车站 · Huǒchēzhàn'],['I don’t understand','我听不懂 · Wǒ tīng bù dǒng'],['We’re from Australia','我们来自澳大利亚 · Wǒmen láizì Àodàlìyà']].map(r=>`<tr><td>${r[0]}</td><td style="color:var(--text2)">${r[1]}</td></tr>`).join('')+
  '</tbody></table>'+
- '<div class="cav"><ul style="padding-left:18px;margin:0"><li><b>Show your driver:</b> taxi / Didi drivers often don’t read English — have each supplier text you their address in Chinese and show it on your phone. (Peach Builder: 青岛驰健英赛特 五谷河一路 赵家岭村106号.)</li><li><b>Luggage:</b> travel carry-on + daypack for the rail-heavy circuit; the boys can forward a bag to Hong Kong (SF Express) for the holiday tail. Domestic cabin limit is ~5 kg — gate-check the roller if it’s over.</li></ul></div>';
+ '<div class="cav"><ul style="padding-left:18px;margin:0"><li><b>Show your driver:</b> taxi / Didi drivers often don’t read English — have each supplier text you their address in Chinese and show it on your phone. (Peach Builder: 青岛驰健英赛特 五谷河一路 赵家岭村106号.)</li><li><b>Luggage:</b> travel carry-on + daypack for the rail-heavy circuit; the boys can forward a bag to Hong Kong (SF Express) for the holiday tail. Domestic cabin limit is 8 kg on your MF8526 tickets.</li></ul></div>';
 
 /* tab nav */
 document.querySelectorAll('.seg button').forEach(b=>{
